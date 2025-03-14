@@ -2,7 +2,7 @@
 
 using Avalonia.Media.Imaging;
 
-namespace BlackJackV2.Models
+namespace BlackJackV2.Models.CardFactory
 {
 
 	/* *
@@ -11,8 +11,8 @@ namespace BlackJackV2.Models
 	 * */
 	internal interface ICard<TFrontImage, TBackImage, TValue>
 	{
-		public TFrontImage FrontImage{ get; }
-		public TBackImage BackImage{ get; }
+		public TFrontImage FrontImage { get; }
+		public TBackImage BackImage { get; }
 		public TValue Value { get; }
 	}
 }

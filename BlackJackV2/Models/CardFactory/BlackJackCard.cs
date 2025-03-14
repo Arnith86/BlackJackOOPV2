@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackV2.Models
+namespace BlackJackV2.Models.CardFactory
 {
 
 	/**
@@ -20,13 +20,13 @@ namespace BlackJackV2.Models
 	 **/
 	public class BlackJackCard : ICard<Bitmap, Bitmap, string[]>
 	{
-		public Bitmap CurrentCardImage => FaceDown ? BackImage : FrontImage; 
+		public Bitmap CurrentCardImage => FaceDown ? BackImage : FrontImage;
 		public Bitmap FrontImage { get; private set; }
 		public Bitmap BackImage { get; private set; }
 		public string[] Value { get; private set; }
 		public bool FaceDown { get; private set; }
 
-		public BlackJackCard(Bitmap frontImage, Bitmap backImage, string[] value) 
+		public BlackJackCard(Bitmap frontImage, Bitmap backImage, string[] value)
 		{
 			FrontImage = frontImage;
 			BackImage = backImage;
@@ -41,4 +41,3 @@ namespace BlackJackV2.Models
 		}
 	}
 }
- 
