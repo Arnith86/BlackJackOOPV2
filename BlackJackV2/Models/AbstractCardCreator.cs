@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Media.Imaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,6 @@ namespace BlackJackV2.Models
 	 * */
 	internal abstract class AbstractCardCreator<TFrontImage, TBackImage, TValue>
 	{
-		public abstract ICard<TFrontImage, TBackImage, TValue> CardFactory();
+		public abstract ICard<TFrontImage, TBackImage, TValue> CreateCard(TFrontImage frontImage, TBackImage backImage, TValue value);
 	}
 }
