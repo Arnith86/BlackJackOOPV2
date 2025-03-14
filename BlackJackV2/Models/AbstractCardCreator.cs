@@ -9,7 +9,7 @@ namespace BlackJackV2.Models
 	/* *
 	 * Abstract creator class to create cards. Part of the Card factory pattern
 	 * */
-	internal abstract class CardCreator<TFrontImage, TBackImage, TValue>
+	internal abstract class AbstractCardCreator<TFrontImage, TBackImage, TValue>
 	{
 		public abstract ICard<TFrontImage, TBackImage, TValue> CardFactory();
 	}
