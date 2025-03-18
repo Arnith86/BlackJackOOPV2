@@ -13,28 +13,28 @@ namespace BlackJackV2.Models.CardDeck
 	/** 
 	 * The class simulates a black jack card deck and contains the logic related to the Card Deck. 
 	 * 
-	 * List<ICard<Bitmap, Bitmap, string[]>> _originalDeck:		An undisturbed version of the card deck
-	 * List<ICard<Bitmap, Bitmap, string[]>> _activeDeck: 		The card deck in active us, can be shuffled and drawn from
+	 * List<ICard<Bitmap, Bitmap, string>> _originalDeck:		An undisturbed version of the card deck
+	 * List<ICard<Bitmap, Bitmap, string>> _activeDeck: 		The card deck in active us, can be shuffled and drawn from
 	 * */
 
-	internal class BlackJackCardDeck : ICardDeck<Bitmap, Bitmap, string[]>
+	internal class BlackJackCardDeck : ICardDeck<Bitmap, Bitmap, string>
 	{
 
-		List<ICard<Bitmap, Bitmap, string[]>> _originalDeck;
-		List<ICard<Bitmap, Bitmap, string[]>> _activeDeck;
+		List<ICard<Bitmap, Bitmap, string>> _originalDeck;
+		List<ICard<Bitmap, Bitmap, string>> _activeDeck;
 
-		public BlackJackCardDeck(List<ICard<Bitmap, Bitmap, string[]>> cardDeck)
+		public BlackJackCardDeck(List<ICard<Bitmap, Bitmap, string>> cardDeck)
 		{
 			_originalDeck = cardDeck;
-			_activeDeck = new List<ICard<Bitmap, Bitmap, string[]>>();
+			_activeDeck = new List<ICard<Bitmap, Bitmap, string>>();
 
 			// Remove these when finished with testing
 			ShuffleDeck();
 		}
 
-		public ICard<Bitmap, Bitmap, string[]> GetTopCard()
+		public ICard<Bitmap, Bitmap, string> GetTopCard()
 		{
-			ICard<Bitmap, Bitmap, string[]> topCard = _activeDeck[0];
+			ICard<Bitmap, Bitmap, string> topCard = _activeDeck[0];
 			_activeDeck.RemoveAt(0);
 
 			return topCard;
