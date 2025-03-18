@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.CardFactory
 {
-	/* *
-	 * Abstract creator class to create cards. Part of the Card factory pattern
-	 * */
-	internal abstract class AbstractCardCreator<TFrontImage, TBackImage, TValue>
+	/**
+	 * Interface for the creator class to create cards. Part of the Card factory pattern
+	 **/
+	internal abstract class ICardCreator<TFrontImage, TBackImage, TValue>
 	{
 		public abstract ICard<TFrontImage, TBackImage, TValue> CreateCard(TFrontImage frontImage, TBackImage backImage, TValue value);
 	}

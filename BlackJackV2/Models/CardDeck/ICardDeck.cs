@@ -5,17 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackV2.Models
+namespace BlackJackV2.Models.CardDeck
 {
 
-	/* * 
+	/** 
 	 * A Generic interface for a set of Generic Card objects
+	 * 
 	 * Minimum functionality: shuffle the deck, get the top card
-	 * */
+	 **/
 
-	internal interface ICardDeck <TFrontImage, TBackImage, TValue>
+	internal interface ICardDeck<TFrontImage, TBackImage, TValue>
 	{
 		public ICard<TFrontImage, TBackImage, TValue> GetTopCard();
-		public void shuffleDeck();
+		public void ShuffleDeck();
 	}
 }
