@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackV2.Models
+namespace BlackJackV2.Models.CardHand
 {
 	/**
 	 * Card Hand interface 
@@ -18,7 +18,7 @@ namespace BlackJackV2.Models
 	 * 
 	 **/
 
-	internal interface ICardHand <TFrontImage, TBackImage, TValue>
+	internal interface ICardHand<TFrontImage, TBackImage, TValue>
 	{
 		public List<ICard<TFrontImage, TBackImage, TValue>> Hand { get; }
 		public int HandValue { get; }

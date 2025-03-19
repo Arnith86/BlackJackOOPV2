@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackV2.Models
+namespace BlackJackV2.Models.CardHand
 {
 	/**
 	 * Card Hand 
@@ -25,7 +25,7 @@ namespace BlackJackV2.Models
 		private int _handValue;
 		public int HandValue => _handValue;
 
-		public List<ICard<Bitmap, Bitmap, string>> Hand {  get; private set; } 
+		public List<ICard<Bitmap, Bitmap, string>> Hand { get; private set; }
 
 		public BlackJackCardHand()
 		{
@@ -46,14 +46,14 @@ namespace BlackJackV2.Models
 		}
 
 		// Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
-		public int CalculateHandValue() 
+		public int CalculateHandValue()
 		{
 			// Hand is empty, value is zero
 			if (Hand.Count == 0) return 0;
 
 			int currentHandValue = 0;
 			int aceCount = 0;
-			 
+
 			// Sums the values of the current except for aces which it counts.
 			foreach (ICard<Bitmap, Bitmap, string> card in Hand)
 			{
@@ -72,14 +72,14 @@ namespace BlackJackV2.Models
 			 *	When checking an ace value and there are more aces present in the hand, then 
 			 *	(currentValueOfHand + 11 + numberOfAcesLeft) cannot exceed 21, otherwise ace gets the value 1.
 			 */
-			if (aceCount > 0) 
+			if (aceCount > 0)
 			{
-				while (aceCount > 0) 
+				while (aceCount > 0)
 				{
 					aceCount--;
-					int handValueAttempt = (currentHandValue + 11);
+					int handValueAttempt = currentHandValue + 11;
 
-					if (handValueAttempt <= 21 && (handValueAttempt + aceCount) <= 21) currentHandValue += 11;
+					if (handValueAttempt <= 21 && handValueAttempt + aceCount <= 21) currentHandValue += 11;
 					else currentHandValue++;
 				}
 			}
