@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using BlackJackV2.Models.CardFactory;
 using System;
 using System.Collections.Generic;
@@ -19,31 +20,37 @@ namespace BlackJackV2.Models
 	 * 
 	 **/
 
-	internal class CardHand : ICardHand<Bitmap, Bitmap, string>
+	internal class BlackJackCardHand : ICardHand<Bitmap, Bitmap, string>
 	{
+		private int _handValue;
+		public int HandValue => _handValue;
+
 		public List<ICard<Bitmap, Bitmap, string>> Hand {  get; private set; } 
 
-		public int HandValue
-		{ 
-			get 
-			{
-				return CalculateAceValue();
-			}
+		public BlackJackCardHand()
+		{
+			_handValue = 0;
+			Hand = new List<ICard<Bitmap, Bitmap, string>>();
 		}
 
 		public void AddCard(ICard<Bitmap, Bitmap, string> card)
 		{
 			Hand.Add(card);
+			_handValue = CalculateHandValue();
 		}
 
 		public void ClearHand()
 		{
 			Hand.Clear();
+			_handValue = CalculateHandValue();
 		}
 
 		// Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
-		public int CalculateAceValue() 
+		public int CalculateHandValue() 
 		{
+			// Hand is empty, value is zero
+			if (Hand.Count == 0) return 0;
+
 			int currentHandValue = 0;
 			int aceCount = 0;
 			 
@@ -54,11 +61,12 @@ namespace BlackJackV2.Models
 				string[] valueString = card.Value.Split('_');
 
 				// If king, Queen or Knight then value = 10, all other values (excluding ace) keep their value
-				if (int.TryParse(valueString[0], out int value) && value == 1) aceCount++;
+				if (int.TryParse(valueString[1], out int value) && value == 1) aceCount++;
 				else currentHandValue += value > 10 ? 10 : value;
 			}
 
-			// Ace card(s) were present in hand
+
+			// Ace card(s) are present in hand
 			/**
 			 *	Ace recives the value of 11 iff the total value of the hand does not exceed the value of 21. 
 			 *	When checking an ace value and there are more aces present in the hand, then 
