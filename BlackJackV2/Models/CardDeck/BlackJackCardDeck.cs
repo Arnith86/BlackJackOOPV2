@@ -27,9 +27,6 @@ namespace BlackJackV2.Models.CardDeck
 		{
 			_originalDeck = cardDeck;
 			_activeDeck = new List<ICard<Bitmap, Bitmap, string>>();
-
-			// Remove these when finished with testing
-			ShuffleDeck();
 		}
 
 		public ICard<Bitmap, Bitmap, string> GetTopCard()
