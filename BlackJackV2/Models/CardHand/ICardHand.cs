@@ -14,7 +14,8 @@ namespace BlackJackV2.Models.CardHand
 	 * HandValue:	Get the current integer value of hand. 
 	 * Hand:		Get the list of card objects of hand
 	 * AddCard():	Adds a new card object to the hand 
-	 * ClearHand()  Emptys the hand
+	 * RemoveCard():Removes a specific card from hand 
+	 * ClearHand(): Emptys the hand
 	 * 
 	 **/
 
@@ -23,6 +24,8 @@ namespace BlackJackV2.Models.CardHand
 		public List<ICard<TFrontImage, TBackImage, TValue>> Hand { get; }
 		public int HandValue { get; }
 		public void AddCard(ICard<TFrontImage, TBackImage, TValue> card);
+		public void RemoveCard(string cardValue);
 		public void ClearHand();
+		
 	}
 }

@@ -15,8 +15,9 @@ namespace BlackJackV2.Models.CardHand
 	 * HandValue:			Get the current integer value of hand. 
 	 * Hand:				Get the list of card objects of hand
 	 * AddCard():			Adds a new card object to the hand 
-	 * ClearHand()			Emptys the hand
-	 * CalculateAceValue	Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
+	 * RemoveCard():		Removes a specific card from hand
+	 * ClearHand():			Emptys the hand
+	 * CalculateAceValue():	Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
 	 * 
 	 **/
 
@@ -43,6 +44,11 @@ namespace BlackJackV2.Models.CardHand
 		{
 			Hand.Clear();
 			_handValue = CalculateHandValue();
+		}
+
+		public void RemoveCard(string cardValue)
+		{
+			Hand.RemoveAll(card => card.Value == cardValue);
 		}
 
 		// Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
@@ -86,6 +92,5 @@ namespace BlackJackV2.Models.CardHand
 
 			return currentHandValue;
 		}
-
 	}
 }
