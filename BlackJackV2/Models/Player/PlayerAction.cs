@@ -16,9 +16,9 @@ namespace BlackJackV2.Models.Player
 	
 	internal class PlayerAction
 	{
-		public void Hit(IPlayerHand<Bitmap, Bitmap, string> player, BlackJackCardDeck blackJackCardDeck)
+		public void Hit(ICardHand<Bitmap, Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
 		{
-			
+			cardHand.AddCard(blackJackCardDeck.GetTopCard());
 		}
 
 		public void Fold(IPlayerHand<Bitmap, Bitmap, string> player, BlackJackCardDeck blackJackCardDeck)
