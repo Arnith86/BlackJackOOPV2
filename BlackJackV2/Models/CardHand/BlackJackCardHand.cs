@@ -49,6 +49,7 @@ namespace BlackJackV2.Models.CardHand
 		public void RemoveCard(string cardValue)
 		{
 			Hand.RemoveAll(card => card.Value == cardValue);
+			_handValue = CalculateHandValue();
 		}
 
 		// Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
