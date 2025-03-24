@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
+             x:Class="BlackJackV2.Views.ButtonView"
+			 x:DataType="vm:ButtonViewModel"
+			 mc:Ignorable="d" >
+	
+	<StackPanel Orientation="Horizontal" Spacing="10">
+		<Button Content="Hit" Command="{Binding HitCommand}"/>
+		<Button Content="Fold" Command="{Binding FoldCommand}"/>
+		<Button Content="Double" Command="{Binding DoubleDownCommand}"/>
+		<Button Content="Split" Command="{Binding SplitCommand}"/>
+	</StackPanel>
+	
+</UserControl>
