@@ -17,7 +17,7 @@ namespace BlackJackV2.Models.CardDeck
 	 * List<ICard<Bitmap, Bitmap, string>> _activeDeck: 		The card deck in active us, can be shuffled and drawn from
 	 * */
 
-	internal class BlackJackCardDeck : ICardDeck<Bitmap, Bitmap, string>
+	public class BlackJackCardDeck : ICardDeck<Bitmap, Bitmap, string>
 	{
 
 		List<ICard<Bitmap, Bitmap, string>> _originalDeck;

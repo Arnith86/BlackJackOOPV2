@@ -21,7 +21,7 @@ namespace BlackJackV2.Models.CardHand
 	 * 
 	 **/
 
-	internal class BlackJackCardHand : ICardHand<Bitmap, Bitmap, string>
+	public class BlackJackCardHand : ICardHand<Bitmap, Bitmap, string>
 	{
 		private int _handValue;
 		public int HandValue => _handValue;
