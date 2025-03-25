@@ -19,7 +19,7 @@ namespace BlackJackV2.Models.CardHand
 	 * 
 	 **/
 
-	internal interface ICardHand<TFrontImage, TBackImage, TValue>
+	public interface ICardHand<TFrontImage, TBackImage, TValue>
 	{
 		public List<ICard<TFrontImage, TBackImage, TValue>> Hand { get; }
 		public int HandValue { get; }
