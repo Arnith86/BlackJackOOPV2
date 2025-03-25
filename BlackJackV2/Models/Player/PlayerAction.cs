@@ -39,7 +39,10 @@ namespace BlackJackV2.Models.Player
 		 **/
 		public void Split(string cardValue, IPlayerHand<Bitmap, Bitmap, string> playerHand)
 		{
-			ICardHand<Bitmap, Bitmap, string> splitHand = new BlackJackCardHand();  // Consider making a creator class
+			BlackJackCardHandCreator blackJackCardHandCreator = new BlackJackCardHandCreator();
+			
+			ICardHand<Bitmap, Bitmap, string> splitHand = blackJackCardHandCreator.CreateBlackJackCardHand();
+
 			playerHand.SplitHand(cardValue, splitHand);
 		}
 	}
