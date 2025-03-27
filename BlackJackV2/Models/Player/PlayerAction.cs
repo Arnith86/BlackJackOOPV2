@@ -21,12 +21,12 @@ namespace BlackJackV2.Models.Player
 			cardHand.AddCard(blackJackCardDeck.GetTopCard());
 		}
 
-		public void Fold(IPlayerHand<Bitmap, Bitmap, string> player, BlackJackCardDeck blackJackCardDeck)
+		public void Fold(IPlayerHands<Bitmap, Bitmap, string> player, BlackJackCardDeck blackJackCardDeck)
 		{
 
 		}
 
-		public void DoubleDown(IPlayerHand<Bitmap, Bitmap, string> player)
+		public void DoubleDown(IPlayerHands<Bitmap, Bitmap, string> player)
 		{
 
 		}
@@ -37,13 +37,13 @@ namespace BlackJackV2.Models.Player
 		 * Resplitting – Some casinos allow resplitting if another pair appears (e.g., drawing another 8 after splitting 8s).
 		 * Restrictions on Aces – If a player splits Aces, they typically receive only one additional card per Ace and cannot hit further.
 		 **/
-		public void Split(string cardValue, IPlayerHand<Bitmap, Bitmap, string> playerHand)
+		public void Split(string cardValue, IPlayerHands<Bitmap, Bitmap, string> playerHand)
 		{
-			BlackJackCardHandCreator blackJackCardHandCreator = new BlackJackCardHandCreator();
+			//BlackJackCardHandCreator blackJackCardHandCreator = new BlackJackCardHandCreator();
 			
-			ICardHand<Bitmap, Bitmap, string> splitHand = blackJackCardHandCreator.CreateBlackJackCardHand();
+			//ICardHand<Bitmap, Bitmap, string> splitHand = BlackJackCardHandCreator.CreateBlackJackCardHand();
 
-			playerHand.SplitHand(cardValue, splitHand);
+			playerHand.SplitHand(cardValue/*, splitHand*/);
 		}
 	}
 }

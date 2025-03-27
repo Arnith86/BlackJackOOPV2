@@ -41,7 +41,7 @@ namespace BlackJackV2.Models.Player
 			//_splitCardHand = (splitHand ?? throw new ArgumentNullException(nameof(splitHand), "Split hand cannot be null."));
 
 			// Searches for the chosen card, in the primary hand
-			ICard<Bitmap, Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.Find(card => card.Value == splitValue);
+			ICard<Bitmap, Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.FirstOrDefault(card => card.Value == splitValue);
 
 			// Card has been found, move card to split hand and end search
 			if (cardWithMatchingValue != null)
