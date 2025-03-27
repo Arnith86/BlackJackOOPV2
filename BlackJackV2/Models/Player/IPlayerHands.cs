@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BlackJackV2.Models.CardHand;
+
+namespace BlackJackV2.Models.Player
+{
+	/**
+	 * Interface for Player hand handeling 
+	 **/
+
+	public interface IPlayerHands<TFrontImage, TBackImage, TValue>
+	{
+		public ICardHand<TFrontImage, TBackImage, TValue> PrimaryCardHand { get; }
+		public ICardHand<TFrontImage, TBackImage, TValue> SplitCardHand { get; }
+		
+		public void SplitHand(string splitValue/*, ICardHand<TFrontImage, TBackImage, TValue> splitHand*/);
+		public void ResetHand();
+	}
+}

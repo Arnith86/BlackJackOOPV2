@@ -13,13 +13,11 @@ namespace BlackJackV2.Models.Player
 	 * Uses the BlackJackCardHandCreator to create a hand of cards.
 	 **/
 
-	internal class BlackJackPlayerHandCreator
+	internal class BlackJackPlayerHandsCreator
 	{
-		public PlayerHand CreateBlackJackPlayerHand()
+		public static PlayerHand CreateBlackJackPlayerHand()
 		{
-			BlackJackCardHandCreator blackJackCardHandCreator = new BlackJackCardHandCreator();
-
-			return new PlayerHand(blackJackCardHandCreator.CreateBlackJackCardHand());
+			return new PlayerHand(BlackJackCardHandCreator.CreateBlackJackCardHand());
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace BlackJackV2.Models.CardHand
 
 	internal class BlackJackCardHandCreator
 	{
-		public BlackJackCardHand CreateBlackJackCardHand()
+		public static BlackJackCardHand CreateBlackJackCardHand()
 		{
 			return new BlackJackCardHand();
 		}
