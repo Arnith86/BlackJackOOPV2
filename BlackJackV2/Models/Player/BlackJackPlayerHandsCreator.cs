@@ -15,9 +15,9 @@ namespace BlackJackV2.Models.Player
 
 	internal class BlackJackPlayerHandsCreator
 	{
-		public static PlayerHand CreateBlackJackPlayerHand()
+		public static PlayerHands CreateBlackJackPlayerHand()
 		{
-			return new PlayerHand(BlackJackCardHandCreator.CreateBlackJackCardHand());
+			return new PlayerHands(BlackJackCardHandCreator.CreateBlackJackCardHand());
 		}
 	}
 }
