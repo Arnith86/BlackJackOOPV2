@@ -17,9 +17,20 @@
         </Design.DataContext>
 	
 	    <Grid>
-		    <!--<Image Height="200" Width="200" Source="{Binding TestImage}"/>-->
+		            <!-- Shows the dealer hand-->
 		    <Views:CardHandView DataContext="{Binding DealerCardViewModel}"  HorizontalContentAlignment="Center"/>
-			<Views:CardHandView DataContext="{Binding PlayerCardViewModels}"  HorizontalContentAlignment="Center"/>
+			
+			        <!-- Shows the player hands -->
+					<!-- Accesses each instance of PlayerCardViewModel in the ObservableCollection -->
+			<ItemsControl ItemsSource="{Binding PlayerCardViewModels}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Views:CardHandView DataContext="{Binding}"  HorizontalContentAlignment="Center"/>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl> 
+			
+			         <!-- Shows the player action buttons -->
 			<Views:ButtonView DataContext="{Binding ButtonViewModel}"  HorizontalContentAlignment="Center"/>
 	    </Grid>
 
