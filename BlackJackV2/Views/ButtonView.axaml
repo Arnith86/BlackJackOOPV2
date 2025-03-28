@@ -7,6 +7,7 @@
 			 x:DataType="vm:ButtonViewModel"
 			 mc:Ignorable="d" >
 	
+	
 	<StackPanel Orientation="Horizontal" Spacing="10">
 		<Button Content="Hit" Command="{Binding HitCommand}"/>
 		<Button Content="Fold" Command="{Binding FoldCommand}"/>

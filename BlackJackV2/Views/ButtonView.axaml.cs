@@ -8,6 +8,5 @@ public partial class ButtonView : UserControl
     public ButtonView()
     {
         InitializeComponent();
-		DataContext = new ButtonViewModel();
 	}
 }
