@@ -13,12 +13,21 @@ namespace BlackJackV2.ViewModels
 {
 	public class CardHandViewModel : ReactiveObject
 	{
-		private ObservableCollection<ICard<Bitmap, Bitmap, string>> _cards;
-		public ObservableCollection<ICard<Bitmap, Bitmap, string>> Cards => _cards;
+		private string _id; 
+		private ObservableCollection<ICard<Bitmap, string>> _cards;
 
-		public CardHandViewModel(ObservableCollection<ICard<Bitmap, Bitmap, string>> cards) 
+		public string Id => _id;
+		public ObservableCollection<ICard<Bitmap, string>> Cards /*=> _cards;*/
 		{
+			get => _cards;
+			private set => this.RaiseAndSetIfChanged(ref _cards, value);
+		}
+
+		public CardHandViewModel(string id, ObservableCollection<ICard<Bitmap, string>> cards) 
+		{
+			_id = id;
 			_cards = cards;
+			_cards.CollectionChanged += (sender, e) => this.RaisePropertyChanged(nameof(Cards));
 		}
 	}
 }

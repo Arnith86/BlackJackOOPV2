@@ -11,9 +11,9 @@ namespace BlackJackV2.Models.CardFactory
 	 * A concrete product class, part of the Card Factory Pattern. Creates BlackJack Card objects
 	 **/
 
-	internal class BlackJackCardCreator : ICardCreator<Bitmap, Bitmap, string>
+	internal class BlackJackCardCreator : ICardCreator<Bitmap, string>
 	{
-		public override ICard<Bitmap, Bitmap, string> CreateCard(Bitmap frontImage, Bitmap backImage, string value)
+		public override ICard<Bitmap, string> CreateCard(Bitmap frontImage, Bitmap backImage, string value)
 		{
 			return new BlackJackCard(frontImage, backImage, value);
 		}

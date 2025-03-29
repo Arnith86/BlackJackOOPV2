@@ -12,9 +12,9 @@ namespace BlackJackV2.ViewModels
 {
 	public class ViewModelCreator
 	{
-		public static CardHandViewModel CreateHandCardViewModel(/*List<ICard<Bitmap, Bitmap, string>>*/  ObservableCollection<ICard<Bitmap, Bitmap, string>> cardHand)
+		public static CardHandViewModel CreateHandCardViewModel(string id,  ObservableCollection<ICard<Bitmap, string>> cardHand)
 		{
-			return new CardHandViewModel(cardHand);
+			return new CardHandViewModel(id, cardHand);
 		}
 		public static ButtonViewModel CreateButtonViewModel(GameLogic gameLogic)
 		{

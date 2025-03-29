@@ -22,26 +22,26 @@ namespace BlackJackV2.Models.CardHand
 	 * 
 	 **/
 
-	public class BlackJackCardHand : ICardHand<Bitmap, Bitmap, string>
+	public class BlackJackCardHand : ICardHand<Bitmap, string>
 	{
 		private int _handValue;
 		public int HandValue => _handValue;
 
 		//public List<ICard<Bitmap, Bitmap, string>> Hand { get; private set; }
-		public ObservableCollection<ICard<Bitmap, Bitmap, string>> Hand { get; private set; }
+		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
 
 
 		public BlackJackCardHand()
 		{
 			_handValue = 0;
 			//Hand = new List<ICard<Bitmap, Bitmap, string>>();
-			Hand = new ObservableCollection<ICard<Bitmap, Bitmap, string>>();
+			Hand = new ObservableCollection<ICard<Bitmap, string>>();
 
 			// When the hand is changed (card added, removed or hand cleard), the hand value is recalculated
 			Hand.CollectionChanged += (sender, e) => _handValue = CalculateHandValue();
 		}
 
-		public void AddCard(ICard<Bitmap, Bitmap, string> card)
+		public void AddCard(ICard<Bitmap, string> card)
 		{
 			Hand.Add(card);
 		}
@@ -49,7 +49,7 @@ namespace BlackJackV2.Models.CardHand
 		public void RemoveCard(string cardValue)
 		{
 			//Hand.RemoveAll(card => card.Value == cardValue);
-			ICard<Bitmap, Bitmap, string> cardsToRemove = Hand.FirstOrDefault(card => card.Value == cardValue);
+			ICard<Bitmap, string> cardsToRemove = Hand.FirstOrDefault(card => card.Value == cardValue);
 			
 			if (cardsToRemove != null) Hand.Remove(cardsToRemove);
 		}
@@ -69,7 +69,7 @@ namespace BlackJackV2.Models.CardHand
 			int aceCount = 0;
 
 			// Sums the values of the current except for aces which it counts.
-			foreach (ICard<Bitmap, Bitmap, string> card in Hand)
+			foreach (ICard<Bitmap,string> card in Hand)
 			{
 				// Seperates int value and suite
 				string[] valueString = card.Value.Split('_');

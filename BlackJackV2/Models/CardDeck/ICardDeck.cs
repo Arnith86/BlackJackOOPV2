@@ -14,9 +14,9 @@ namespace BlackJackV2.Models.CardDeck
 	 * Minimum functionality: shuffle the deck, get the top card
 	 **/
 
-	internal interface ICardDeck<TFrontImage, TBackImage, TValue>
+	internal interface ICardDeck<TImage,TValue>
 	{
-		public ICard<TFrontImage, TBackImage, TValue> GetTopCard();
+		public ICard<TImage, TValue> GetTopCard();
 		public void ShuffleDeck();
 	}
 }

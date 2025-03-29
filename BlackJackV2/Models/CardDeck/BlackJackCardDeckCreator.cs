@@ -15,7 +15,7 @@ namespace BlackJackV2.Models.CardDeck
 
 	internal class BlackJackCardDeckCreator
 	{
-		public ICardDeck<Bitmap, Bitmap, string> CreateBlackJackCardDeck()
+		public ICardDeck<Bitmap, string> CreateBlackJackCardDeck()
 		{
 			BlackJackCardCreator blackJackCardCreator = new BlackJackCardCreator();
 			BlackJackDeckBuilder deckBuilder = new BlackJackDeckBuilder();

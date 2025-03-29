@@ -16,20 +16,24 @@ namespace BlackJackV2.ViewModels
 
 		public CardHandViewModel DealerCardViewModel { get; }
 		public CardHandViewModel PlayerCardViewModel { get; }
+		private ObservableCollection<CardHandViewModel> _playerCardViewModels;
 		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; }
 		public ButtonViewModel ButtonViewModel { get; }
 
 		public MainWindowViewModel()
 		{
-			DealerCardViewModel = ViewModelCreator.CreateHandCardViewModel(gameLogic.DealerCardHand.PrimaryCardHand.Hand);
+			DealerCardViewModel = ViewModelCreator.CreateHandCardViewModel("dealer", gameLogic.DealerCardHand.PrimaryCardHand.Hand);
+			
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>();
-			PlayerCardViewModels.Add(ViewModelCreator.CreateHandCardViewModel(gameLogic.PlayerCardHand.PrimaryCardHand.Hand));
+			PlayerCardViewModels.Add(ViewModelCreator.CreateHandCardViewModel("player1", gameLogic.PlayerCardHand.PrimaryCardHand.Hand));
+			this.RaisePropertyChanged(nameof(PlayerCardViewModels));
+			PlayerCardViewModels.Add(ViewModelCreator.CreateHandCardViewModel("player2", gameLogic.PlayerCardHand.SplitCardHand.Hand));
 			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic);
 
 		}
 		public void OnPlayerSplit(string splitValue)
 		{
-			PlayerCardViewModels.Add(ViewModelCreator.CreateHandCardViewModel(gameLogic.PlayerCardHand.SplitCardHand.Hand));
+			PlayerCardViewModels.Add(ViewModelCreator.CreateHandCardViewModel("player2", gameLogic.PlayerCardHand.SplitCardHand.Hand));
 		}
 		
 

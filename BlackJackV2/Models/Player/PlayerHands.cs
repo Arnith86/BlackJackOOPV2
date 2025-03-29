@@ -19,15 +19,15 @@ namespace BlackJackV2.Models.Player
 	 *	ResetHand()			: Empteys all hands of cards
 	 */
 
-	internal class PlayerHands : IPlayerHands<Bitmap, Bitmap, string>
+	internal class PlayerHands : IPlayerHands<Bitmap, string>
 	{
-		private ICardHand<Bitmap, Bitmap, string> _primeryCardHand;
-		private ICardHand<Bitmap, Bitmap, string> _splitCardHand;
+		private ICardHand<Bitmap, string> _primeryCardHand;
+		private ICardHand<Bitmap, string> _splitCardHand;
 
-		public ICardHand<Bitmap, Bitmap, string> PrimaryCardHand => _primeryCardHand;
-		public ICardHand<Bitmap, Bitmap, string> SplitCardHand => _splitCardHand;
+		public ICardHand<Bitmap, string> PrimaryCardHand => _primeryCardHand;
+		public ICardHand<Bitmap, string> SplitCardHand => _splitCardHand;
 
-		public PlayerHands(ICardHand<Bitmap, Bitmap, string> cardHand) 
+		public PlayerHands(ICardHand<Bitmap, string> cardHand) 
 		{
 			_primeryCardHand = cardHand;
 			_splitCardHand = BlackJackCardHandCreator.CreateBlackJackCardHand();
@@ -41,7 +41,7 @@ namespace BlackJackV2.Models.Player
 			//_splitCardHand = (splitHand ?? throw new ArgumentNullException(nameof(splitHand), "Split hand cannot be null."));
 
 			// Searches for the chosen card, in the primary hand
-			ICard<Bitmap, Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.FirstOrDefault(card => card.Value == splitValue);
+			ICard<Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.FirstOrDefault(card => card.Value == splitValue);
 
 			// Card has been found, move card to split hand and end search
 			if (cardWithMatchingValue != null)

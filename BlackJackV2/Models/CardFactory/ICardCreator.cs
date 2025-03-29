@@ -10,8 +10,8 @@ namespace BlackJackV2.Models.CardFactory
 	/**
 	 * Interface for the creator class to create cards. Part of the Card factory pattern
 	 **/
-	internal abstract class ICardCreator<TFrontImage, TBackImage, TValue>
+	internal abstract class ICardCreator<TImage, TValue>
 	{
-		public abstract ICard<TFrontImage, TBackImage, TValue> CreateCard(TFrontImage frontImage, TBackImage backImage, TValue value);
+		public abstract ICard<TImage, TValue> CreateCard(TImage frontImage, TImage backImage, TValue value);
 	}
 }

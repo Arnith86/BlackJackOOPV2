@@ -10,10 +10,11 @@ namespace BlackJackV2.Models
 	 * Common aspect to all cards is image, generic types are used to ease reuse of this interface
 	 **/
 
-	public interface ICard<TFrontImage, TBackImage, TValue>
+	public interface ICard<TImage, TValue>
 	{
-		public TFrontImage FrontImage{ get; }
-		public TBackImage BackImage{ get; }
+		public TImage CurrentImage{ get; }
+		public TImage FrontImage { get; }
+		public TImage BackImage { get; }
 		public TValue Value { get; }
 	}
 }

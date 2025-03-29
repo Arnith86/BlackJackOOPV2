@@ -18,9 +18,9 @@ namespace BlackJackV2.Models.CardFactory
 	 *	bool FaceDown:			signifies if the back of the card is shown or the value
 	 * 
 	 **/
-	public class BlackJackCard : ICard<Bitmap, Bitmap, string>
+	public class BlackJackCard : ICard<Bitmap, string>
 	{
-		public Bitmap CurrentCardImage => FaceDown ? BackImage : FrontImage;
+		public Bitmap CurrentImage => FaceDown ? BackImage : FrontImage;
 		public Bitmap FrontImage { get; private set; }
 		public Bitmap BackImage { get; private set; }
 		public string Value { get; private set; }
