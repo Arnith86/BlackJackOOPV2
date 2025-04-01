@@ -4,30 +4,35 @@ using System.Collections.ObjectModel;
 
 namespace BlackJackV2.ViewModels
 {
+	/**
+	 * This class is used to represent the table in the view
+	 * Here we can have the dealer's hand, player's hand, and player's split hand
+	 **/
+
 	public class TableViewModel : ReactiveObject
 	{
-		// These properties could be other view models for sub-views, for instance.
+		// Create the view models for the dealer and player hands
 		public CardHandViewModel DealerCardHandViewModel { get; }
 		public CardHandViewModel PlayerCardHandViewModel { get; }
 		public CardHandViewModel PlayerSplitCardHandViewModel { get; }
-
-		// Optionally, if you have collections, expose them too.
 		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; }
 
 		public TableViewModel(GameLogic gameLogic)
 		{
-			// Create sub-view models (using your ViewModelCreator or directly)
 			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Dealer Hand", gameLogic.DealerCardHand.PrimaryCardHand.Hand);
 			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Player Hand", gameLogic.PlayerCardHand.PrimaryCardHand.Hand);
 			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Player Split Hand", gameLogic.PlayerCardHand.SplitCardHand.Hand);
 
-			// You can create a collection of player hand view models if needed
+			// Add the player and player split hand to the player card view models
+			//** TODO: Add the player split hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>
 			{
 				PlayerCardHandViewModel,
 				PlayerSplitCardHandViewModel
 			};
 		}
+
+		//** TODO: Add the player split hand to the player card view models
 		public void OnPlayerSplit(string splitValue)
 		{
 		}

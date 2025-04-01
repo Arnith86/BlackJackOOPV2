@@ -11,6 +11,10 @@ using ReactiveUI;
 
 namespace BlackJackV2.ViewModels
 {
+	/**
+	 * This class is used to represent the player's hand in the view
+	 **/
+
 	public class CardHandViewModel : ReactiveObject
 	{
 		private string _id;

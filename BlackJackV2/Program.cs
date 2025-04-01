@@ -20,5 +20,6 @@ namespace BlackJackV2
                 .WithInterFont()
                 .LogToTrace()
                 .UseReactiveUI();
+
     }
 }

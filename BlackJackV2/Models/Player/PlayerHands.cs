@@ -35,11 +35,8 @@ namespace BlackJackV2.Models.Player
 
 
 		// Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-		public void SplitHand(string splitValue/*, ICardHand<Bitmap, Bitmap, string> splitHand*/  )
+		public void SplitHand(string splitValue)
 		{
-			// Adds the new empty hand to the list, if not null.
-			//_splitCardHand = (splitHand ?? throw new ArgumentNullException(nameof(splitHand), "Split hand cannot be null."));
-
 			// Searches for the chosen card, in the primary hand
 			ICard<Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.FirstOrDefault(card => card.Value == splitValue);
 
@@ -55,7 +52,6 @@ namespace BlackJackV2.Models.Player
 		public void ResetHand()
 		{
 			_primeryCardHand.ClearHand();
-			//if (_cardHands.Count > 1) _cardHands.RemoveRange(1, _cardHands.Count - 1);
 			_splitCardHand.ClearHand();
 		}
 	}

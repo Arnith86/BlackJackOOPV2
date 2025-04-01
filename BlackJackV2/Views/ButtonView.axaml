@@ -7,6 +7,7 @@
 			 x:DataType="vm:ButtonViewModel"
 			 mc:Ignorable="d" >
 	
+	<!-- View representing the action buttons -->
 	
 	<StackPanel Orientation="Horizontal" Spacing="10">
 		<Button Content="Hit" Command="{Binding HitCommand}"/>

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.ViewModels
 {
+	/**
+	 * This class is used to create the view models for the game
+	 **/
 	public class ViewModelCreator
 	{
 		public static CardHandViewModel CreateHandCardViewModel(string id,  ObservableCollection<ICard<Bitmap, string>> cardHand)

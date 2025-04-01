@@ -10,6 +10,8 @@
             Icon="/Assets/avalonia-logo.ico"
             Title="BlackJackV2">
 
+		<!-- The MainView of the game, which uses other views to build a complete view -->
+		
         <Design.DataContext>
             <!-- This only sets the DataContext for the previewer in an IDE,
                  to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -18,11 +20,12 @@
 	
 	    <Grid ShowGridLines="True">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="*"></RowDefinition>
-				<RowDefinition Height="50"></RowDefinition>		
+				<RowDefinition Height="100"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="50"/>		
 			</Grid.RowDefinitions>
 
-			<Views:TableView Grid.Row="0" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center"/> 
+			<Views:TableView Grid.Row="1" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center"/> 
 			
 			<!-- Shows the player action buttons -->
 			<Views:ButtonView Grid.Row="2" DataContext="{Binding ButtonViewModel}"  HorizontalContentAlignment="Center"/>

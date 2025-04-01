@@ -40,27 +40,6 @@ namespace BlackJackV2.Models.CardDeck
 				}
 			}
 
-			////// these are not important, only present to allow for continued testing 
-			//Uri cardBackImageUri = new Uri("avares://BlackJackV2/Assets/Cards/Card_Back.png");
-			//Bitmap cardBackImage = new Bitmap(AssetLoader.Open(cardBackImageUri));
-			//Uri cardFrontImageUri = new Uri($"avares://BlackJackV2/Assets/Cards/Hearts_1.png");
-			//Bitmap cardFrontImage = new Bitmap(AssetLoader.Open(cardFrontImageUri));
-
-			//ICard<Bitmap, Bitmap, string> card7 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_11");
-			//_cards.Add(card7);
-			//ICard<Bitmap, Bitmap, string> card6 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_6");
-			//_cards.Add(card6);
-			//ICard<Bitmap, Bitmap, string> card1 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
-			//_cards.Add(card1);
-			//ICard<Bitmap, Bitmap, string> card2 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Clubs_1");
-			//_cards.Add(card2);
-			////ICard<Bitmap, Bitmap, string> card3 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_12");
-			////_cards.Add(card3);
-			////ICard<Bitmap, Bitmap, string> card4 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_13");
-			////_cards.Add(card4);
-			////ICard<Bitmap, Bitmap, string> card5 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_5");
-			////_cards.Add(card5);
-
 			return _cards;
 		}
 	}

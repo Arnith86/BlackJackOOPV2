@@ -27,14 +27,12 @@ namespace BlackJackV2.Models.CardHand
 		private int _handValue;
 		public int HandValue => _handValue;
 
-		//public List<ICard<Bitmap, Bitmap, string>> Hand { get; private set; }
 		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
 
 
 		public BlackJackCardHand()
 		{
 			_handValue = 0;
-			//Hand = new List<ICard<Bitmap, Bitmap, string>>();
 			Hand = new ObservableCollection<ICard<Bitmap, string>>();
 
 			// When the hand is changed (card added, removed or hand cleard), the hand value is recalculated
@@ -48,7 +46,6 @@ namespace BlackJackV2.Models.CardHand
 
 		public void RemoveCard(string cardValue)
 		{
-			//Hand.RemoveAll(card => card.Value == cardValue);
 			ICard<Bitmap, string> cardsToRemove = Hand.FirstOrDefault(card => card.Value == cardValue);
 			
 			if (cardsToRemove != null) Hand.Remove(cardsToRemove);

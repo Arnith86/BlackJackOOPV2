@@ -17,14 +17,14 @@ namespace BlackJackV2.Models
 	{
 		// Used to create a deck of cards
 		private BlackJackCardDeckCreator blackJackCardDeckCreator = new BlackJackCardDeckCreator();
-		private ICardDeck<Bitmap, Bitmap, string> blackJackCardDeck;
+		private ICardDeck<Bitmap, string> blackJackCardDeck;
 		
 		// Represents the player and dealer hands
-		IPlayerHands<Bitmap, Bitmap, string> _playerCardHand;
-		IPlayerHands<Bitmap, Bitmap, string> _dealerCardHand;
+		IPlayerHands<Bitmap, string> _playerCardHand;
+		IPlayerHands<Bitmap, string> _dealerCardHand;
 
-		public IPlayerHands<Bitmap, Bitmap, string> PlayerCardHand { get => _playerCardHand; }
-		public IPlayerHands<Bitmap, Bitmap, string> DealerCardHand { get => _dealerCardHand; }
+		public IPlayerHands<Bitmap, string> PlayerCardHand { get => _playerCardHand; }
+		public IPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
 
 		public GameLogic()
 		{
@@ -33,28 +33,17 @@ namespace BlackJackV2.Models
 			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
 
 			blackJackCardDeck.ShuffleDeck();
-			//playerCardHand.AddCard(blackJackCardDeck.GetTopCard());
-			//int temp = playerCardHand.HandValue;
-			//playerCardHand.AddCard(blackJackCardDeck.GetTopCard());
-			//temp = playerCardHand.HandValue;
-			//playerCardHand.AddCard(blackJackCardDeck.GetTopCard());
-			//temp = playerCardHand.HandValue;
-			//playerCardHand.AddCard(blackJackCardDeck.GetTopCard());
-			//temp = playerCardHand.HandValue;
-			//cardHand.AddCard(blackJackCardDeck.GetTopCard());
-			//temp = cardHand.HandValue;
-
-			//IPlayerHand<Bitmap, Bitmap, string> playerHand = new PlayerHand(playerCardHand);
+		
 			PlayerAction playerAction = new PlayerAction();
-			playerAction.Split("Clubs_1", _playerCardHand);
 
-			// TestImage = cardHand.Hand[0].FrontImage;
 		}
 
-		public void AddCard(/*ICardHand<Bitmap, Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck*/)
+		public void AddCard()
 		{
-			Console.WriteLine("KAKAKA");
-			//cardHand.AddCard(blackJackCardDeck.GetTopCard());
+			PlayerCardHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
+			PlayerCardHand.SplitCardHand.AddCard(blackJackCardDeck.GetTopCard());
+			DealerCardHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
+
 		}
 	}
 }
