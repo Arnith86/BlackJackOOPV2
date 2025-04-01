@@ -3,25 +3,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
-			 x:Class="BlackJackV2.Views.CardHandView"
-			 x:DataType="vm:CardHandViewModel"
-			 mc:Ignorable="d" >
-
+             x:Class="BlackJackV2.Views.CardHandView"
+             x:DataType="vm:CardHandViewModel"
+             mc:Ignorable="d">
 
 	<StackPanel>
-		
 		<ItemsControl ItemsSource="{Binding Cards}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<StackPanel>
-						<Image Source="{Binding FrontImage}" Width="100" Height="150"/>
-						<Image Source="{Binding BackImage}" Width="100" Height="150"/>
+						<Image Source="{Binding CurrentImage}" Width="100" Height="150"/>
 					</StackPanel>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
-
-		
 	</StackPanel>
-	
 </UserControl>
