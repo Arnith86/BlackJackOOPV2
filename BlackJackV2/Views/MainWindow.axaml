@@ -1,11 +1,11 @@
-    <Window xmlns:Views="clr-namespace:BlackJackV2.Views"
-	        xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
-		    xmlns="https://github.com/avaloniaui"
+    <Window xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-            x:Class="BlackJackV2.Views.MainWindow"
+           
+			xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
+			xmlns:Views="clr-namespace:BlackJackV2.Views"
+	        x:Class="BlackJackV2.Views.MainWindow"
             x:DataType="vm:MainWindowViewModel"
             Icon="/Assets/avalonia-logo.ico"
             Title="BlackJackV2">
@@ -16,22 +16,16 @@
             <vm:MainWindowViewModel/>
         </Design.DataContext>
 	
-	    <Grid>
-		            <!-- Shows the dealer hand-->
-		    <Views:CardHandView DataContext="{Binding DealerCardViewModel}"  HorizontalContentAlignment="Center"/>
+	    <Grid ShowGridLines="True">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"></RowDefinition>
+				<RowDefinition Height="50"></RowDefinition>		
+			</Grid.RowDefinitions>
+
+			<Views:TableView Grid.Row="0" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center"/> 
 			
-			        <!-- Shows the player hands -->
-					<!-- Accesses each instance of PlayerCardViewModel in the ObservableCollection -->
-			<ItemsControl ItemsSource="{Binding PlayerCardViewModels}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<Views:CardHandView DataContext="{Binding}"  HorizontalContentAlignment="Center"/>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl> 
-			
-			         <!-- Shows the player action buttons -->
-			<Views:ButtonView DataContext="{Binding ButtonViewModel}"  HorizontalContentAlignment="Center"/>
+			<!-- Shows the player action buttons -->
+			<Views:ButtonView Grid.Row="2" DataContext="{Binding ButtonViewModel}"  HorizontalContentAlignment="Center"/>
 	    </Grid>
 
     </Window>
