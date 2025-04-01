@@ -20,5 +20,10 @@ namespace BlackJackV2.ViewModels
 		{
 			return new ButtonViewModel(gameLogic);
 		}
+
+		public static TableViewModel CreateTableViewModel(GameLogic gameLogic)
+		{
+			return new TableViewModel(gameLogic);
+		}
 	}
 }

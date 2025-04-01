@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:BlackJackV2.ViewModels;assembly=BlackJackV2"
+			 xmlns:Views="clr-namespace:BlackJackV2.Views"
+			 x:Class="BlackJackV2.Views.TableView"
+             x:DataType="vm:TableViewModel"
+             mc:Ignorable="d">
+	
+	<StackPanel>
+
+		<!-- Shows the dealer hand -->
+		<StackPanel>
+			<TextBlock Text="{Binding DealerCardHandViewModel.Id}" HorizontalAlignment="Center"/>
+			<Views:CardHandView DataContext="{Binding DealerCardHandViewModel}"  HorizontalContentAlignment="Center"/>
+		</StackPanel>
+
+		<!-- Shows the player hands -->
+		<!-- Accesses each instance of PlayerCardViewModel in the ObservableCollection -->
+	
+		<ItemsControl ItemsSource="{Binding PlayerCardViewModels}">
+				
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+
+			<ItemsControl.ItemTemplate>
+				<DataTemplate x:DataType="vm:CardHandViewModel">
+					<StackPanel>
+						<TextBlock Text="{Binding Id}" HorizontalAlignment="Center"/>
+						<Views:CardHandView HorizontalContentAlignment="Center"/>
+					</StackPanel>
+				</DataTemplate>
+				
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	
+	</StackPanel>
+</UserControl>
