@@ -13,12 +13,15 @@ namespace BlackJackV2.Models.CardHand
 	/**
 	 * Card Hand 
 	 * 
-	 * HandValue:			Get the current integer value of hand. 
-	 * Hand:				Get the list of card objects of hand
-	 * AddCard():			Adds a new card object to the hand 
-	 * RemoveCard():		Removes a specific card from hand
-	 * ClearHand():			Emptys the hand
-	 * CalculateAceValue():	Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
+	 * int HandValue:				Get the current integer value of hand. 
+	 * ObservableCollection Hand:	Get the list of card objects of hand
+	 * bool IsBlackJack:		    True if card hand is black jack (21 and 2 cards)
+	 * bool IsBusted:				True if card hand is busted (value > 21) 
+	 * void AddCard():				Adds a new card object to the hand 
+	 * void RemoveCard():			Removes a specific card from hand
+	 * void ClearHand():			Emptys the hand
+	 * int CalculateAceValue():		Calculate the current hands value, while accounting for that ace 
+									can have a value of either 1 or 11 
 	 * 
 	 **/
 
@@ -27,8 +30,14 @@ namespace BlackJackV2.Models.CardHand
 		private int _handValue;
 		public int HandValue => _handValue;
 
-		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
+		// True if card hand is black jack (21 and 2 cards)
+		public bool IsBlackJack => _handValue == 21 && Hand.Count == 2;
+		
+		// True if card hand is busted (value > 21)
+		public bool IsBusted => _handValue > 21;
 
+		// The cards in the hand
+		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
 
 		public BlackJackCardHand()
 		{
