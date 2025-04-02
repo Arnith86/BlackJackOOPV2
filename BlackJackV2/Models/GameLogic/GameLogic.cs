@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackV2.Models
+namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogic
 	{

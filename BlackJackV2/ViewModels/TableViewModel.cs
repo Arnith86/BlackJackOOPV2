@@ -1,4 +1,4 @@
-﻿using BlackJackV2.Models;
+﻿using BlackJackV2.Models.GameLogic;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 
@@ -15,7 +15,7 @@ namespace BlackJackV2.ViewModels
 		public CardHandViewModel DealerCardHandViewModel { get; }
 		public CardHandViewModel PlayerCardHandViewModel { get; }
 		public CardHandViewModel PlayerSplitCardHandViewModel { get; }
-		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; }
+		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; private set; }
 
 		public TableViewModel(GameLogic gameLogic)
 		{
@@ -23,18 +23,23 @@ namespace BlackJackV2.ViewModels
 			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Player Hand", gameLogic.PlayerCardHand.PrimaryCardHand.Hand);
 			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Player Split Hand", gameLogic.PlayerCardHand.SplitCardHand.Hand);
 
-			// Add the player and player split hand to the player card view models
-			//** TODO: Add the player split hand to the player card view models
+			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>
 			{
-				PlayerCardHandViewModel,
-				PlayerSplitCardHandViewModel
+				PlayerCardHandViewModel
 			};
 		}
 
-		//** TODO: Add the player split hand to the player card view models
+		// Add the player split hand to the to PlayerCardViewModels (adds another view in the UI)
 		public void OnPlayerSplit(string splitValue)
 		{
+			PlayerCardViewModels.Add(PlayerSplitCardHandViewModel);
+		}
+
+		// Remove the player split hand from the PlayerCardViewModels (removes the view from the UI)
+		public void OnPlayerSplitEnd()
+		{
+			PlayerCardViewModels.Remove(PlayerSplitCardHandViewModel);
 		}
 	}
 }

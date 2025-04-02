@@ -1,4 +1,4 @@
-﻿using BlackJackV2.Models;
+﻿using BlackJackV2.Models.GameLogic;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;

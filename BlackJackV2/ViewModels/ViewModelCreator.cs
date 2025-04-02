@@ -1,6 +1,7 @@
 ﻿using Avalonia.Media.Imaging;
 using BlackJackV2.Models;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.GameLogic;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

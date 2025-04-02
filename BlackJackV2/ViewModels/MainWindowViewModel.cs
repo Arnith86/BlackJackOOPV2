@@ -1,9 +1,9 @@
 ﻿using Avalonia.Collections;
 using Avalonia.Media.Imaging;
-using BlackJackV2.Models;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardFactory;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System.Collections.ObjectModel;
@@ -17,7 +17,7 @@ namespace BlackJackV2.ViewModels
 	public class MainWindowViewModel : ViewModelBase
     {
 		Bitmap _testImage;
-		private GameLogic gameLogic = new GameLogic();
+		private GameLogic gameLogic = GameLogicCreator.CreateGameLogic();
 		
 		public ButtonViewModel ButtonViewModel { get; }
 		public TableViewModel TableViewModel { get; }
