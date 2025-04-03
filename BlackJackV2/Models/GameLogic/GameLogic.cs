@@ -15,6 +15,8 @@ namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogic
 	{
+		PlayerAction playerAction;
+
 		// Used to create a deck of cards
 		private BlackJackCardDeckCreator blackJackCardDeckCreator = new BlackJackCardDeckCreator();
 		private ICardDeck<Bitmap, string> blackJackCardDeck;
@@ -34,7 +36,7 @@ namespace BlackJackV2.Models.GameLogic
 
 			blackJackCardDeck.ShuffleDeck();
 		
-			PlayerAction playerAction = new PlayerAction();
+			playerAction = new PlayerAction();
 
 		}
 

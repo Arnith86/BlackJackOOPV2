@@ -1,6 +1,7 @@
 ﻿using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace BlackJackV2.Models.Player
+namespace BlackJackV2.Models.GameLogic
 {
 	/**
 	 * Handels the blackjack related actions the players can take 
 	 **/
 	
-	internal class PlayerAction
+	public class PlayerAction
 	{
 		public void Hit(ICardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
 		{

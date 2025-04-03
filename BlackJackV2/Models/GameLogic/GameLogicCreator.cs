@@ -12,5 +12,15 @@ namespace BlackJackV2.Models.GameLogic
 		{
 			return new GameLogic();
 		}
+
+		public static RoundEvaluator CreateRoundEvaluator() 
+		{ 
+			return new RoundEvaluator(); 
+		}
+
+		public static PlayerAction CreatePlayerAction() 
+		{ 
+			return new PlayerAction(); 
+		}
 	}
 }
