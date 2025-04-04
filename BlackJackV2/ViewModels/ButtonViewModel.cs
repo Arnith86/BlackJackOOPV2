@@ -13,6 +13,7 @@ namespace BlackJackV2.ViewModels
 	/**
 	* This class is responsible for handling the button commands in the game.
 	**/
+
 	public class ButtonViewModel : ReactiveObject
 	{
 		private GameLogic _gameLogic;
@@ -25,7 +26,7 @@ namespace BlackJackV2.ViewModels
 		{
 			_gameLogic = gameLogic;
 
-			HitCommand = ReactiveCommand.Create(() => gameLogic.AddCard());
+			HitCommand = ReactiveCommand.Create(() => gameLogic.HitAction());
 			FoldCommand = ReactiveCommand.Create(() => Console.WriteLine("Fold pressed"));
 			DoubleDownCommand = ReactiveCommand.Create(() => Console.WriteLine("Double pressed"));
 			SplitCommand = ReactiveCommand.Create(() =>  Console.WriteLine("Split pressed"));
