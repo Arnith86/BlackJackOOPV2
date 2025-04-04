@@ -19,7 +19,7 @@ namespace BlackJackV2.Models.Player
 	 *	ResetHand()			: Empteys all hands of cards
 	 */
 
-	internal class PlayerHands : IPlayerHands<Bitmap, string>
+	public class PlayerHands : IPlayerHands<Bitmap, string>
 	{
 		private ICardHand<Bitmap, string> _primeryCardHand;
 		private ICardHand<Bitmap, string> _splitCardHand;
