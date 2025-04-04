@@ -31,7 +31,7 @@ namespace BlackJackV2.Models.CardFactory
 			FrontImage = frontImage;
 			BackImage = backImage;
 			Value = value;
-			FaceDown = true;
+			FaceDown = false;
 		}
 
 		// Initiates card flips
