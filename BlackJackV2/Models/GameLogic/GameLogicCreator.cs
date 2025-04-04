@@ -22,5 +22,10 @@ namespace BlackJackV2.Models.GameLogic
 		{ 
 			return new PlayerAction(); 
 		}
+
+		public static DealerLogic CreateDealerLogic()
+		{
+			return new DealerLogic();
+		}
 	}
 }

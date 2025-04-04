@@ -16,10 +16,10 @@ namespace BlackJackV2.Models.GameLogic
 	public class GameLogic
 	{
 		PlayerAction playerAction;
+		DealerLogic dealerLogic; 
 
 		// Used to create a deck of cards
-		private BlackJackCardDeckCreator blackJackCardDeckCreator = new BlackJackCardDeckCreator();
-		private ICardDeck<Bitmap, string> blackJackCardDeck;
+		private BlackJackCardDeck blackJackCardDeck;
 		
 		// Represents the player and dealer hands
 		IPlayerHands<Bitmap, string> _playerCardHand;
@@ -30,14 +30,16 @@ namespace BlackJackV2.Models.GameLogic
 
 		public GameLogic()
 		{
-			blackJackCardDeck = blackJackCardDeckCreator.CreateBlackJackCardDeck();
+			blackJackCardDeck = (BlackJackCardDeck) BlackJackCardDeckCreator.CreateBlackJackCardDeck();
 			_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
 			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
 
-			blackJackCardDeck.ShuffleDeck();
-		
-			playerAction = new PlayerAction();
+			playerAction = GameLogicCreator.CreatePlayerAction();
+			dealerLogic = GameLogicCreator.CreateDealerLogic();
 
+			// Here for testing reasons
+			blackJackCardDeck.ShuffleDeck();
+			StartNewRound(); 
 		}
 
 		public void AddCard()
@@ -45,7 +47,11 @@ namespace BlackJackV2.Models.GameLogic
 			PlayerCardHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
 			PlayerCardHand.SplitCardHand.AddCard(blackJackCardDeck.GetTopCard());
 			DealerCardHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
+		}
 
+		public void StartNewRound()
+		{
+			dealerLogic.InitialDeal(DealerCardHand, blackJackCardDeck);
 		}
 	}
 }
