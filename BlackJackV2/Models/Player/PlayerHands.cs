@@ -35,17 +35,36 @@ namespace BlackJackV2.Models.Player
 
 
 		// Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-		public void SplitHand(string splitValue)
+		public bool SplitHand(string splitValue)
 		{
-			// Searches for the chosen card, in the primary hand
-			ICard<Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.FirstOrDefault(card => card.Value == splitValue);
-
-			// Card has been found, move card to split hand and end search
-			if (cardWithMatchingValue != null)
+			// Checks if the primary hand has two cards
+			if (_primeryCardHand.Hand.Count == 2)
 			{
-				_splitCardHand.AddCard(cardWithMatchingValue);
-				_primeryCardHand.RemoveCard(cardWithMatchingValue.Value);
+				// Retrieves the value of the first two cards in the primary hand
+				string value1 = _primeryCardHand.Hand[0].Value.Split('_')[1];
+				string value2 = _primeryCardHand.Hand[1].Value.Split('_')[1];
+
+				// Checks to see if the numeric value of the cards are the same 
+				if (value1[1] == value2[1])
+				{
+					// Splits the hand
+					_splitCardHand.AddCard(_primeryCardHand.Hand[1]);
+					_primeryCardHand.RemoveCard(_primeryCardHand.Hand[1].Value);
+					return true;
+				}
 			}
+			
+			return false;
+
+			//	// Searches for the chosen card, in the primary hand
+			//	ICard<Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.FirstOrDefault(card => card.Value == splitValue);
+
+			//// Card has been found, move card to split hand and end search
+			//if (cardWithMatchingValue != null)
+			//{
+			//	_splitCardHand.AddCard(cardWithMatchingValue);
+			//	_primeryCardHand.RemoveCard(cardWithMatchingValue.Value);
+			//}
 		}
 
 		// Removes all hands exept primary hand, which is reset
