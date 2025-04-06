@@ -35,7 +35,7 @@ namespace BlackJackV2.Models.Player
 
 
 		// Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-		public bool SplitHand(string splitValue)
+		public bool SplitHand()
 		{
 			// Checks if the primary hand has two cards
 			if (_primeryCardHand.Hand.Count == 2)
@@ -45,7 +45,7 @@ namespace BlackJackV2.Models.Player
 				string value2 = _primeryCardHand.Hand[1].Value.Split('_')[1];
 
 				// Checks to see if the numeric value of the cards are the same 
-				if (value1[1] == value2[1])
+				if (value1 == value2)
 				{
 					// Splits the hand
 					_splitCardHand.AddCard(_primeryCardHand.Hand[1]);

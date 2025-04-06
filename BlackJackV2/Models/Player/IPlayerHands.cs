@@ -16,7 +16,7 @@ namespace BlackJackV2.Models.Player
 		public ICardHand<TImage, TValue> PrimaryCardHand { get; }
 		public ICardHand<TImage, TValue> SplitCardHand { get; }
 		
-		public bool SplitHand(string splitValue);
+		public bool SplitHand();
 		public void ResetHand();
 	}
 }
