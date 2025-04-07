@@ -25,7 +25,7 @@ namespace BlackJackV2.Models.GameLogic
 		BlackJackCardHand _playerHand;
 		BlackJackCardHand _dealerHand;
 
-		public RoundResult EvaluateRound(ICardHand<Bitmap, string> playerHand, ICardHand<Bitmap, string> dealerHand) 
+		public RoundResult EvaluateRound(IBlackJackCardHand<Bitmap, string> playerHand, IBlackJackCardHand<Bitmap, string> dealerHand) 
 		{
 			_playerHand = playerHand as BlackJackCardHand;
 			_dealerHand = dealerHand as BlackJackCardHand;

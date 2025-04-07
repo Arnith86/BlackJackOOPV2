@@ -3,13 +3,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
+			 xmlns:converter="clr-namespace:BlackJackV2.Views.Converters"
              x:Class="BlackJackV2.Views.CardHandView"
              x:DataType="vm:CardHandViewModel"
              mc:Ignorable="d">
 
+	<UserControl.Resources>
+		<converter:CardPositionConverter x:Key="CardPositionConverter"/>
+		<converter:ElementToIndexConverter x:Key="ElementToIndexConverter"/>
+	</UserControl.Resources>
+	
 	<!-- View representing the cards in a single hand -->
 	<StackPanel>
-		<ItemsControl ItemsSource="{Binding Cards}">
+		<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Horizontal"/>
@@ -18,10 +24,19 @@
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<StackPanel>
-						<Image Source="{Binding CurrentImage}" Width="100" Height="150"/>
+						<!-- Sends the value of the clicked card to CardHandViewModel -->
+						<!-- Had to bind it using ReflectionBinding.. -->
+						<Button	Command="{ReflectionBinding #cards.DataContext.CardClickedCommand, 
+							RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+							CommandParameter="{Binding Value}">
+
+							<Image Source="{Binding CurrentImage}" Width="100" Height="150"/>
+						</Button>						
 					</StackPanel>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
+		<!-- Shows the card value -->
+		<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
 	</StackPanel>
 </UserControl>

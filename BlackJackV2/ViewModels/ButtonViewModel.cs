@@ -3,6 +3,7 @@ using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Text;
@@ -18,18 +19,23 @@ namespace BlackJackV2.ViewModels
 	public class ButtonViewModel : ReactiveObject
 	{
 		private GameLogic _gameLogic;
+
 		public ReactiveCommand<Unit, Unit> HitCommand { get; }
 		public ReactiveCommand<Unit, Unit> FoldCommand { get; }
 		public ReactiveCommand<Unit, Unit> DoubleDownCommand { get; }
 		public ReactiveCommand<Unit, Unit> SplitCommand { get; }
+		private string markedCardValue = string.Empty; // remove when finished
 
 		public ButtonViewModel(GameLogic gameLogic)
 		{
 			_gameLogic = gameLogic;
 
 			HitCommand = ReactiveCommand.Create(() => gameLogic.HitAction());
-			FoldCommand = ReactiveCommand.Create(() => Console.WriteLine("Fold pressed"));
+
+			FoldCommand = ReactiveCommand.Create(() => gameLogic.FoldAction());
+			
 			DoubleDownCommand = ReactiveCommand.Create(() => Console.WriteLine("Double pressed"));
+			
 			SplitCommand = ReactiveCommand.Create(() =>
 			{
 				SplitPerformed(gameLogic.SplitAction()); 
