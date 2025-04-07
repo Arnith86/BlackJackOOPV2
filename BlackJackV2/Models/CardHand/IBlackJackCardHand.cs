@@ -21,10 +21,12 @@ namespace BlackJackV2.Models.CardHand
 	 * 
 	 **/
 
-	public interface ICardHand<TImage, TValue>
+	public interface IBlackJackCardHand<TImage, TValue>
 	{
 		public ObservableCollection<ICard<TImage, TValue>> Hand { get; }
 		public int HandValue { get; }
+		public bool IsBlackJack { get; }
+		public bool IsBusted { get; }
 		public void AddCard(ICard<TImage, TValue> card);
 		public void RemoveCard(string cardValue);
 		public void ClearHand();

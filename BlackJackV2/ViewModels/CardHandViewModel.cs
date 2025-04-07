@@ -39,7 +39,7 @@ namespace BlackJackV2.ViewModels
 		public CardHandViewModel(string id, ObservableCollection<ICard<Bitmap, string>> cards)
 		public ReactiveCommand<string, Unit> CardClickedCommand { get; }
 
-		public CardHandViewModel(string id,  ICardHand<Bitmap, string> cardHand, string handValue)
+		public CardHandViewModel(string id,  IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
 		{
 			_id = id;
 			_cards = cards;
