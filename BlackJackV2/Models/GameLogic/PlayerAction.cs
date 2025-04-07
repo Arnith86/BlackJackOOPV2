@@ -19,9 +19,15 @@ namespace BlackJackV2.Models.GameLogic
 	
 	public class PlayerAction
 	{
-		public void Hit(ICardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
+		// Performes the action of hitting a card, if the player is not busted
+		public bool Hit(IBlackJackCardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
 		{
-			cardHand.AddCard(blackJackCardDeck.GetTopCard());
+			if (!cardHand.IsBusted)
+			{
+				cardHand.AddCard(blackJackCardDeck.GetTopCard());
+				return true;
+			}
+			return false;
 		}
 
 		public void Fold(IPlayerHands<Bitmap, string> player, BlackJackCardDeck blackJackCardDeck)

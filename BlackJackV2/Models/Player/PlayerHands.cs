@@ -22,13 +22,13 @@ namespace BlackJackV2.Models.Player
 	public class PlayerHands : IPlayerHands<Bitmap, string>
 	{
 		// Represents the player's primary hand and split hand
-		private ICardHand<Bitmap, string> _primeryCardHand;
-		private ICardHand<Bitmap, string> _splitCardHand;
+		private IBlackJackCardHand<Bitmap, string> _primeryCardHand;
+		private IBlackJackCardHand<Bitmap, string> _splitCardHand;
 
-		public ICardHand<Bitmap, string> PrimaryCardHand => _primeryCardHand;
-		public ICardHand<Bitmap, string> SplitCardHand => _splitCardHand;
+		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand => _primeryCardHand;
+		public IBlackJackCardHand<Bitmap, string> SplitCardHand => _splitCardHand;
 
-		public PlayerHands(ICardHand<Bitmap, string> cardHand) 
+		public PlayerHands(IBlackJackCardHand<Bitmap, string> cardHand) 
 		{
 			_primeryCardHand = cardHand;
 			_splitCardHand = BlackJackCardHandCreator.CreateBlackJackCardHand();
