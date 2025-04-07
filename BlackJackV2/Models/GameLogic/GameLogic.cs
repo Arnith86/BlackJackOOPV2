@@ -60,14 +60,7 @@ namespace BlackJackV2.Models.GameLogic
 			
 		}
 
-		public void HitAction()
-		{
-			if (activeHand == ActiveHand.Primary) playerAction.Hit(PlayerCardHand.PrimaryCardHand, blackJackCardDeck);
-			else if (activeHand == ActiveHand.Split) playerAction.Hit(PlayerCardHand.SplitCardHand, blackJackCardDeck);
-			//PlayerCardHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
-			//PlayerCardHand.SplitCardHand.AddCard(blackJackCardDeck.GetTopCard());
-		}
-
+		
 		public void StartNewRound()
 		{
 			dealerLogic.InitialDeal(DealerCardHand, blackJackCardDeck);
@@ -77,14 +70,24 @@ namespace BlackJackV2.Models.GameLogic
 			dealerLogic.DealerFinishTurn(DealerCardHand, blackJackCardDeck);
 		}
 
-		public void Fold()
-		{
-
-		}
-
 		public void EvaluateRound()
 		{
-			Debug.WriteLine( roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
+			Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
+		}
+
+		public void HitAction()
+		{
+			if (activeHand == ActiveHand.Primary) playerAction.Hit(PlayerCardHand.PrimaryCardHand, blackJackCardDeck);
+			else if (activeHand == ActiveHand.Split) playerAction.Hit(PlayerCardHand.SplitCardHand, blackJackCardDeck);
+		}
+
+		public void FoldAction()
+		{
+			if (activeHand == ActiveHand.Primary) playerAction.Fold(PlayerCardHand.PrimaryCardHand, blackJackCardDeck);
+			else if (activeHand == ActiveHand.Split) playerAction.Fold(PlayerCardHand.SplitCardHand, blackJackCardDeck);
+
+			EvaluateRound();
+
 		}
 
 		// Validates and initiates procedure for splitting the hand

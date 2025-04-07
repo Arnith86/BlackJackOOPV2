@@ -56,16 +56,6 @@ namespace BlackJackV2.Models.Player
 			}
 			
 			return false;
-
-			//	// Searches for the chosen card, in the primary hand
-			//	ICard<Bitmap, string> cardWithMatchingValue = _primeryCardHand.Hand.FirstOrDefault(card => card.Value == splitValue);
-
-			//// Card has been found, move card to split hand and end search
-			//if (cardWithMatchingValue != null)
-			//{
-			//	_splitCardHand.AddCard(cardWithMatchingValue);
-			//	_primeryCardHand.RemoveCard(cardWithMatchingValue.Value);
-			//}
 		}
 
 		// Removes all hands exept primary hand, which is reset

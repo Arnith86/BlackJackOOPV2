@@ -13,20 +13,23 @@ namespace BlackJackV2.Models.CardHand
 	/**
 	 * Card Hand 
 	 * 
-	 * int HandValue:				Get the current integer value of hand. 
-	 * ObservableCollection Hand:	Get the list of card objects of hand
-	 * bool IsBlackJack:		    True if card hand is black jack (21 and 2 cards)
-	 * bool IsBusted:				True if card hand is busted (value > 21) 
-	 * void AddCard():				Adds a new card object to the hand 
-	 * void RemoveCard():			Removes a specific card from hand
-	 * void ClearHand():			Emptys the hand
-	 * int CalculateAceValue():		Calculate the current hands value, while accounting for that ace 
-									can have a value of either 1 or 11 
+	 * int HandValue				: Get the current integer value of hand. 
+	 * ObservableCollection Hand	: Get the list of card objects of hand
+	 * bool IsBlackJack				: True if card hand is black jack (21 and 2 cards)
+	 * bool IsBusted				: True if card hand is busted (value > 21)
+	 * bool IsFolded				: Is set from outside the class
+	 * void AddCard()				: Adds a new card object to the hand 
+	 * void RemoveCard()			: Removes a specific card from hand
+	 * void ClearHand()				: Emptys the hand
+	 * int CalculateAceValue()		: Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
 	 * 
 	 **/
 
 	public class BlackJackCardHand : IBlackJackCardHand<Bitmap, string>
 	{
+		// The cards in the hand
+		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
+		
 		private int _handValue;
 		public int HandValue => _handValue;
 
@@ -36,8 +39,13 @@ namespace BlackJackV2.Models.CardHand
 		// True if card hand is busted (value > 21)
 		public bool IsBusted => _handValue > 21;
 
-		// The cards in the hand
-		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
+		// Is set from outside the class, if true, the hand is folded
+		private bool _isFolded = false;
+		public bool IsFolded
+		{
+			get => _isFolded;
+			set => _isFolded = value;
+		} 
 
 		public BlackJackCardHand()
 		{

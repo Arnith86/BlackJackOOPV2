@@ -13,11 +13,14 @@ namespace BlackJackV2.Models.CardHand
 	 * Card Hand interface 
 	 * Basic funtionallity present
 	 * 
-	 * HandValue:	Get the current integer value of hand. 
-	 * Hand:		Get the list of card objects of hand
-	 * AddCard():	Adds a new card object to the hand 
-	 * RemoveCard():Removes a specific card from hand 
-	 * ClearHand(): Emptys the hand
+	 * Hand			: Get the list of card objects of hand
+	 * HandValue	: Get the current integer value of hand. 
+	 * IsBlackJack	: True if card hand is black jack (21 and 2 cards)
+	 * IsBusted		: True if card hand is busted (value > 21)
+	 * IsFolded		: True if card hand is folded (value == 0)
+	 * AddCard()	: Adds a new card object to the hand 
+	 * RemoveCard()	: Removes a specific card from hand 
+	 * ClearHand()	: Emptys the hand
 	 * 
 	 **/
 
@@ -27,6 +30,7 @@ namespace BlackJackV2.Models.CardHand
 		public int HandValue { get; }
 		public bool IsBlackJack { get; }
 		public bool IsBusted { get; }
+		public bool IsFolded { get; set; }
 		public void AddCard(ICard<TImage, TValue> card);
 		public void RemoveCard(string cardValue);
 		public void ClearHand();

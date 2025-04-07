@@ -30,9 +30,9 @@ namespace BlackJackV2.Models.GameLogic
 			return false;
 		}
 
-		public void Fold(IPlayerHands<Bitmap, string> player, BlackJackCardDeck blackJackCardDeck)
+		public void Fold(IBlackJackCardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
 		{
-
+			 cardHand.IsFolded = true;
 		}
 
 		public void DoubleDown(IPlayerHands<Bitmap, string> player)
