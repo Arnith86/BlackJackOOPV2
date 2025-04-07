@@ -77,6 +77,9 @@ namespace BlackJackV2.Models.CardHand
 			// Sums the values of the current except for aces which it counts.
 			foreach (ICard<Bitmap,string> card in Hand)
 			{
+				// If card is face down, skip it
+				if (card.FaceDown == true) continue;
+
 				// Seperates int value and suite
 				string[] valueString = card.Value.Split('_');
 

@@ -16,5 +16,6 @@ namespace BlackJackV2.Models
 		public TImage FrontImage { get; }
 		public TImage BackImage { get; }
 		public TValue Value { get; }
+		public bool FaceDown { get; }
 	}
 }
