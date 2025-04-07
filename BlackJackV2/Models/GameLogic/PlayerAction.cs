@@ -2,6 +2,8 @@
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Services.Messaging;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +41,15 @@ namespace BlackJackV2.Models.GameLogic
 		 * Restrictions on Aces – If a player splits Aces, they typically receive only one additional card per Ace and cannot hit further.
 		 **/
 		// Was hand split conducted successfully?
-		public bool Split(string cardValue, IPlayerHands<Bitmap, string> playerHand)
-		public bool Split(IPlayerHands<Bitmap, string> playerHand)
+		public bool Split(IPlayerHands<Bitmap, string> playerHand, BlackJackCardDeck blackJackCardDeck)
 		{	
-			return playerHand.SplitHand();
+			if (playerHand.SplitHand())
+			{
+				playerHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
+				playerHand.SplitCardHand.AddCard(blackJackCardDeck.GetTopCard());
+				return true;
+			}
+			return false;
 		}
 	}
 }

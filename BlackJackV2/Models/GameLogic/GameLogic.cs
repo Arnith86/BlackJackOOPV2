@@ -89,6 +89,6 @@ namespace BlackJackV2.Models.GameLogic
 
 		// Validates and initiates procedure for splitting the hand
 		// Only on the initial deal, in primary hand
-		public bool SplitAction() => activeHand == ActiveHand.Primary && playerAction.Split(PlayerCardHand);
+		public bool SplitAction() => activeHand == ActiveHand.Primary && playerAction.Split(PlayerCardHand, blackJackCardDeck);
 	}
 }

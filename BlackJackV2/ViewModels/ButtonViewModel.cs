@@ -32,7 +32,7 @@ namespace BlackJackV2.ViewModels
 			DoubleDownCommand = ReactiveCommand.Create(() => Console.WriteLine("Double pressed"));
 			SplitCommand = ReactiveCommand.Create(() =>
 			{
-				SplitPerformedSuccessfully(gameLogic.SplitAction()); 
+				SplitPerformed(gameLogic.SplitAction()); 
 			});
 			
 			// Subscribe to the CardMarkedMessage
@@ -41,7 +41,8 @@ namespace BlackJackV2.ViewModels
 		}
 
 		// This method is called when the player attempts to splits their hand
-		private void SplitPerformedSuccessfully(bool yesNo) 
+		// The result of the split is sent as a message to the rest of the application
+		private void SplitPerformed(bool yesNo) 
 		{
 			MessageBus.Current.SendMessage(new SplitSuccessfulMessage(yesNo));
 		}

@@ -39,7 +39,7 @@ namespace BlackJackV2.Models.Player
 		public bool SplitHand()
 		{
 			// Checks if the primary hand has two cards
-			if (_primeryCardHand.Hand.Count == 2)
+			if (_primeryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1)
 			{
 				// Retrieves the value of the first two cards in the primary hand
 				string value1 = _primeryCardHand.Hand[0].Value.Split('_')[1];
