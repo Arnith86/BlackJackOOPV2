@@ -1,4 +1,7 @@
 ﻿using BlackJackV2.Models.GameLogic;
+﻿using BlackJackV2.Constants;
+using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 
@@ -19,9 +22,9 @@ namespace BlackJackV2.ViewModels
 
 		public TableViewModel(GameLogic gameLogic)
 		{
-			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Dealer Hand", gameLogic.DealerCardHand.PrimaryCardHand.Hand);
-			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Player Hand", gameLogic.PlayerCardHand.PrimaryCardHand.Hand);
-			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel("Player Split Hand", gameLogic.PlayerCardHand.SplitCardHand.Hand);
+			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.Dealer, gameLogic.DealerCardHand.PrimaryCardHand.Hand);
+			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.Player, gameLogic.PlayerCardHand.PrimaryCardHand.Hand);
+			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.PlayerSplit, gameLogic.PlayerCardHand.SplitCardHand.Hand);
 
 			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>
