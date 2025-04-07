@@ -40,6 +40,7 @@ namespace BlackJackV2.Models.GameLogic
 		 **/
 		// Was hand split conducted successfully?
 		public bool Split(string cardValue, IPlayerHands<Bitmap, string> playerHand)
+		public bool Split(IPlayerHands<Bitmap, string> playerHand)
 		{	
 			return playerHand.SplitHand();
 		}

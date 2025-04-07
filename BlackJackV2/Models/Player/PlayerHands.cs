@@ -21,6 +21,7 @@ namespace BlackJackV2.Models.Player
 
 	public class PlayerHands : IPlayerHands<Bitmap, string>
 	{
+		// Represents the player's primary hand and split hand
 		private ICardHand<Bitmap, string> _primeryCardHand;
 		private ICardHand<Bitmap, string> _splitCardHand;
 

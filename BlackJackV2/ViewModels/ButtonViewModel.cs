@@ -1,4 +1,5 @@
 ﻿using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,20 @@ namespace BlackJackV2.ViewModels
 			HitCommand = ReactiveCommand.Create(() => gameLogic.HitAction());
 			FoldCommand = ReactiveCommand.Create(() => Console.WriteLine("Fold pressed"));
 			DoubleDownCommand = ReactiveCommand.Create(() => Console.WriteLine("Double pressed"));
-			SplitCommand = ReactiveCommand.Create(() =>  Console.WriteLine("Split pressed"));
+			SplitCommand = ReactiveCommand.Create(() =>
+			{
+				SplitPerformedSuccessfully(gameLogic.SplitAction()); 
+			});
+			
+			// Subscribe to the CardMarkedMessage
+			MessageBus.Current.Listen<CardMarkedMessage>()
+				.Subscribe(message =>  markedCardValue = message.MarkedCardValue);
+		}
+
+		// This method is called when the player attempts to splits their hand
+		private void SplitPerformedSuccessfully(bool yesNo) 
+		{
+			MessageBus.Current.SendMessage(new SplitSuccessfulMessage(yesNo));
 		}
 	}
 }

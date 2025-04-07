@@ -1,9 +1,11 @@
-﻿using BlackJackV2.Models.GameLogic;
 ﻿using BlackJackV2.Constants;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Reactive.Linq;
+using System;
 
 namespace BlackJackV2.ViewModels
 {
@@ -31,10 +33,18 @@ namespace BlackJackV2.ViewModels
 			{
 				PlayerCardHandViewModel
 			};
+
+
+			// Listen for the player split event
+			MessageBus.Current.Listen<SplitSuccessfulMessage>().Subscribe(splitPerformed =>
+			{
+				// If the player split was successful, add the split hand to the player card view models
+				if (splitPerformed.IsSplitSuccessful) OnPlayerSplit();
+			});
 		}
 
 		// Add the player split hand to the to PlayerCardViewModels (adds another view in the UI)
-		public void OnPlayerSplit(string splitValue)
+		public void OnPlayerSplit()
 		{
 			PlayerCardViewModels.Add(PlayerSplitCardHandViewModel);
 		}

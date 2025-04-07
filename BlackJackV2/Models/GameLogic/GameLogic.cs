@@ -86,5 +86,9 @@ namespace BlackJackV2.Models.GameLogic
 		{
 			Debug.WriteLine( roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
 		}
+
+		// Validates and initiates procedure for splitting the hand
+		// Only on the initial deal, in primary hand
+		public bool SplitAction() => activeHand == ActiveHand.Primary && playerAction.Split(PlayerCardHand);
 	}
 }
