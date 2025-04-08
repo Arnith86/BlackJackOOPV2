@@ -8,8 +8,12 @@ namespace BlackJackV2.Constants
 {
 	public static class HandOwners
 	{
-		public const string Dealer = "Dealer";
-		public const string Player = "Player";
-		public const string PlayerSplit = "Player Split";
+		// Possible hands in the blackjack game
+		public enum HandOwner
+		{
+			Primary,
+			Split,
+			Dealer
+		}
 	}
 }

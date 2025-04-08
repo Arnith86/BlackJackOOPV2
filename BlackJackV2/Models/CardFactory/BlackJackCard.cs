@@ -38,8 +38,6 @@ namespace BlackJackV2.Models.CardFactory
 				// Raise change for CurrentImage when FaceDown changes
 				this.RaisePropertyChanged(nameof(CurrentImage)); 
 			}
-				
-
 		}
 
 		public BlackJackCard(Bitmap frontImage, Bitmap backImage, string value)

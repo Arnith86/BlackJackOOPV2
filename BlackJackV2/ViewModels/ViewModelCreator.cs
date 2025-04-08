@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media.Imaging;
+using BlackJackV2.Constants;
 using BlackJackV2.Models;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic;
@@ -16,7 +17,7 @@ namespace BlackJackV2.ViewModels
 	 **/
 	public class ViewModelCreator
 	{
-		public static CardHandViewModel CreateHandCardViewModel(string id, IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
+		public static CardHandViewModel CreateHandCardViewModel(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
 		{
 			return new CardHandViewModel(id, cardHand, handValue);
 		}

@@ -24,13 +24,13 @@ namespace BlackJackV2.ViewModels
 
 		public TableViewModel(GameLogic gameLogic)
 		{
-			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.Dealer, 
+			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Dealer, 
 																				gameLogic.DealerCardHand.PrimaryCardHand, 
 																				gameLogic.DealerCardHand.PrimaryCardHand.HandValue.ToString());
-			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.Player, 
+			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Primary, 
 																				gameLogic.PlayerCardHand.PrimaryCardHand,
 																				gameLogic.PlayerCardHand.PrimaryCardHand.HandValue.ToString());
-			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.PlayerSplit, 
+			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Split, 
 																				gameLogic.PlayerCardHand.SplitCardHand, 
 																				gameLogic.PlayerCardHand.SplitCardHand.HandValue.ToString());
 
