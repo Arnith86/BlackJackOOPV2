@@ -20,6 +20,7 @@ namespace BlackJackV2.Models.GameLogic
 	public class PlayerAction
 	{
 		// Performes the action of hitting a card, if the player is not busted
+		// TODO: show that the player has busted
 		public bool Hit(IBlackJackCardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
 		{
 			if (!cardHand.IsBusted)

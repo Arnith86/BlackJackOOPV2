@@ -39,7 +39,7 @@ namespace BlackJackV2.Models.CardHand
 		// True if card hand is busted (value > 21)
 		public bool IsBusted => _handValue > 21;
 
-		// Is set from outside the class, if true, the hand is folded
+		// Is set from outside the class or if _handValue = 21, if true, the hand is folded
 		private bool _isFolded = false;
 		public bool IsFolded
 		{
@@ -53,7 +53,11 @@ namespace BlackJackV2.Models.CardHand
 			Hand = new ObservableCollection<ICard<Bitmap, string>>();
 
 			// When the hand is changed (card added, removed or hand cleard), the hand value is recalculated
-			Hand.CollectionChanged += (sender, e) => _handValue = CalculateHandValue();
+			Hand.CollectionChanged += (sender, e) => 
+			{ 
+				_handValue = CalculateHandValue();
+				if (_handValue == 21) IsFolded = true;
+			};
 		}
 
 		public void AddCard(ICard<Bitmap, string> card)

@@ -17,5 +17,6 @@ namespace BlackJackV2.Models
 		public TImage BackImage { get; }
 		public TValue Value { get; }
 		public bool FaceDown { get; }
+		public void FlipCard();
 	}
 }

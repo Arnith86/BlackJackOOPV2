@@ -36,9 +36,12 @@ namespace BlackJackV2.Models.GameLogic
 		// Dealer finishes their turn by hitting until they reach a total of 17 or higher (or busts)
 		public void DealerFinishTurn(IPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
 		{
+			// Flip the first card face up
+			dealerHands.PrimaryCardHand.Hand[0].FlipCard();
+
 			// Dealer must hit until they reach a total of 17 or higher
 			while (dealerHands.PrimaryCardHand.HandValue < 17)
-			{
+			{ 
 				dealerHands.PrimaryCardHand.AddCard((BlackJackCard)cardDeck.GetTopCard());
 			}
 		}
