@@ -1,5 +1,7 @@
-﻿using BlackJackV2.Models.GameLogic;
+﻿using BlackJackV2.Constants;
+using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Services.Messaging;
+using BlackJackV2.Constants;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,8 @@ namespace BlackJackV2.ViewModels
 
 	public class ButtonViewModel : ReactiveObject
 	{
-		private GameLogic _gameLogic;
+		private PlayerRound _playerRound;
+		private HandOwners.HandOwner _activeHand;
 
 		public ReactiveCommand<Unit, Unit> HitCommand { get; }
 		public ReactiveCommand<Unit, Unit> FoldCommand { get; }
@@ -26,31 +29,32 @@ namespace BlackJackV2.ViewModels
 		public ReactiveCommand<Unit, Unit> SplitCommand { get; }
 		private string markedCardValue = string.Empty; // remove when finished
 
-		public ButtonViewModel(GameLogic gameLogic)
+		public ButtonViewModel(PlayerRound playerRound)
 		{
-			_gameLogic = gameLogic;
+			_playerRound = playerRound;
 
-			HitCommand = ReactiveCommand.Create(() => gameLogic.HitAction());
+			HitCommand = ReactiveCommand.Create(() => 
+				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.Hit)); 
 
-			FoldCommand = ReactiveCommand.Create(() => gameLogic.FoldAction());
+			FoldCommand = ReactiveCommand.Create(() => 
+				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.Fold));
 			
-			DoubleDownCommand = ReactiveCommand.Create(() => Console.WriteLine("Double pressed"));
-			
+			DoubleDownCommand = ReactiveCommand.Create(() =>
+				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.DoubleDown));
+
 			SplitCommand = ReactiveCommand.Create(() =>
-			{
-				SplitPerformed(gameLogic.SplitAction()); 
-			});
+				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.Split));
 			
 			// Subscribe to the CardMarkedMessage
 			MessageBus.Current.Listen<CardMarkedMessage>()
 				.Subscribe(message =>  markedCardValue = message.MarkedCardValue);
-		}
 
-		// This method is called when the player attempts to splits their hand
-		// The result of the split is sent as a message to the rest of the application
-		private void SplitPerformed(bool yesNo) 
-		{
-			MessageBus.Current.SendMessage(new SplitSuccessfulMessage(yesNo));
+			// Subscribe to the ActiveHandMessage
+			MessageBus.Current.Listen<ActiveHandMessage>()
+				.Subscribe(message =>
+				{
+					_activeHand = message.ActiveHand;
+				});
 		}
 	}
 }

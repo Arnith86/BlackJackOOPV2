@@ -21,14 +21,12 @@ namespace BlackJackV2.Models.GameLogic
 	{
 		// Performes the action of hitting a card, if the player is not busted
 		// TODO: show that the player has busted
-		public bool Hit(IBlackJackCardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
+		public void Hit(IBlackJackCardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
 		{
-			if (!cardHand.IsBusted)
+			if (!cardHand.IsBusted && !cardHand.IsFolded)
 			{
 				cardHand.AddCard(blackJackCardDeck.GetTopCard());
-				return true;
 			}
-			return false;
 		}
 
 		public void Fold(IBlackJackCardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
@@ -47,16 +45,15 @@ namespace BlackJackV2.Models.GameLogic
 		 * Resplitting – Some casinos allow resplitting if another pair appears (e.g., drawing another 8 after splitting 8s).
 		 * Restrictions on Aces – If a player splits Aces, they typically receive only one additional card per Ace and cannot hit further.
 		 **/
-		// Was hand split conducted successfully?
-		public bool Split(IPlayerHands<Bitmap, string> playerHand, BlackJackCardDeck blackJackCardDeck)
+			public void Split(IPlayerHands<Bitmap, string> playerHand, BlackJackCardDeck blackJackCardDeck)
 		{	
 			if (playerHand.SplitHand())
 			{
 				playerHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
 				playerHand.SplitCardHand.AddCard(blackJackCardDeck.GetTopCard());
-				return true;
+				// Notify that the split was successful
+				MessageBus.Current.SendMessage(new SplitSuccessfulMessage(true));
 			}
-			return false;
 		}
 	}
 }

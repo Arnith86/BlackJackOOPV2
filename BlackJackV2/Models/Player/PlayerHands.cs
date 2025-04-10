@@ -58,7 +58,7 @@ namespace BlackJackV2.Models.Player
 			return false;
 		}
 
-		// Removes all hands exept primary hand, which is reset
+		// Empties all hands of cards
 		public void ResetHand()
 		{
 			_primeryCardHand.ClearHand();

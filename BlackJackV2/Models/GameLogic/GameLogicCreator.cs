@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlackJackV2.Models.CardDeck;
+using BlackJackV2.Models.Player;
 
 namespace BlackJackV2.Models.GameLogic
 {
@@ -21,6 +23,11 @@ namespace BlackJackV2.Models.GameLogic
 		public static PlayerAction CreatePlayerAction() 
 		{ 
 			return new PlayerAction(); 
+		}
+
+		public static PlayerRound CreatePlayerRound(BlackJackCardDeck cardDeck, PlayerAction playerAction)
+		{
+			return new PlayerRound(cardDeck, playerAction);
 		}
 
 		public static DealerLogic CreateDealerLogic()

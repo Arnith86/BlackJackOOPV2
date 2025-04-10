@@ -17,6 +17,7 @@ namespace BlackJackV2.ViewModels
 	public class MainWindowViewModel : ViewModelBase
     {
 		Bitmap _testImage;
+		private PlayerRound _playerRound;
 		private GameLogic gameLogic = GameLogicCreator.CreateGameLogic();
 		
 		public ButtonViewModel ButtonViewModel { get; }
@@ -25,7 +26,7 @@ namespace BlackJackV2.ViewModels
 		public MainWindowViewModel()
 		{
 			TableViewModel = ViewModelCreator.CreateTableViewModel(gameLogic);
-			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic);
+			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic.playerRound);
 		}
 	}
 }
