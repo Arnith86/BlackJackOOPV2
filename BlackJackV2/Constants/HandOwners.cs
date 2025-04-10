@@ -13,7 +13,8 @@ namespace BlackJackV2.Constants
 		{
 			Primary,
 			Split,
-			Dealer
+			Dealer,
+			Player
 		}
 	}
 }
