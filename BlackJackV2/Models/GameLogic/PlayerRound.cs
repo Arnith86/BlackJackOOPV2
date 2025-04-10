@@ -39,16 +39,17 @@ namespace BlackJackV2.Models.GameLogic
 		public Subject<BlackJackActions.PlayerActions> _playerActionSubject = new Subject<BlackJackActions.PlayerActions>();
 
 		// Notifies when a hand has changed
-		private Subject<BlackJackCardHand> _onHandChangedSubject = new Subject<BlackJackCardHand>();
+		private Subject<HandOwners.HandOwner> _onHandChangedSubject = new Subject<HandOwners.HandOwner>();
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
-		public IObservable<BlackJackCardHand> OnHandChangedObservable => _onHandChangedSubject;
+
+		public IObservable<HandOwners.HandOwner> OnHandChangedObservable => _onHandChangedSubject;
 		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
 
 		public PlayerRound(BlackJackCardDeck cardDeck, PlayerAction playerAction)
 		{
 			_cardDeck = cardDeck;
 			_playerAction = playerAction;
-			_playerHands = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
+			_playerHands = null;// BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
 
 			// If a split was registered then add the split hand to the queue
 			MessageBus.Current.Listen<SplitSuccessfulMessage>().Subscribe(_ =>
@@ -68,7 +69,7 @@ namespace BlackJackV2.Models.GameLogic
 			while (blackJackCardHands.Count > 0)
 			{
 				currentHand = blackJackCardHands.Dequeue();
-				_onHandChangedSubject.OnNext(currentHand);
+				_onHandChangedSubject.OnNext(currentHand.Id);
 
 				// Each iteration represents a hand in unfinished state 
 				while (!currentHand.IsBusted && !currentHand.IsFolded && !currentHand.IsBlackJack)

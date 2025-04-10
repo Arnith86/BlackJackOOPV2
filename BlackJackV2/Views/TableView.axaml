@@ -25,7 +25,9 @@
 				
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal"/>
+					<StackPanel Orientation="Horizontal" 
+								HorizontalAlignment="Center"
+								Spacing="50"/>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
 

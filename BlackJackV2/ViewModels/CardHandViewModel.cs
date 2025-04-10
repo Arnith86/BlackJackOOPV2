@@ -51,7 +51,7 @@ namespace BlackJackV2.ViewModels
 
 		public ReactiveCommand<string, Unit> CardClickedCommand { get; }
 
-		public CardHandViewModel(HandOwners.HandOwner id,  IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
+		public CardHandViewModel(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
 		{
 			_id = id;
 			_cards = cardHand.Hand;
@@ -67,6 +67,8 @@ namespace BlackJackV2.ViewModels
 			{
 				MessageBus.Current.SendMessage(new CardMarkedMessage(markedCardValue));
 			});
+
+			
 
 			//// Subscribe to each card in the hand for property changes
 			//foreach (ICard<Bitmap, string> card in _cards)

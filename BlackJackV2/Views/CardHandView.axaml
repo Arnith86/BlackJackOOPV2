@@ -18,9 +18,11 @@
 		<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal"/>
+					<StackPanel Orientation="Horizontal" 
+								Spacing="5"/>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
+			
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<StackPanel>
@@ -36,7 +38,9 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
+		
 		<!-- Shows the card value -->
 		<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
+		
 	</StackPanel>
 </UserControl>
