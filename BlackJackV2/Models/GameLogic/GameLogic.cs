@@ -44,8 +44,8 @@ namespace BlackJackV2.Models.GameLogic
 		public GameLogic()
 		{
 			blackJackCardDeck = (BlackJackCardDeck) BlackJackCardDeckCreator.CreateBlackJackCardDeck();
-			_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
-			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
+			_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(HandOwners.HandOwner.Player);
+			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(HandOwners.HandOwner.Dealer);
 
 			playerAction = GameLogicCreator.CreatePlayerAction();
 			dealerLogic = GameLogicCreator.CreateDealerLogic();

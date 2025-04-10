@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Constants;
 
 namespace BlackJackV2.Models.Player
 {
@@ -13,8 +14,9 @@ namespace BlackJackV2.Models.Player
 
 	public interface IPlayerHands<TImage, TValue>
 	{
-		public IBlackJackCardHand<TImage, TValue> PrimaryCardHand { get; }
-		public IBlackJackCardHand<TImage, TValue> SplitCardHand { get; }
+		public HandOwners.HandOwner Id { get; }
+		public BlackJackCardHand PrimaryCardHand { get; }
+		public BlackJackCardHand SplitCardHand { get; }
 		
 		public bool SplitHand();
 		public void ResetHand();

@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.Shapes;
 using Avalonia.Media.Imaging;
+using BlackJackV2.Constants;
 using BlackJackV2.Models.CardHand;
 using System;
 using System.Collections.Generic;
@@ -21,17 +22,27 @@ namespace BlackJackV2.Models.Player
 
 	public class PlayerHands : IPlayerHands<Bitmap, string>
 	{
+		// The id of the hand, used to identify the hand in the game
+		public HandOwners.HandOwner Id { get; private set; } 
+
 		// Represents the player's primary hand and split hand
-		private IBlackJackCardHand<Bitmap, string> _primeryCardHand;
-		private IBlackJackCardHand<Bitmap, string> _splitCardHand;
+		private BlackJackCardHand _primeryCardHand;
+		private BlackJackCardHand _splitCardHand;
 
-		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand => _primeryCardHand;
-		public IBlackJackCardHand<Bitmap, string> SplitCardHand => _splitCardHand;
+		public BlackJackCardHand PrimaryCardHand => _primeryCardHand;
+		public BlackJackCardHand SplitCardHand => _splitCardHand;
 
-		public PlayerHands(IBlackJackCardHand<Bitmap, string> cardHand) 
+		public PlayerHands(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand) 
 		{
-			_primeryCardHand = cardHand;
+			Id = id;
+			_primeryCardHand = (BlackJackCardHand)cardHand;
 			_splitCardHand = BlackJackCardHandCreator.CreateBlackJackCardHand();
+
+			if (Id == HandOwners.HandOwner.Player)
+			{
+				_primeryCardHand.Id = HandOwners.HandOwner.Primary;
+				_splitCardHand.Id = HandOwners.HandOwner.Split;
+			}
 		}
 
 

@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media.Imaging;
+using BlackJackV2.Constants;
 using BlackJackV2.Models.CardHand;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ namespace BlackJackV2.Models.Player
 
 	internal class BlackJackPlayerHandsCreator
 	{
-		public static PlayerHands CreateBlackJackPlayerHand()
+		public static PlayerHands CreateBlackJackPlayerHand(HandOwners.HandOwner id)
 		{
-			return new PlayerHands(BlackJackCardHandCreator.CreateBlackJackCardHand());
+			return new PlayerHands(id, BlackJackCardHandCreator.CreateBlackJackCardHand());
 		}
 	}
 }

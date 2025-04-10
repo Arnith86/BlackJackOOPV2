@@ -1,4 +1,5 @@
-﻿using BlackJackV2.Models.CardFactory;
+﻿using BlackJackV2.Constants;
+using BlackJackV2.Models.CardFactory;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ namespace BlackJackV2.Models.CardHand
 	 * Card Hand interface 
 	 * Basic funtionallity present
 	 * 
+	 * Id			: The id of the hand, used to identify the hand in the game
 	 * Hand			: Get the list of card objects of hand
 	 * HandValue	: Get the current integer value of hand. 
 	 * IsBlackJack	: True if card hand is black jack (21 and 2 cards)
@@ -26,6 +28,7 @@ namespace BlackJackV2.Models.CardHand
 
 	public interface IBlackJackCardHand<TImage, TValue>
 	{
+		public HandOwners.HandOwner Id { get; }
 		public ObservableCollection<ICard<TImage, TValue>> Hand { get; }
 		public int HandValue { get; }
 		public bool IsBlackJack { get; }

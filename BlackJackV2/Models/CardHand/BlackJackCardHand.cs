@@ -1,5 +1,6 @@
 ﻿using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using BlackJackV2.Constants;
 using BlackJackV2.Models.CardFactory;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,9 @@ namespace BlackJackV2.Models.CardHand
 	/**
 	 * Card Hand 
 	 * 
-	 * int HandValue				: Get the current integer value of hand. 
+	 * HandOwners.HandOwner Id		: The id of the hand, used to identify the hand in the game
 	 * ObservableCollection Hand	: Get the list of card objects of hand
+	 * int HandValue				: Get the current integer value of hand. 
 	 * bool IsBlackJack				: True if card hand is black jack (21 and 2 cards)
 	 * bool IsBusted				: True if card hand is busted (value > 21)
 	 * bool IsFolded				: Is set from outside the class
@@ -27,9 +29,13 @@ namespace BlackJackV2.Models.CardHand
 
 	public class BlackJackCardHand : IBlackJackCardHand<Bitmap, string>
 	{
+		// The id of the hand, used to identify the hand in the game
+		public HandOwners.HandOwner Id { get; set; }
+				
 		// The cards in the hand
 		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
-		
+
+		// The current integer value of hand.
 		private int _handValue;
 		public int HandValue => _handValue;
 
@@ -48,7 +54,7 @@ namespace BlackJackV2.Models.CardHand
 		} 
 
 		public BlackJackCardHand()
-		{
+		{	
 			_handValue = 0;
 			Hand = new ObservableCollection<ICard<Bitmap, string>>();
 
