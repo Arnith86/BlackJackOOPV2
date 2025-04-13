@@ -55,8 +55,7 @@ namespace BlackJackV2.Models.GameLogic
 
 			// Here for testing reasons
 			blackJackCardDeck.ShuffleDeck();
-			StartNewRound();
-
+		
 			MessageBus.Current.SendMessage(new ActiveHandMessage(activeHand));
 		}
 
@@ -64,6 +63,7 @@ namespace BlackJackV2.Models.GameLogic
 		public async void StartNewRound()
 		{
 			dealerLogic.InitialDeal(DealerCardHand, blackJackCardDeck);
+			
 			await playerRound.PlayerTurn((PlayerHands)_playerCardHand); 
 			// These will be removed after testing finishes
 			dealerLogic.DealerFinishTurn(DealerCardHand, blackJackCardDeck);

@@ -12,6 +12,7 @@ using BlackJackV2.Constants;
 using BlackJackV2.Models;
 using BlackJackV2.Models.CardFactory;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using ReactiveUI.Legacy;
@@ -25,12 +26,19 @@ namespace BlackJackV2.ViewModels
 	public class CardHandViewModel : ReactiveObject
 	{
 		private HandOwners.HandOwner _id;
+		private bool _handIsActive; 
 		private string _markedCardValue;
 		private string _handValue;
 		private ObservableCollection<ICard<Bitmap, string>> _cards;
 		
 		public HandOwners.HandOwner Id => _id;
 		
+		public bool HandIsActive
+		{
+			get => _handIsActive;
+			set => this.RaiseAndSetIfChanged(ref _handIsActive, value);
+		}
+
 		public string MarkedCardValue
 		{
 			get => _markedCardValue;
@@ -54,6 +62,7 @@ namespace BlackJackV2.ViewModels
 		public CardHandViewModel(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
 		{
 			_id = id;
+			_handIsActive = false;
 			_cards = cardHand.Hand;
 			_handValue = cardHand.HandValue.ToString();
 
@@ -68,7 +77,11 @@ namespace BlackJackV2.ViewModels
 				MessageBus.Current.SendMessage(new CardMarkedMessage(markedCardValue));
 			});
 
-			
+			// Subscribe to the ActiveHandMessage and update the HandIsActive property, To regester if current hand is active hand
+			MessageBus.Current.Listen<ActiveHandMessage>().Subscribe( newHand =>
+			{
+				HandIsActive = _id == newHand.ActiveHand ? true : false;
+			});
 
 			//// Subscribe to each card in the hand for property changes
 			//foreach (ICard<Bitmap, string> card in _cards)

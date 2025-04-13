@@ -11,36 +11,58 @@
 	<UserControl.Resources>
 		<converter:CardPositionConverter x:Key="CardPositionConverter"/>
 		<converter:ElementToIndexConverter x:Key="ElementToIndexConverter"/>
+		<converter:BoolToHighlightBrush x:Key="BoolToHighlightBrush"/>
 	</UserControl.Resources>
-	
-	<!-- View representing the cards in a single hand -->
-	<StackPanel>
-		<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal" 
-								Spacing="5"/>
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<StackPanel>
-						<!-- Sends the value of the clicked card to CardHandViewModel -->
-						<!-- Had to bind it using ReflectionBinding.. -->
-						<Button	Command="{ReflectionBinding #cards.DataContext.CardClickedCommand, 
-							RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-							CommandParameter="{Binding Value}">
 
-							<Image Source="{Binding CurrentImage}" Width="100" Height="150"/>
-						</Button>						
-					</StackPanel>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
+	<!--<Border BorderBrush="Aqua" BorderThickness="1">
+		<Border.Styles>
+			<Style TargetType="Border">
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding HandIsActive}" Value="False">
+						<Setter Property="IsVisible" Value="False"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+		</Border.Styles>-->
+
+		<!-- View representing the cards in a single hand -->
+		<!-- Border shows which hand is the active hand-->
+	<Border BorderThickness="1"
+        Margin="5"
+        Padding="10"
+        CornerRadius="10"
+		BorderBrush="{Binding HandIsActive, Converter={StaticResource BoolToHighlightBrush}}">
+
+		<StackPanel>
+			<TextBlock Text="{Binding HandIsActive}"></TextBlock>
+			<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal" 
+									Spacing="5"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+			
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<!-- Sends the value of the clicked card to CardHandViewModel -->
+							<!-- Had to bind it using ReflectionBinding.. -->
+							<Button	Command="{ReflectionBinding #cards.DataContext.CardClickedCommand, 
+								RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+								CommandParameter="{Binding Value}">
+
+								<Image Source="{Binding CurrentImage}" Width="100" Height="150"/>
+							</Button>						
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 		
-		<!-- Shows the card value -->
-		<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
+			<!-- Shows the card value -->
+			<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
+	
+		</StackPanel>
 		
-	</StackPanel>
+	</Border>
 </UserControl>

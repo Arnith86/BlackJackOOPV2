@@ -39,10 +39,10 @@ namespace BlackJackV2.Models.GameLogic
 		public Subject<BlackJackActions.PlayerActions> _playerActionSubject = new Subject<BlackJackActions.PlayerActions>();
 
 		// Notifies when a hand has changed
-		private Subject<HandOwners.HandOwner> _onHandChangedSubject = new Subject<HandOwners.HandOwner>();
+		//private Subject<HandOwners.HandOwner> _onHandChangedSubject = new Subject<HandOwners.HandOwner>();
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
 
-		public IObservable<HandOwners.HandOwner> OnHandChangedObservable => _onHandChangedSubject;
+		//public IObservable<HandOwners.HandOwner> OnHandChangedObservable => _onHandChangedSubject;
 		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
 
 		public PlayerRound(BlackJackCardDeck cardDeck, PlayerAction playerAction)
@@ -69,7 +69,8 @@ namespace BlackJackV2.Models.GameLogic
 			while (blackJackCardHands.Count > 0)
 			{
 				currentHand = blackJackCardHands.Dequeue();
-				_onHandChangedSubject.OnNext(currentHand.Id);
+				//_onHandChangedSubject.OnNext(currentHand.Id);
+				MessageBus.Current.SendMessage(new ActiveHandMessage(currentHand.Id));
 
 				// Each iteration represents a hand in unfinished state 
 				while (!currentHand.IsBusted && !currentHand.IsFolded && !currentHand.IsBlackJack)
