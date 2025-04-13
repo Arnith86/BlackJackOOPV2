@@ -14,16 +14,6 @@
 		<converter:BoolToHighlightBrush x:Key="BoolToHighlightBrush"/>
 	</UserControl.Resources>
 
-	<!--<Border BorderBrush="Aqua" BorderThickness="1">
-		<Border.Styles>
-			<Style TargetType="Border">
-				<Style.Triggers>
-					<DataTrigger Binding="{Binding HandIsActive}" Value="False">
-						<Setter Property="IsVisible" Value="False"/>
-					</DataTrigger>
-				</Style.Triggers>
-			</Style>
-		</Border.Styles>-->
 
 		<!-- View representing the cards in a single hand -->
 		<!-- Border shows which hand is the active hand-->
@@ -34,7 +24,6 @@
 		BorderBrush="{Binding HandIsActive, Converter={StaticResource BoolToHighlightBrush}}">
 
 		<StackPanel>
-			<TextBlock Text="{Binding HandIsActive}"></TextBlock>
 			<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>

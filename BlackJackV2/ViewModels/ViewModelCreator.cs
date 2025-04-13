@@ -21,6 +21,12 @@ namespace BlackJackV2.ViewModels
 		{
 			return new CardHandViewModel(id, cardHand, handValue);
 		}
+
+		public static StatsViewModel CreateStatsViewModel(GameLogic gameLogic)
+		{
+			return new StatsViewModel(gameLogic);
+		}
+
 		public static ButtonViewModel CreateButtonViewModel(PlayerRound playerRound)
 		{
 			return new ButtonViewModel(playerRound);

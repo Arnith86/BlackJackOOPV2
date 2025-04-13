@@ -20,11 +20,13 @@ namespace BlackJackV2.ViewModels
 		private PlayerRound _playerRound;
 		private GameLogic gameLogic = GameLogicCreator.CreateGameLogic();
 		
-		public ButtonViewModel ButtonViewModel { get; }
+		public StatsViewModel StatsViewModel { get; }
 		public TableViewModel TableViewModel { get; }
-
+		public ButtonViewModel ButtonViewModel { get; }
+		
 		public MainWindowViewModel()
 		{
+			StatsViewModel = ViewModelCreator.CreateStatsViewModel(gameLogic);
 			TableViewModel = ViewModelCreator.CreateTableViewModel(gameLogic);
 			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic.playerRound);
 

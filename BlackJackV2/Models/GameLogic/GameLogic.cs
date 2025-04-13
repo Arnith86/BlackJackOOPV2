@@ -14,6 +14,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reactive.Subjects;
+using System.Reactive.Linq;
 
 namespace BlackJackV2.Models.GameLogic
 {
@@ -21,6 +23,10 @@ namespace BlackJackV2.Models.GameLogic
 	{
 		// Represents the current active hand in the game
 		HandOwners.HandOwner activeHand;
+
+		// Contains and notyfies about the funds and bet of the player
+		private BehaviorSubject<FundsAndBet> _fundsAndBetSubject = new BehaviorSubject<FundsAndBet>(new FundsAndBet());
+		public IObservable<FundsAndBet> FundsAndBetObservable => _fundsAndBetSubject.AsObservable();
 
 
 		// Used to create a deck of cards
@@ -51,33 +57,55 @@ namespace BlackJackV2.Models.GameLogic
 			dealerLogic = GameLogicCreator.CreateDealerLogic();
 			roundEvaluator = GameLogicCreator.CreateRoundEvaluator();
 			playerRound = GameLogicCreator.CreatePlayerRound(blackJackCardDeck, playerAction);
-			activeHand = HandOwners.HandOwner.Primary;
 
-			// Here for testing reasons
-			blackJackCardDeck.ShuffleDeck();
-		
-			MessageBus.Current.SendMessage(new ActiveHandMessage(activeHand));
 		}
 
+		// Updates the FundsAndBet state and notify subscribers
+		// Action<> means "a method that takes a FundsAndBet state and modifies it, but doesn't return anything.
+		private void UpdateFundsAndBetState(Action<FundsAndBet> updateAction)
+		{
+			// Specify the subject to update
+			var newState = _fundsAndBetSubject.Value;
+			
+			// Update the state using the provided action
+			updateAction(newState);
+
+			// Notify subscribers about the new state
+			_fundsAndBetSubject.OnNext(newState);
+		}
+
+		public async void InitiateGame()
+		{
+			
+		}
 		
 		public async void StartNewRound()
 		{
+			blackJackCardDeck.ShuffleDeck();
+
+			// Gives dealer his initial cards
 			dealerLogic.InitialDeal(DealerCardHand, blackJackCardDeck);
-			
-			await playerRound.PlayerTurn((PlayerHands)_playerCardHand); 
-			// These will be removed after testing finishes
+
+			// Player conducts their turn
+			await playerRound.PlayerTurn((PlayerHands)_playerCardHand);
+
+			// Dealer finishes his turn
 			dealerLogic.DealerFinishTurn(DealerCardHand, blackJackCardDeck);
+			
 			EvaluateRound();
 		}
 
-		public void FinishRound()
+
+
+		private void EvaluateRound()
 		{
-			dealerLogic.DealerFinishTurn(DealerCardHand, blackJackCardDeck);
+			// Evaluate the round and determine the winner
+			Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
 		}
 
-		public void EvaluateRound()
+		private void EvaluateSingleHand(BlackJackCardHand cardHand) 
 		{
-			Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
+			
 		}
 	}
 }

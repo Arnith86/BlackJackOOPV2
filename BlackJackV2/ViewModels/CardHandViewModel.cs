@@ -77,7 +77,8 @@ namespace BlackJackV2.ViewModels
 				MessageBus.Current.SendMessage(new CardMarkedMessage(markedCardValue));
 			});
 
-			// Subscribe to the ActiveHandMessage and update the HandIsActive property, To regester if current hand is active hand
+			// Subscribe to the ActiveHandMessage and update the HandIsActive property
+			// regester if current hand is active hand
 			MessageBus.Current.Listen<ActiveHandMessage>().Subscribe( newHand =>
 			{
 				HandIsActive = _id == newHand.ActiveHand ? true : false;

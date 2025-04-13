@@ -1,0 +1,18 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
+    x:Class="BlackJackV2.Views.StatsView"
+    x:DataType="vm:StatsViewModel"
+    mc:Ignorable="d">
+
+	<StackPanel Orientation="Horizontal" Spacing="20">
+		<TextBlock Text="Funds:" FontWeight="Bold"/>
+		<TextBlock Text="{Binding Funds}" />
+
+		<TextBlock Text="Bet:" FontWeight="Bold" Margin="20,0,0,0"/>
+		<TextBlock Text="{Binding Bet}" />
+	</StackPanel>
+</UserControl>

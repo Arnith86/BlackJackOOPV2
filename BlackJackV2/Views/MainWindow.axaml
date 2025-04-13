@@ -25,6 +25,10 @@
 				<RowDefinition Height="50"/>		
 			</Grid.RowDefinitions>
 
+			<!-- Shows the Funds and chosen bet -->
+			<Views:StatsView Grid.Row="0" DataContext="{Binding StatsViewModel}" HorizontalContentAlignment="Center"/>
+			
+			<!-- Shows the table and the cards -->
 			<Views:TableView Grid.Row="1" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center"/> 
 			
 			<!-- Shows the player action buttons -->
