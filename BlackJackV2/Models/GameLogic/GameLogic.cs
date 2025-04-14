@@ -21,12 +21,12 @@ namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogic
 	{
-		// Represents the current active hand in the game
-		HandOwners.HandOwner activeHand;
+		//// Represents the current active hand in the game
+		//HandOwners.HandOwner activeHand;
 
 		// Contains and notyfies about the funds and bet of the player
-		private BehaviorSubject<FundsAndBet> _fundsAndBetSubject = new BehaviorSubject<FundsAndBet>(new FundsAndBet());
-		public IObservable<FundsAndBet> FundsAndBetObservable => _fundsAndBetSubject.AsObservable();
+		private BehaviorSubject<GameState> _gameStateSubject = new BehaviorSubject<GameState>(new GameState());
+		public IObservable<GameState> GameStateObservable => _gameStateSubject.AsObservable();
 
 
 		// Used to create a deck of cards
@@ -47,6 +47,8 @@ namespace BlackJackV2.Models.GameLogic
 		public IPlayerHands<Bitmap, string> PlayerCardHand { get => _playerCardHand; }
 		public IPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
 
+		private TaskCompletionSource<bool> _taskBetInputReceived;
+
 		public GameLogic()
 		{
 			blackJackCardDeck = (BlackJackCardDeck) BlackJackCardDeckCreator.CreateBlackJackCardDeck();
@@ -58,25 +60,40 @@ namespace BlackJackV2.Models.GameLogic
 			roundEvaluator = GameLogicCreator.CreateRoundEvaluator();
 			playerRound = GameLogicCreator.CreatePlayerRound(blackJackCardDeck, playerAction);
 
+			_taskBetInputReceived = new TaskCompletionSource<bool>();
+
+			UpdateGameState(state =>
+			{
+				state.Points = 5/*10*/; // Set initial points
+			});
 		}
 
 		// Updates the FundsAndBet state and notify subscribers
 		// Action<> means "a method that takes a FundsAndBet state and modifies it, but doesn't return anything.
-		private void UpdateFundsAndBetState(Action<FundsAndBet> updateAction)
+		private void UpdateGameState(Action<GameState> updateAction)
 		{
 			// Specify the subject to update
-			var newState = _fundsAndBetSubject.Value;
+			var newState = _gameStateSubject.Value;
 			
 			// Update the state using the provided action
 			updateAction(newState);
 
 			// Notify subscribers about the new state
-			_fundsAndBetSubject.OnNext(newState);
+			_gameStateSubject.OnNext(newState);
 		}
 
-		public async void InitiateGame()
+		public async void InitiateNewRound()
 		{
-			
+			// Change the state to show that logic is waiting for the bet input
+			UpdateGameState( state => state.IsBetRecieved = false );
+
+			// Wait for the bet input to be received (statsViewModel)
+			await _taskBetInputReceived.Task;
+
+			// Once the bet input is received, update the state to show that the bet has been received
+			UpdateGameState(state => state.IsBetRecieved = true);
+
+			Debug.WriteLine("Bet input received.");
 		}
 		
 		public async void StartNewRound()
@@ -106,6 +123,20 @@ namespace BlackJackV2.Models.GameLogic
 		private void EvaluateSingleHand(BlackJackCardHand cardHand) 
 		{
 			
+		}
+
+		// This method is called when the player inputs their bet
+		// It sets the bet input and updates the game state, and completes the _taskBetInputReceived task
+		public void OnBetInputReceived(int betInput)
+		{
+			_taskBetInputReceived.SetResult(true);
+
+			// Update the game state with the bet input
+			UpdateGameState(state =>
+			{
+				state.Bet = betInput;
+				state.Points -= betInput; // Deduct the bet from the points
+			}); 
 		}
 	}
 }

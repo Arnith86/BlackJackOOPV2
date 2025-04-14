@@ -30,6 +30,7 @@ namespace BlackJackV2.ViewModels
 			TableViewModel = ViewModelCreator.CreateTableViewModel(gameLogic);
 			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic.playerRound);
 
+			gameLogic.InitiateNewRound();
 			gameLogic.StartNewRound(); // Move or remove when not needed
 		}
 	}
