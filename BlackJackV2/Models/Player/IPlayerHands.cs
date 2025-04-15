@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Constants;
+using Avalonia.Media.Imaging;
 
 namespace BlackJackV2.Models.Player
 {
@@ -19,7 +20,10 @@ namespace BlackJackV2.Models.Player
 
 		public int GetBetFromHand(HandOwners.HandOwner owner);
 		public void SetBetToHand(HandOwners.HandOwner owner, int bet);
-		public bool SplitHand();
+		public bool TryDoubleDownBet(IBlackJackCardHand<Bitmap, string> cardHand);
+		public bool TrySplitHand();
+		public void AddCardToHand(IBlackJackCardHand<Bitmap, string> cardHand, ICard<Bitmap, string> card);
+		public void FoldHand(IBlackJackCardHand<Bitmap, string> cardHand);
 		public void ResetHand();
 		
 	}

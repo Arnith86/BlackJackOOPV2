@@ -86,13 +86,13 @@ namespace BlackJackV2.Models.GameLogic
 			switch (action)
 			{
 				case BlackJackActions.PlayerActions.Hit:
-					_playerAction.Hit(currentHand, _cardDeck);
+					_playerAction.Hit(_playerHands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.DoubleDown:
-					_playerAction.DoubleDown(_playerHands);       // Finish this, does nothing yet  <--------
+					_playerAction.DoubleDown(_playerHands, currentHand, _cardDeck);       
 					break;
 				case BlackJackActions.PlayerActions.Fold:
-					_playerAction.Fold(currentHand, _cardDeck);
+					_playerAction.Fold(_playerHands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Split:
 					_playerAction.Split(_playerHands, _cardDeck);

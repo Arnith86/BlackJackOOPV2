@@ -93,8 +93,22 @@ namespace BlackJackV2.Models.Player
 			}
 		}
 
+		public bool TryDoubleDownBet(IBlackJackCardHand<Bitmap, string> cardHand)
+		{
+			// Checks if the hand has two cards
+			if (cardHand.Hand.Count == 2)
+			{
+				// Doubles the bet for the hand
+				SetBetToHand(cardHand.Id, GetBetFromHand(cardHand.Id) * 2);
+				Bet[HandOwners.HandOwner.Primary] *= 2;
+				return true;
+			}
+			return false;
+		}
+
 		// Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-		public bool SplitHand()
+		// If successfull, returns true
+		public bool TrySplitHand()
 		{
 			// Checks if the primary hand has two cards
 			if (_primeryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1)
@@ -119,7 +133,25 @@ namespace BlackJackV2.Models.Player
 			return false;
 		}
 
-		// Empties all hands of cards
+		// Adds a new card object to the specified hand
+		public void AddCardToHand(IBlackJackCardHand<Bitmap, string> cardHand, ICard<Bitmap, string> card)
+		{
+			if (cardHand.Id == HandOwners.HandOwner.Primary)
+				_primeryCardHand.AddCard(card);
+			else
+				_splitCardHand.AddCard(card);
+		}
+
+		// Folds the specified hand
+		public void FoldHand(IBlackJackCardHand<Bitmap, string> cardHand)
+		{
+			if (cardHand.Id == HandOwners.HandOwner.Primary)
+				_primeryCardHand.IsFolded = true;
+			else
+				_splitCardHand.IsFolded = true;
+		}
+
+		// Resets hands for a new round
 		public void ResetHand()
 		{
 			// Emptys the hands
@@ -127,6 +159,9 @@ namespace BlackJackV2.Models.Player
 			_splitCardHand.ClearHand();
 			// Reset the bets for both hands
 			Bet[HandOwners.HandOwner.Primary] = Bet[HandOwners.HandOwner.Split] = 0;
+			// Reset the folded state of the hands
+			_primeryCardHand.IsFolded = false;
+			_splitCardHand.IsFolded = false;
 		}
 	}
 }

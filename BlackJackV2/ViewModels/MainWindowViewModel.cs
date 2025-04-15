@@ -16,8 +16,8 @@ namespace BlackJackV2.ViewModels
 	 **/
 	public class MainWindowViewModel : ViewModelBase
     {
-		Bitmap _testImage;
-		private PlayerRound _playerRound;
+		
+		//private PlayerRound _playerRound;
 		private GameLogic gameLogic = GameLogicCreator.CreateGameLogic();
 		
 		public StatsViewModel StatsViewModel { get; }
