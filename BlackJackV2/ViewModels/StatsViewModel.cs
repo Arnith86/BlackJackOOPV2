@@ -11,14 +11,17 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.ViewModels
 {
+
+	/**
+	 * This view model is used to show current points, and register the bet input from the user.
+	 **/
+
 	public class StatsViewModel : ReactiveObject
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");
 
 		private int _points;
-		private int _bet;
 		private bool _isBetEnabled;
-
 
 		public int Points
 		{
@@ -26,25 +29,17 @@ namespace BlackJackV2.ViewModels
 			set => this.RaiseAndSetIfChanged(ref _points, value);
 		}
 
-		public int Bet
-		{
-			get => _bet;
-			set => this.RaiseAndSetIfChanged(ref _bet, value);
-		}
-				
 		public bool IsBetEnabled
 		{
 			get => _isBetEnabled;
 			set => this.RaiseAndSetIfChanged(ref _isBetEnabled, value);
 		}
 
-
 		public ReactiveCommand<string, Unit> InputBetCommand { get; }
 
 		public StatsViewModel(GameLogic gameLogic)
 		{
 			Points = 10;
-			Bet = 0;
 			IsBetEnabled = true;
 
 			InputBetCommand = ReactiveCommand.Create<string>(betString =>
@@ -57,7 +52,6 @@ namespace BlackJackV2.ViewModels
 					int.TryParse(betString, out int parsedBet) && 
 					(parsedBet < 11 && parsedBet > 0) && parsedBet <= Points)
 				{
-					Bet = parsedBet;
 					gameLogic.OnBetInputReceived(parsedBet);
 				}
 				else
@@ -69,11 +63,10 @@ namespace BlackJackV2.ViewModels
 			});
 
 
-			// This will automatically update the UI due to data binding
+			// This will automatically update bet in the UI due to data binding
 			gameLogic.GameStateObservable.Subscribe(gameState =>
 			{
 				Points = gameState.Points;
-				Bet = gameState.Bet;
 				IsBetEnabled = !gameState.IsBetRecieved;
 			});
 

@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reactive.Subjects;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using BlackJackV2.Services.Events;
 
 namespace BlackJackV2.Models.GameLogic
 {
@@ -43,17 +45,22 @@ namespace BlackJackV2.Models.GameLogic
 		// Represents the player and dealer hands
 		IPlayerHands<Bitmap, string> _playerCardHand;
 		IPlayerHands<Bitmap, string> _dealerCardHand;
-
 		public IPlayerHands<Bitmap, string> PlayerCardHand { get => _playerCardHand; }
 		public IPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
 
+
+		// Used to wait for the bet input to be received
 		private TaskCompletionSource<bool> _taskBetInputReceived;
+
+		// Used to notify when the bet value is updated
+		public Subject<BetUpdateEvent> BetUpdateEvent { get; } 
 
 		public GameLogic()
 		{
 			blackJackCardDeck = (BlackJackCardDeck) BlackJackCardDeckCreator.CreateBlackJackCardDeck();
-			_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(HandOwners.HandOwner.Player);
-			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(HandOwners.HandOwner.Dealer);
+			BetUpdateEvent = new Subject<BetUpdateEvent>();
+			_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player);
+			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Dealer);
 
 			playerAction = GameLogicCreator.CreatePlayerAction();
 			dealerLogic = GameLogicCreator.CreateDealerLogic();
@@ -61,10 +68,12 @@ namespace BlackJackV2.Models.GameLogic
 			playerRound = GameLogicCreator.CreatePlayerRound(blackJackCardDeck, playerAction);
 
 			_taskBetInputReceived = new TaskCompletionSource<bool>();
+			
+
 
 			UpdateGameState(state =>
 			{
-				state.Points = 5/*10*/; // Set initial points
+				state.Points = 10; // Set initial points
 			});
 		}
 
@@ -130,13 +139,13 @@ namespace BlackJackV2.Models.GameLogic
 		public void OnBetInputReceived(int betInput)
 		{
 			_taskBetInputReceived.SetResult(true);
+			// Set the bet for the primary hand
+			_playerCardHand.SetBetToHand(HandOwners.HandOwner.Primary, betInput);
 
-			// Update the game state with the bet input
-			UpdateGameState(state =>
-			{
-				state.Bet = betInput;
-				state.Points -= betInput; // Deduct the bet from the points
-			}); 
+			// Deduct the bet from the points
+			UpdateGameState(state => state.Points -= betInput);
 		}
+
+
 	}
 }

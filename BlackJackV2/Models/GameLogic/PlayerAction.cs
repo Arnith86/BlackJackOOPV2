@@ -52,7 +52,7 @@ namespace BlackJackV2.Models.GameLogic
 				playerHand.PrimaryCardHand.AddCard(blackJackCardDeck.GetTopCard());
 				playerHand.SplitCardHand.AddCard(blackJackCardDeck.GetTopCard());
 				// Notify that the split was successful
-				MessageBus.Current.SendMessage(new SplitSuccessfulMessage(true));
+				MessageBus.Current.SendMessage(new SplitSuccessfulMessage(true, playerHand));
 			}
 		}
 	}

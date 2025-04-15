@@ -26,13 +26,20 @@ namespace BlackJackV2.ViewModels
 	public class CardHandViewModel : ReactiveObject
 	{
 		private HandOwners.HandOwner _id;
+		private int _bet;
 		private bool _handIsActive; 
 		private string _markedCardValue;
 		private string _handValue;
 		private ObservableCollection<ICard<Bitmap, string>> _cards;
 		
 		public HandOwners.HandOwner Id => _id;
-		
+
+		public int Bet
+		{
+			get => _bet;
+			set => this.RaiseAndSetIfChanged(ref _bet, value);
+		}
+
 		public bool HandIsActive
 		{
 			get => _handIsActive;
@@ -62,6 +69,7 @@ namespace BlackJackV2.ViewModels
 		public CardHandViewModel(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
 		{
 			_id = id;
+			Bet = 0;
 			_handIsActive = false;
 			_cards = cardHand.Hand;
 			_handValue = cardHand.HandValue.ToString();

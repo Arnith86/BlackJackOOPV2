@@ -14,7 +14,6 @@ namespace BlackJackV2.Models.GameLogic
 	public class GameState()
 	{
 		public int Points { get; set; } = 0;
-		public int Bet { get; set; } = 0;
 
 		public bool IsBetRecieved { get; set; }
 

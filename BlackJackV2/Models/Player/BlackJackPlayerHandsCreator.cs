@@ -1,9 +1,11 @@
 ﻿using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Services.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,9 +18,9 @@ namespace BlackJackV2.Models.Player
 
 	internal class BlackJackPlayerHandsCreator
 	{
-		public static PlayerHands CreateBlackJackPlayerHand(HandOwners.HandOwner id)
+		public static IPlayerHands<Bitmap, string> CreateBlackJackPlayerHand(ISubject<BetUpdateEvent> betUpdateSubject, HandOwners.HandOwner id)
 		{
-			return new PlayerHands(id, BlackJackCardHandCreator.CreateBlackJackCardHand());
+			return new PlayerHands(betUpdateSubject, id, BlackJackCardHandCreator.CreateBlackJackCardHand());
 		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Avalonia.Media.Imaging;
+using BlackJackV2.Models.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +17,13 @@ namespace BlackJackV2.Services.Messaging
 	public class SplitSuccessfulMessage
 	{
 		public bool IsSplitSuccessful { get; }
+		public IPlayerHands<Bitmap, string> PlayerHands { get; }
 
-		public SplitSuccessfulMessage(bool isSplitSuccessful)
+		public SplitSuccessfulMessage(bool isSplitSuccessful, IPlayerHands<Bitmap, string> playerHands)
 		{
 			IsSplitSuccessful = isSplitSuccessful;
+			PlayerHands = playerHands;
+
 		}
 	}
 }

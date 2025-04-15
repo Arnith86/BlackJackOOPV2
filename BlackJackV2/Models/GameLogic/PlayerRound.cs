@@ -46,7 +46,7 @@ namespace BlackJackV2.Models.GameLogic
 		{
 			_cardDeck = cardDeck;
 			_playerAction = playerAction;
-			_playerHands = null;// BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand();
+			_playerHands = null;
 
 			// If a split was registered then add the split hand to the queue
 			MessageBus.Current.Listen<SplitSuccessfulMessage>().Subscribe( _ =>
@@ -66,7 +66,8 @@ namespace BlackJackV2.Models.GameLogic
 			while (blackJackCardHands.Count > 0)
 			{
 				currentHand = blackJackCardHands.Dequeue();
-				
+
+				// Notify that the current hand is active
 				MessageBus.Current.SendMessage(new ActiveHandMessage(currentHand.Id));
 
 				// Each iteration represents a hand in unfinished state 

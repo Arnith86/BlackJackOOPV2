@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
 using System;
+using BlackJackV2.Models.Player;
+using Avalonia.Media.Imaging;
 
 namespace BlackJackV2.ViewModels
 {
@@ -27,12 +29,15 @@ namespace BlackJackV2.ViewModels
 			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Dealer, 
 																				gameLogic.DealerCardHand.PrimaryCardHand, 
 																				gameLogic.DealerCardHand.PrimaryCardHand.HandValue.ToString());
+		
 			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Primary, 
 																				gameLogic.PlayerCardHand.PrimaryCardHand,
 																				gameLogic.PlayerCardHand.PrimaryCardHand.HandValue.ToString());
+			
 			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Split, 
 																				gameLogic.PlayerCardHand.SplitCardHand, 
 																				gameLogic.PlayerCardHand.SplitCardHand.HandValue.ToString());
+			
 
 			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>
@@ -40,13 +45,31 @@ namespace BlackJackV2.ViewModels
 				PlayerCardHandViewModel
 			};
 
+			gameLogic.BetUpdateEvent.Subscribe( betEvent =>
+			{
+				// Update the player bet when the bet is updated
+				SyncPlayerBet(betEvent.PlayerHands);
+			});
 
 			// Listen for the player split event
 			MessageBus.Current.Listen<SplitSuccessfulMessage>().Subscribe(splitPerformed =>
 			{
 				// If the player split was successful, add the split hand to the player card view models
-				if (splitPerformed.IsSplitSuccessful) OnPlayerSplit();
+				// and update the bet values
+				if (splitPerformed.IsSplitSuccessful)
+				{
+					OnPlayerSplit();
+
+					SyncPlayerBet(splitPerformed.PlayerHands);
+				}
 			});
+		}
+
+		// Sync the player bet with the player hands
+		public void SyncPlayerBet(IPlayerHands<Bitmap, string> playerHands)
+		{
+			PlayerCardHandViewModel.Bet = playerHands.GetBetFromHand(HandOwners.HandOwner.Primary);
+			PlayerSplitCardHandViewModel.Bet = playerHands.GetBetFromHand(HandOwners.HandOwner.Split);
 		}
 
 		// Add the player split hand to the to PlayerCardViewModels (adds another view in the UI)

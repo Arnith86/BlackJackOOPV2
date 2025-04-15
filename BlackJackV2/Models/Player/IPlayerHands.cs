@@ -14,11 +14,13 @@ namespace BlackJackV2.Models.Player
 
 	public interface IPlayerHands<TImage, TValue>
 	{
-		public HandOwners.HandOwner Id { get; }
 		public BlackJackCardHand PrimaryCardHand { get; }
 		public BlackJackCardHand SplitCardHand { get; }
-		
+
+		public int GetBetFromHand(HandOwners.HandOwner owner);
+		public void SetBetToHand(HandOwners.HandOwner owner, int bet);
 		public bool SplitHand();
 		public void ResetHand();
+		
 	}
 }
