@@ -1,4 +1,5 @@
 ﻿using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,22 @@ namespace BlackJackV2.ViewModels
 	public class StatsViewModel : ReactiveObject
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");
+		private IPlayer _currentPlayer;
 
-		private int _points;
+		private int _funds;
 		private bool _isBetEnabled;
-
-		public int Points
+		
+		
+		public IPlayer CurrentPlayer
 		{
-			get => _points;
-			set => this.RaiseAndSetIfChanged(ref _points, value);
+			get => _currentPlayer;
+			set => this.RaiseAndSetIfChanged(ref _currentPlayer, value);
+		}
+
+		public int Funds
+		{
+			get => _funds;
+			set => this.RaiseAndSetIfChanged(ref _funds, value);
 		}
 
 		public bool IsBetEnabled
@@ -39,7 +48,6 @@ namespace BlackJackV2.ViewModels
 
 		public StatsViewModel(GameLogic gameLogic)
 		{
-			Points = 10;
 			IsBetEnabled = true;
 
 			InputBetCommand = ReactiveCommand.Create<string>(betString =>
@@ -48,11 +56,13 @@ namespace BlackJackV2.ViewModels
 				if (!IsBetEnabled) return;
 
 				// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Points 
-				if ( !string.IsNullOrWhiteSpace(betString) && InputBetRegex.IsMatch(betString) &&
+				if ( !string.IsNullOrWhiteSpace(betString) && 
+					InputBetRegex.IsMatch(betString) &&
 					int.TryParse(betString, out int parsedBet) && 
-					(parsedBet < 11 && parsedBet > 0) && parsedBet <= Points)
+					(parsedBet < 11 && parsedBet > 0) && 
+					parsedBet <= CurrentPlayer.Funds)
 				{
-					gameLogic.OnBetInputReceived(parsedBet);
+					gameLogic.OnBetInputReceived(CurrentPlayer.Name, parsedBet);
 				}
 				else
 				{
@@ -62,11 +72,17 @@ namespace BlackJackV2.ViewModels
 				}
 			});
 
+			// Set the current player to the one that is requesting a bet
+			gameLogic.BetRequestedEvent.Subscribe(currentPlayer =>
+			{
+				CurrentPlayer = currentPlayer;
+				// Set the funds to the current players funds
+				Funds = CurrentPlayer.Funds;
+			});
 
 			// This will automatically update bet in the UI due to data binding
 			gameLogic.GameStateObservable.Subscribe(gameState =>
 			{
-				Points = gameState.Points;
 				IsBetEnabled = !gameState.IsBetRecieved;
 			});
 

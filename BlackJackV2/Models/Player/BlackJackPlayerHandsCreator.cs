@@ -22,5 +22,10 @@ namespace BlackJackV2.Models.Player
 		{
 			return new PlayerHands(betUpdateSubject, id, BlackJackCardHandCreator.CreateBlackJackCardHand());
 		}
+
+		public static IPlayer CreatePlayer(IPlayerHands<Bitmap, string> hands, string name = "Player")
+		{
+			return new Player(name, hands);
+		}
 	}
 }

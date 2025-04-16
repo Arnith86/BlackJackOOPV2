@@ -1,4 +1,6 @@
-﻿using Avalonia.Media.Imaging;
+﻿using Avalonia;
+using Avalonia.Media.Imaging;
+using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
@@ -6,6 +8,7 @@ using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,21 +38,30 @@ namespace BlackJackV2.Models.GameLogic
 	{
 		// Performes the action of hitting a card, if the player is not busted
 		// TODO: show that the player has busted
-		public void Hit(IPlayerHands<Bitmap, string> playerHands, IBlackJackCardHand<Bitmap, string> cardHand, BlackJackCardDeck blackJackCardDeck)
+		public void Hit(IPlayerHands<Bitmap, string> playerHands, 
+						IBlackJackCardHand<Bitmap, string> cardHand, 
+						ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
 			if (!cardHand.IsBusted && !cardHand.IsFolded)
 				playerHands.AddCardToHand(cardHand, blackJackCardDeck.GetTopCard());
 		}
 
 		// Performes the action of doubling down, if the player is not busted and not folded
-		public void DoubleDown(IPlayerHands<Bitmap, string> playerHands,
+		public void DoubleDown(	int playerFunds,
+								IPlayerHands<Bitmap, string> playerHands,
 								IBlackJackCardHand<Bitmap, string> cardHand,
-								BlackJackCardDeck blackJackCardDeck)
+								ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
-			if (playerHands.TryDoubleDownBet(cardHand))
+			// If the player has enough funds, double the bet and add a card to the hand
+			if (playerHands.TryDoubleDownBet(playerFunds, cardHand))
 			{
 				playerHands.AddCardToHand(cardHand, blackJackCardDeck.GetTopCard());
 				playerHands.FoldHand(cardHand);
+			}
+			else
+			{
+				Debug.WriteLine("Double down failed");
+				// TODO: Add a message to the user that the double down was not successfull
 			}
 		}
 
@@ -57,13 +69,15 @@ namespace BlackJackV2.Models.GameLogic
 		// TODO: Show that the player has busted
 		public void Fold(	IPlayerHands<Bitmap, string> playerHands, 
 							IBlackJackCardHand<Bitmap, string> cardHand, 
-							BlackJackCardDeck blackJackCardDeck)
+							ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
 			if (!cardHand.IsBusted)
 				playerHands.FoldHand(cardHand);
 		}
 
-		public void Split(IPlayerHands<Bitmap, string> playerHands, BlackJackCardDeck blackJackCardDeck)
+		public void Split(	int playerFunds, 
+							IPlayerHands<Bitmap, string> playerHands, 
+							ICardDeck<Bitmap, string> blackJackCardDeck)
 		{	
 			if (playerHands.TrySplitHand())
 			{
@@ -72,6 +86,10 @@ namespace BlackJackV2.Models.GameLogic
 
 				// Notify that the split was successful
 				MessageBus.Current.SendMessage(new SplitSuccessfulMessage(true, playerHands));
+			}
+			else
+			{
+				// TODO : Add a message to the user that the split was not successfull
 			}
 		}
 	}

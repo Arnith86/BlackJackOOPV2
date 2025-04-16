@@ -27,7 +27,7 @@ namespace BlackJackV2.Models.GameLogic
 
 		public static PlayerRound CreatePlayerRound(BlackJackCardDeck cardDeck, PlayerAction playerAction)
 		{
-			return new PlayerRound(cardDeck, playerAction);
+			return new PlayerRound(playerAction);
 		}
 
 		public static DealerLogic CreateDealerLogic()

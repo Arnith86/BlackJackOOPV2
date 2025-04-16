@@ -12,8 +12,8 @@
 		
 		<!-- Shows current Points -->
 		<StackPanel Orientation="Horizontal" Spacing="20">
-			<TextBlock Text="Points:" FontWeight="Bold"/>
-			<TextBlock Text="{Binding Points}" />
+			<TextBlock Text="Funds:" FontWeight="Bold"/>
+			<TextBlock Text="{Binding Funds}" />
 		</StackPanel>
 
 		<!-- Bet Input -->

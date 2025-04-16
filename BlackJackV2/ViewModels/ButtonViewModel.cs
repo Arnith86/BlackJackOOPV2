@@ -21,7 +21,7 @@ namespace BlackJackV2.ViewModels
 	public class ButtonViewModel : ReactiveObject
 	{
 		private PlayerRound _playerRound;
-		private HandOwners.HandOwner _activeHand;
+		//private HandOwners.HandOwner _activeHand;
 
 		public ReactiveCommand<Unit, Unit> HitCommand { get; }
 		public ReactiveCommand<Unit, Unit> FoldCommand { get; }
@@ -49,12 +49,12 @@ namespace BlackJackV2.ViewModels
 			MessageBus.Current.Listen<CardMarkedMessage>()
 				.Subscribe(message =>  markedCardValue = message.MarkedCardValue);
 
-			// Subscribe to the ActiveHandMessage
-			MessageBus.Current.Listen<ActiveHandMessage>()
-				.Subscribe(message =>
-				{
-					_activeHand = message.ActiveHand;
-				});
+			//// Subscribe to the ActiveHandMessage
+			//MessageBus.Current.Listen<ActiveHandMessage>()
+			//	.Subscribe(message =>
+			//	{
+			//		_activeHand = message.ActiveHand;
+			//	});
 		}
 	}
 }

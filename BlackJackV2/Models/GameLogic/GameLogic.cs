@@ -23,12 +23,19 @@ namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogic
 	{
-		//// Represents the current active hand in the game
-		//HandOwners.HandOwner activeHand;
+		// Used to notify when the bet value is updated
+		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
 
-		// Contains and notyfies about the funds and bet of the player
+		// Subject to notify when the bet is requested
+		public Subject<IPlayer> BetRequestedEvent { get; }
+
+		// Subject and IObservable to notify when the game state changes
 		private BehaviorSubject<GameState> _gameStateSubject = new BehaviorSubject<GameState>(new GameState());
 		public IObservable<GameState> GameStateObservable => _gameStateSubject.AsObservable();
+
+
+		// Used to wait for specific player bet input to be received
+		private Dictionary<string, TaskCompletionSource<int>> _betInputTask; 
 
 
 		// Used to create a deck of cards
@@ -42,6 +49,9 @@ namespace BlackJackV2.Models.GameLogic
 		// Handles all rounds related to a players hands
 		public PlayerRound playerRound;
 
+		// A collection of players in the game
+		public Dictionary<string, IPlayer> Players { get; }
+
 		// Represents the player and dealer hands
 		IPlayerHands<Bitmap, string> _playerCardHand;
 		IPlayerHands<Bitmap, string> _dealerCardHand;
@@ -49,32 +59,30 @@ namespace BlackJackV2.Models.GameLogic
 		public IPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
 
 
-		// Used to wait for the bet input to be received
-		private TaskCompletionSource<bool> _taskBetInputReceived;
-
-		// Used to notify when the bet value is updated
-		public Subject<BetUpdateEvent> BetUpdateEvent { get; } 
 
 		public GameLogic()
 		{
 			blackJackCardDeck = (BlackJackCardDeck) BlackJackCardDeckCreator.CreateBlackJackCardDeck();
 			BetUpdateEvent = new Subject<BetUpdateEvent>();
-			_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player);
+			//_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player);
 			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Dealer);
 
-			playerAction = GameLogicCreator.CreatePlayerAction();
+			// As of now this is a single player game so we will only have one player
+			Players = new Dictionary<string, IPlayer>() 
+			{ 
+				{"Player1", BlackJackPlayerHandsCreator.CreatePlayer(
+					BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player), "Player1")},
+				{"Player2", BlackJackPlayerHandsCreator.CreatePlayer(
+					BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player), "Player2")}
+			};
+
+			playerAction = GameLogicCreator.CreatePlayerAction(/*GameStateObservable*/);
 			dealerLogic = GameLogicCreator.CreateDealerLogic();
 			roundEvaluator = GameLogicCreator.CreateRoundEvaluator();
 			playerRound = GameLogicCreator.CreatePlayerRound(blackJackCardDeck, playerAction);
 
-			_taskBetInputReceived = new TaskCompletionSource<bool>();
-			
-
-
-			UpdateGameState(state =>
-			{
-				state.Points = 10; // Set initial points
-			});
+			BetRequestedEvent = new Subject<IPlayer>();
+			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 		}
 
 		// Updates the FundsAndBet state and notify subscribers
@@ -93,16 +101,32 @@ namespace BlackJackV2.Models.GameLogic
 
 		public async void InitiateNewRound()
 		{
-			// Change the state to show that logic is waiting for the bet input
-			UpdateGameState( state => state.IsBetRecieved = false );
+			foreach (KeyValuePair<string, IPlayer> player in Players)
+			{
+				
+				string playerName = player.Key;
+				IPlayer currentPlayer = player.Value;
 
-			// Wait for the bet input to be received (statsViewModel)
-			await _taskBetInputReceived.Task;
+				// Adds a new completion source for the bet input task
+				TaskCompletionSource<int> betInputTask = new TaskCompletionSource<int>();
+				_betInputTask[playerName] = betInputTask;
 
-			// Once the bet input is received, update the state to show that the bet has been received
-			UpdateGameState(state => state.IsBetRecieved = true);
+				// Notify which player is to place their bet
+				BetRequestedEvent.OnNext(currentPlayer);
 
-			Debug.WriteLine("Bet input received.");
+				// Change the state to show that logic is waiting for the bet input
+				UpdateGameState(state => state.IsBetRecieved = false);
+
+				// Wait for the bet input to be received
+				int betInput = await betInputTask.Task;
+				
+				// Change the state to show that logic is waiting for the bet input
+				UpdateGameState(state => state.IsBetRecieved = true);
+
+				Debug.WriteLine($"Bet input received for {playerName}: {betInput}");
+			}
+
+			Debug.WriteLine("All bet inputs received. Starting new round.");
 		}
 		
 		public async void StartNewRound()
@@ -112,9 +136,13 @@ namespace BlackJackV2.Models.GameLogic
 			// Gives dealer his initial cards
 			dealerLogic.InitialDeal(DealerCardHand, blackJackCardDeck);
 
-			// Player conducts their turn
-			await playerRound.PlayerTurn((PlayerHands)_playerCardHand);
+			foreach (KeyValuePair<string, IPlayer> player in Players)
+			{
+				// Player conducts their turn
+				await playerRound.PlayerTurn(blackJackCardDeck, player.Value);
 
+			}
+		
 			// Dealer finishes his turn
 			dealerLogic.DealerFinishTurn(DealerCardHand, blackJackCardDeck);
 			
@@ -136,14 +164,14 @@ namespace BlackJackV2.Models.GameLogic
 
 		// This method is called when the player inputs their bet
 		// It sets the bet input and updates the game state, and completes the _taskBetInputReceived task
-		public void OnBetInputReceived(int betInput)
+		public void OnBetInputReceived(string playerName, int betInput)
 		{
-			_taskBetInputReceived.SetResult(true);
-			// Set the bet for the primary hand
-			_playerCardHand.SetBetToHand(HandOwners.HandOwner.Primary, betInput);
-
-			// Deduct the bet from the points
-			UpdateGameState(state => state.Points -= betInput);
+			if (_betInputTask.TryGetValue(playerName, out var betUpdateCompletionSource))
+			{
+				Players[playerName].PlaceBet(HandOwners.HandOwner.Primary, betInput);
+				betUpdateCompletionSource.SetResult(betInput);
+				_betInputTask.Remove(playerName);
+			}
 		}
 
 

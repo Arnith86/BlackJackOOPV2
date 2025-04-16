@@ -16,21 +16,24 @@ using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using BlackJackV2.Services.Messaging;
+using Avalonia.Media.Imaging;
 
 namespace BlackJackV2.Models.GameLogic
 {
 	public class PlayerRound
 	{
-		private BlackJackCardDeck _cardDeck;
+		private ICardDeck<Bitmap, string> _cardDeck;
+
+		private IPlayer _player;
 		
-		// The current active player 
-		private PlayerHands _playerHands;
+		//// The current active player 
+		//private PlayerHands _playerHands;
 
 		// The player action class handles the blackjack related actions the players can take
 		private PlayerAction _playerAction;
 
 		// The current active hand in the game
-		private BlackJackCardHand currentHand;
+		private IBlackJackCardHand<Bitmap, string> currentHand;
 
 		// Queue of card hands to handle
 		private Queue<BlackJackCardHand> blackJackCardHands = new Queue<BlackJackCardHand>();
@@ -42,25 +45,30 @@ namespace BlackJackV2.Models.GameLogic
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
 		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
 
-		public PlayerRound(BlackJackCardDeck cardDeck, PlayerAction playerAction)
+		public PlayerRound(/*BlackJackCardDeck cardDeck,*/ PlayerAction playerAction)
 		{
-			_cardDeck = cardDeck;
+			//_cardDeck = cardDeck;
 			_playerAction = playerAction;
-			_playerHands = null;
+			//_playerHands = null;
 
-			// If a split was registered then add the split hand to the queue
-			MessageBus.Current.Listen<SplitSuccessfulMessage>().Subscribe( _ =>
-			{
-				blackJackCardHands.Enqueue((BlackJackCardHand)_playerHands.SplitCardHand);
-			});
+
+
+			//// If a split was registered then add the split hand to the queue
+			//MessageBus.Current.Listen<SplitSuccessfulMessage>().Subscribe( _ =>
+			//{
+			//	blackJackCardHands.Enqueue(_playerHands.SplitCardHand);
+			//});
 		}
 
 		// This method is called when the player is taking their turn
-		public async Task PlayerTurn(PlayerHands playerHands) 
+		public async Task PlayerTurn(/*PlayerHands playerHands*/ICardDeck<Bitmap, string> cardDeck, IPlayer player) 
 		{
-			_playerHands = playerHands;
+			//_playerHands = playerHands;
+			_cardDeck = cardDeck;
+			_player = player;
 
-			blackJackCardHands.Enqueue((BlackJackCardHand)_playerHands.PrimaryCardHand);
+			//blackJackCardHands.Enqueue(_playerHands.PrimaryCardHand);
+			blackJackCardHands.Enqueue(_player.hands.PrimaryCardHand);
 
 			// If a split was registered through the MessageBuss, then it is added to the queue of hands to handle
 			while (blackJackCardHands.Count > 0)
@@ -86,16 +94,20 @@ namespace BlackJackV2.Models.GameLogic
 			switch (action)
 			{
 				case BlackJackActions.PlayerActions.Hit:
-					_playerAction.Hit(_playerHands, currentHand, _cardDeck);
+					//_playerAction.Hit(_playerHands, currentHand, _cardDeck);
+					_playerAction.Hit(_player.hands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.DoubleDown:
-					_playerAction.DoubleDown(_playerHands, currentHand, _cardDeck);       
+					//_playerAction.DoubleDown(_playerHands, currentHand, _cardDeck);       
+					_playerAction.DoubleDown(_player.Funds, _player.hands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Fold:
-					_playerAction.Fold(_playerHands, currentHand, _cardDeck);
+					//_playerAction.Fold(_playerHands, currentHand, _cardDeck);
+					_playerAction.Fold(_player.hands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Split:
-					_playerAction.Split(_playerHands, _cardDeck);
+					//_playerAction.Split(_playerHands, _cardDeck);
+					_playerAction.Split(_player.Funds, _player.hands, _cardDeck);
 					break;
 				default:
 					break;

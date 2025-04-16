@@ -93,10 +93,13 @@ namespace BlackJackV2.Models.Player
 			}
 		}
 
-		public bool TryDoubleDownBet(IBlackJackCardHand<Bitmap, string> cardHand)
+		public bool TryDoubleDownBet(int points, IBlackJackCardHand<Bitmap, string> cardHand)
 		{
+			// Check if the player has enough funds to double down
+			bool enoughFunds = GetBetFromHand(cardHand.Id) <= points;
+
 			// Checks if the hand has two cards
-			if (cardHand.Hand.Count == 2)
+			if (enoughFunds && cardHand.Hand.Count == 2)
 			{
 				// Doubles the bet for the hand
 				SetBetToHand(cardHand.Id, GetBetFromHand(cardHand.Id) * 2);
@@ -110,8 +113,8 @@ namespace BlackJackV2.Models.Player
 		// If successfull, returns true
 		public bool TrySplitHand()
 		{
-			// Checks if the primary hand has two cards
-			if (_primeryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1)
+			// Checks if the primary hand has two cards, and if the split hand is empty
+			if (_primeryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1 )
 			{
 				// Retrieves the value of the first two cards in the primary hand
 				string value1 = _primeryCardHand.Hand[0].Value.Split('_')[1];

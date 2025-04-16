@@ -29,15 +29,22 @@ namespace BlackJackV2.ViewModels
 			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Dealer, 
 																				gameLogic.DealerCardHand.PrimaryCardHand, 
 																				gameLogic.DealerCardHand.PrimaryCardHand.HandValue.ToString());
-		
-			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Primary, 
-																				gameLogic.PlayerCardHand.PrimaryCardHand,
-																				gameLogic.PlayerCardHand.PrimaryCardHand.HandValue.ToString());
-			
+
+			//PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Primary, 
+			//																	gameLogic.PlayerCardHand.PrimaryCardHand,
+			//																	gameLogic.PlayerCardHand.PrimaryCardHand.HandValue.ToString());
+
+			//PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Split, 
+			//																	gameLogic.PlayerCardHand.SplitCardHand, 
+			//																	gameLogic.PlayerCardHand.SplitCardHand.HandValue.ToString());
+
+			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Primary,
+																				gameLogic.Players["Player1"].hands.PrimaryCardHand,
+																				gameLogic.Players["Player1"].hands.PrimaryCardHand.HandValue.ToString());
+
 			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Split, 
-																				gameLogic.PlayerCardHand.SplitCardHand, 
-																				gameLogic.PlayerCardHand.SplitCardHand.HandValue.ToString());
-			
+																				gameLogic.Players["Player1"].hands.PrimaryCardHand,
+																				gameLogic.Players["Player1"].hands.PrimaryCardHand.HandValue.ToString());
 
 			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>
