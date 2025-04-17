@@ -20,9 +20,6 @@ namespace BlackJackV2.Models.GameLogic
 {
 	public class DealerLogic
 	{
-
-		
-
 		// Deals two cards to the dealer, the first card is flipped face down, the second card is face up
 		public void InitialDeal(IPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
 		{

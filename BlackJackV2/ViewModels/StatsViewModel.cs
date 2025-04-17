@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -44,6 +45,8 @@ namespace BlackJackV2.ViewModels
 
 		public ReactiveCommand<string, Unit> InputBetCommand { get; }
 
+		private readonly CompositeDisposable _disposable = new CompositeDisposable();
+
 		public StatsViewModel(GameLogic gameLogic)
 		{
 			IsBetEnabled = true;
@@ -71,19 +74,23 @@ namespace BlackJackV2.ViewModels
 			});
 
 			// Set the current player to the one that is requesting a bet
-			gameLogic.BetRequestedEvent.Subscribe(currentPlayer =>
-			{
-				CurrentPlayer = currentPlayer;
-				// Set the funds to the current players funds
-				Funds = CurrentPlayer.Funds;
-			});
+			gameLogic.BetRequestedEvent
+				.Subscribe(currentPlayer =>{
+
+					CurrentPlayer = currentPlayer;
+					// Set the funds to the current players funds
+					Funds = CurrentPlayer.Funds;
+
+				}).DisposeWith(_disposable);
 
 			// This will automatically update bet in the UI due to data binding
-			gameLogic.GameStateObservable.Subscribe(gameState =>
-			{
-				IsBetEnabled = !gameState.IsBetRecieved;
-			});
+			gameLogic.GameStateObservable
+				.Subscribe(gameState =>	{
+					IsBetEnabled = !gameState.IsBetRecieved;
+			}).DisposeWith(_disposable);
 
 		}
+
+		public void Dispose() => _disposable.Dispose();
 	}
 }

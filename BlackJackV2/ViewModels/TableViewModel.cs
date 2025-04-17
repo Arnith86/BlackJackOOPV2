@@ -9,8 +9,11 @@
 ///		GameLogic								_gameLogic				: The game logic for the game 
 ///		CardHandViewModel						DealerCardHandViewModel : The dealer's hand view model 
 ///		ObservableCollection<PlayerViewModel>	playerViewModels		: A collection of player view models
+///		readonly CompositeDisposable			_disposables			: Used to clean up resources	
+/// 
+///		void	UpdatePlayerViewModels(Dictionary<string, IPlayer>)		: Update the player view models when the player changed event is received
+///		void	Dispose()												: Cleans up resources
 ///		
-///		void	UpdatePlayerViewModels(Dictionary<string, IPlayer>)		: Update the player view models when the player changed event is received 
 /// </summary>
 
 using BlackJackV2.Models.GameLogic;
@@ -20,6 +23,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System;
 using BlackJackV2.Models.Player;
+using System.Reactive.Disposables;
 
 namespace BlackJackV2.ViewModels
 {
@@ -30,10 +34,10 @@ namespace BlackJackV2.ViewModels
 		// View models for the dealers
 		public CardHandViewModel DealerCardHandViewModel { get; }
 	
-
 		// A collection of player view models
 		public ObservableCollection<PlayerViewModel> playerViewModels { get; private set; }
 
+		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 		public TableViewModel(GameLogic gameLogic)
 		{
 			_gameLogic = gameLogic;
@@ -42,11 +46,11 @@ namespace BlackJackV2.ViewModels
 
 			playerViewModels = new ObservableCollection<PlayerViewModel>();
 
-			gameLogic.PlayerChangedEvent.Subscribe(playerEvent =>
-			{
-				// Update the player view models when the player event is received
-				UpdatePlayerViewModels(playerEvent);
-			});
+			gameLogic.PlayerChangedEvent
+				.Subscribe(playerEvent =>{
+					// Update the player view models when the player event is received
+					UpdatePlayerViewModels(playerEvent);
+			}).DisposeWith(_disposables);
 	
 		}
 
@@ -62,6 +66,8 @@ namespace BlackJackV2.ViewModels
 				playerViewModels.Add(playerViewModel);
 			}
 		}
+		
+		public void Dispose() => _disposables.Dispose();
 	}
 }
 
