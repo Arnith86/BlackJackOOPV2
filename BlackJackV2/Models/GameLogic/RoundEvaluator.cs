@@ -1,18 +1,24 @@
-﻿using Avalonia.Media.Imaging;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/GameLogic/RoundEvaluator.cs
+
+/// <summary>
+///			
+///		This class evaluates a single player hand against the dealer hand, and determines the winner.
+///		
+///		enum				RoundResult	: Possible results of the round. 
+///		BlackJackCardHand	_playerHand	: Player hand to evaluate.
+///		BlackJackCardHand	_dealerHand	: Dealer hand to evaluate.
+///		
+///		EvaluateRound()		: Evaluates the round and determines the winner.
+/// </summary>
+
+using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardHand;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.GameLogic
 {
 	public class RoundEvaluator
 	{
-		/**
-		 * Evaluates the round and determines the winner
-		 **/
 		public enum RoundResult
 		{
 			PlayerWinsBlackJack,

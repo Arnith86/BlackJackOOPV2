@@ -1,15 +1,25 @@
-﻿using Avalonia.Media.Imaging;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/ViewModels/PlayerViewModel.cs
+
+/// <summary>
+///		This class is the view model that represents a player in the UI.
+///		
+///		IPlayer					Player						: The player represented by this view model
+///		CardHandViewModel		PlayerCardHandViewModel		: The player's primary hand view model
+///		CardHandViewModel		PlayerSplitCardHandViewModel: The player's split hand view model
+///		ObservableCollection<>	PlayerCardViewModels		: The collection of card hand view models for the player	
+///	
+///		void	SyncPlayerBet(string playeName)	: Sync the bet in this viewModel with the player hands
+///		void	OnPlayerSplit()					: Add the player split hand to the to PlayerCardViewModels (adds another view in the UI)
+///		void	OnPlayerSplitEnd()				: Remove the player split hand from the PlayerCardViewModels (removes the view from the UI)
+///		
+/// </summary>
+ 
 using BlackJackV2.Constants;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Services.Messaging;
-using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.ViewModels
 {

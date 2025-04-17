@@ -1,25 +1,27 @@
-﻿using Avalonia.Media.Imaging;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/CardFactory/BlackJackCard.cs
+
+/// <summary>
+///		
+///		A single card used in black jack. 
+/// 
+///		Bitmap		CurrentCardImage	:	The current image that shown (front or back of card).
+///		Bitmap		FrontImage			:	The visual representation of the card value.
+///		Bitmap		BackImage			:	The visual representation of the back of the card value 
+///		string[]	Value				:   Has one of four colors ( Heart, Dimond, Spade, Club ), 
+///											and a numerical value between 1 - 13 (knight: 11, queen: 12, king: 13)
+///		bool		FaceDown			:	Signifies if the back of the card is shown or the value
+///		
+///		void		flipCard()			:	Flips the card to show the opposite side	
+///		
+/// </summary>
+
+using Avalonia.Media.Imaging;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.CardFactory
 {
-
-	/**
-	 * A single card used in black jack. 
-	 * 
-	 *  Bitmap CurrentCardImage	the current image that shown (front or back of card)
-	 *	Bitmap FrontImage:		the visual representation of the card value
-	 *	Bitmap BackImage:		the visual representation of the back of the card value 
-	 *	string[] Value:			has one of four colors ( Heart, Dimond, Spade, Club ), and a numerical value between 1 - 13 (knight: 11, queen: 12, king: 13)
-	 *	bool FaceDown:			signifies if the back of the card is shown or the value
-	 * 
-	 **/
 	public class BlackJackCard : ReactiveObject,  ICard<Bitmap, string>
 	{
 		public Bitmap CurrentImage => FaceDown ? BackImage : FrontImage;

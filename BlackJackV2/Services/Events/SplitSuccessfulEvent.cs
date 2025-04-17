@@ -1,8 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Services/Events/SplitSuccessfulEvent.cs
+
+/// <summary>
+///		
+///		This class is responsible for handling the split successful events in the game.
+///		It contains the player name and is used to notify when a split has been successful.
+///		
+///		string PlayerName	: The name of the player who successfully split their hand.
+///		
+/// </summary> 
 
 namespace BlackJackV2.Services.Events
 {

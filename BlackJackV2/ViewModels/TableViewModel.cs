@@ -1,27 +1,33 @@
-﻿using BlackJackV2.Constants;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/ViewModels/TableViewModel.cs
+
+/// <summary>
+///
+///		This class is used to represent the table in the view
+///		Here we have the dealer's hand and a collection of player hands
+///		
+///		GameLogic								_gameLogic				: The game logic for the game 
+///		CardHandViewModel						DealerCardHandViewModel : The dealer's hand view model 
+///		ObservableCollection<PlayerViewModel>	playerViewModels		: A collection of player view models
+///		
+///		void	UpdatePlayerViewModels(Dictionary<string, IPlayer>)		: Update the player view models when the player changed event is received 
+/// </summary>
+
 using BlackJackV2.Models.GameLogic;
-using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reactive.Linq;
 using System;
 using BlackJackV2.Models.Player;
-using Avalonia.Media.Imaging;
 
 namespace BlackJackV2.ViewModels
 {
-	/**
-	 * This class is used to represent the table in the view
-	 * Here we can have the dealer's hand, player's hand, and player's split hand
-	 **/
-
 	public class TableViewModel : ReactiveObject
 	{
 		GameLogic _gameLogic; 
 
-		// Create the view models for the dealer and player hands
+		// View models for the dealers
 		public CardHandViewModel DealerCardHandViewModel { get; }
 	
 
@@ -44,7 +50,7 @@ namespace BlackJackV2.ViewModels
 	
 		}
 
-		// Update the player view models when the player event is received
+		// Update the player view models when the player changed event is received
 		public void UpdatePlayerViewModels(Dictionary<string, IPlayer> playerEvent)
 		{
 			// Replace the old player view models with the new ones

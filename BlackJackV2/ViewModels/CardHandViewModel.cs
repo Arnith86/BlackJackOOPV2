@@ -1,35 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/ViewModels/CardHandViewModel.cs
+
+/// <summary>
+/// 
+///		This class is used to represent a single hand in a view
+///		
+///		HandOwners.HandOwner		_id				: The id of the hand (primary or split) 
+///		int							_bet			: The bet amount for the hand 
+///		bool						_handIsActive	: True if the hand is active
+///		string						_handValue		: The current value of the hand
+///		ObservableCollection<ICard> _cards			: The list of cards in the hand
+///
+/// </summary>
+
+using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Models;
-using BlackJackV2.Models.CardFactory;
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.Models.GameLogic;
-using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Messaging;
 using ReactiveUI;
-using ReactiveUI.Legacy;
 
 namespace BlackJackV2.ViewModels
 {
-	/**
-	 * This class is used to represent the player's hand in the view
-	 **/
-
 	public class CardHandViewModel : ReactiveObject
 	{
 		private HandOwners.HandOwner _id;
 		private int _bet;
 		private bool _handIsActive; 
-		private string _markedCardValue;
 		private string _handValue;
 		private ObservableCollection<ICard<Bitmap, string>> _cards;
 		
@@ -45,12 +45,6 @@ namespace BlackJackV2.ViewModels
 		{
 			get => _handIsActive;
 			set => this.RaiseAndSetIfChanged(ref _handIsActive, value);
-		}
-
-		public string MarkedCardValue
-		{
-			get => _markedCardValue;
-			set => this.RaiseAndSetIfChanged(ref _markedCardValue, value);
 		}
 
 		public string HandValue
@@ -91,25 +85,6 @@ namespace BlackJackV2.ViewModels
 			{
 				MessageBus.Current.SendMessage(new CardMarkedMessage(markedCardValue));
 			});
-
-			//// Subscribe to each card in the hand for property changes
-			//foreach (ICard<Bitmap, string> card in _cards)
-			//{
-			//	SubscribeToCard((BlackJackCard)card);
-			//}
 		}
-
-		//private void SubscribeToCard(BlackJackCard card)
-		//{
-		//	card.PropertyChanged += Card_PropertyChanged;
-		//}
-
-		//private void Card_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-		//{
-		//	if (e.PropertyName == nameof(ICard<Bitmap, string>.FaceDown)) 
-		//	{
-		//		Debug.WriteLine($"Card's FaceDown value changed: {((ICard<Bitmap, string>)sender!).Value}");
-		//	}
-		//}
 	}
 }

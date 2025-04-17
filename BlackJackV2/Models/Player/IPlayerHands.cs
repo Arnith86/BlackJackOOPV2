@@ -1,17 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/Player/IPlayerHands.cs
+
+/// <summary>
+///		Interface for Player hands handeling 
+///		
+///		BlackJackCardHand	PrimaryCardHand						: The player's primary hand
+///		BlackJackCardHand	SplitCardHand						: The player's split hand
+///
+///		int					GetBetFromHand(HandOwners.HandOwner)		: Returns the bet for the specified hand
+///		void				SetBetToHand(HandOwners.HandOwner, int)		: Sets the bet for the specified hand
+///		bool				TryDoubleDownBet(int, IBlackJackCardHand)	: Tries to double down the bet for the specified hand
+///		bool				TrySplitHand()								: Tries to split the hand
+///		void				AddCardToHand(IBlackJackCardHand, ICard)	: Adds a card to the specified hand
+///		void				FoldHand(IBlackJackCardHand)				: Folds the specified hand
+///		void				ResetHand()									: Resets all player hands
+///		
+/// </summary>
+
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Constants;
 using Avalonia.Media.Imaging;
 
 namespace BlackJackV2.Models.Player
 {
-	/**
-	 * Interface for Player hand handeling 
-	 **/
 
 	public interface IPlayerHands<TImage, TValue>
 	{

@@ -1,21 +1,30 @@
-﻿using Avalonia.Controls.Documents;
-using Avalonia.Controls.Shapes;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/GameLogic/PlayerRound.cs
+
+/// <summary>	
+/// 	This class handles an instance of a players turn in black jack 
+/// 	
+///		ICardDeck<Bitmap, string>				_cardDeck				: The card deck used in this round.
+///		IPlayer									_player					: The player currently taking their turn.
+///		PlayerAction							_playerAction			: The player action class handles the blackjack related actions the players can take.
+///		IBlackJackCardHand<Bitmap, string>		currentHand				: The current active hand in the game.
+///		Queue<BlackJackCardHand>				blackJackCardHands		: Queue of card hands to handle.
+///		Subject<BlackJackActions.PlayerActions> _playerActionSubject	: Regesters player actions events. 
+///		Subject<SplitSuccessfulEvent>			_splitSuccessfulEvent	: Notifies when a split of the hand has happend.
+///		
+///		async Task		PlayerTurn(ICardDeck cardDeck, IPlayer player)				: This method is called when the player is taking their turn
+///		void			ProcessPlayerAction(BlackJackActions.PlayerActions action)	: This method is called when player has takes an action
+///		
+///	</summary>
+
 using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Constants;
-using ReactiveUI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text;
 using System.Threading.Tasks;
-using BlackJackV2.Services.Messaging;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Services.Events;
 

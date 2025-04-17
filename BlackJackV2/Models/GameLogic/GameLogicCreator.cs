@@ -1,11 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/GameLogic/GameLogicCreator.cs
+
+/// <summary>
+///		Creates objects related to GameLogic
+///		
+///		static GameLogic		CreateGameLogic()									: Return new GameLogic object.
+///		static RoundEvaluator	CreateRoundEvaluator()								: Return new RoundEvaluator object.
+///		static PlayerAction		CreatePlayerAction(Subject<SplitSuccessfulEvent>)	: Return new PlayerAction object.
+///		static PlayerRound		CreatePlayerRound(PlayerAction, 
+///													Subject<SplitSuccessfulEvent>)	: Return new PlayerRound object.
+///		static DealerLogic		CreateDealerLogic()									: Return new DealerLogic object.
+///		
+/// </summary>
+
 using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
-using BlackJackV2.Models.CardDeck;
-using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 
 namespace BlackJackV2.Models.GameLogic

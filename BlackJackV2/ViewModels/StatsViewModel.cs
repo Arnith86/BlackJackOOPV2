@@ -1,4 +1,7 @@
-﻿using BlackJackV2.Models.GameLogic;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/ViewModels/StatsViewModel.cs
+
+using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
@@ -12,11 +15,6 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.ViewModels
 {
-
-	/**
-	 * This view model is used to show current points, and register the bet input from the user.
-	 **/
-
 	public class StatsViewModel : ReactiveObject
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");

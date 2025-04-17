@@ -1,24 +1,25 @@
-﻿using System.Collections.Generic;
-using Avalonia.Collections;
-using Avalonia.Media.Imaging;
-using BlackJackV2.Models.CardDeck;
-using BlackJackV2.Models.CardFactory;
-using BlackJackV2.Models.CardHand;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/ViewModels/MainWindowViewModel.cs
+
+/// <summary>
+///		This class is the view model for the main window of the application.
+///		And it contains the view models for the button and table.
+///		
+///		GameLogic		gameLogic		: The game logic for the game.
+///		StatsViewModel	StatsViewModel	: View model for displaying the current stats (will probubly be removed).
+///		TableViewModel	TableViewModel	: View model for displaying the table (With Dealer and Player Hands).
+///		ButtonViewModel ButtonViewModel : View model for displaying the buttons (Hit, Stand, etc).
+///		
+/// </summary>
+
+using System.Collections.Generic;
 using BlackJackV2.Models.GameLogic;
-using BlackJackV2.Models.Player;
-using ReactiveUI;
-using System.Collections.ObjectModel;
 
 namespace BlackJackV2.ViewModels
 {
-	/**
-	 * This class is the view model for the main window of the application.
-	 * And it contains the view models for the button and table.
-	 **/
 	public class MainWindowViewModel : ViewModelBase
     {
 		
-		//private PlayerRound _playerRound;
 		private GameLogic gameLogic = GameLogicCreator.CreateGameLogic();
 		
 		public StatsViewModel StatsViewModel { get; }

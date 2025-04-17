@@ -1,29 +1,28 @@
-﻿using Avalonia.Media.Imaging;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/Player/Player.cs
+
+/// <summary>
+/// 
+///		 This class represents a player in the game.
+///		 The player will start with a set amount of money and can place bets on their hands.
+///		 
+///		string			Name		: The name of the player
+///		int				Funds		: The amount of money the player has
+///		IPlayerHands	PlayerHands : The player's hands in the game
+///		
+///		bool	PlaceBet()	: Places a bet for the player for the specified hand
+///		void	PayOut()	: Add specified amount to the player funds
+///		
+/// </summary>
+
+using Avalonia.Media.Imaging;
 using ReactiveUI;
 using BlackJackV2.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;
 
 namespace BlackJackV2.Models.Player
 {
-	/**
-	 * This class represents a player in the game.
-	 * The player will start with a set amount of money and can place bets on their hands.
-	 * 
-	 * string Name 				: The name of the player
-	 * int Funds				: The amount of money the player has
-	 * IPlayerHands PlayerHands : The player's hands in the game
-	 * 
-	 * PlaceBet()			: Places a bet for the player for the specified hand
-	 * PayOut()				: Add specified amount to the player funds
-	 * 
-	 **/
-
 	public class Player : ReactiveObject, IPlayer
 	{
 		public string Name { get; private set; }

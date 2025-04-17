@@ -1,20 +1,26 @@
-﻿using Avalonia.Media.Imaging;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/Player/IPlayer.cs
+
+/// <summary>
+///		Interface for Player specific handeling 
+///		
+///		string			Name	: Player name 
+///		int				Funds	: Players current found amount 
+///		IPlayerHands<>	hands	: Object containing the players hands
+///		
+///		bool			PlaceBet(HandOwners.HandOwner, int)	: Places a bet for the player for the specified hand
+///		void			PayOut(int amount)					: Add specified amount to the player funds			
+/// </summary>
+
+using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.Player
 {
-	/**
-	 * Interface for Player specific handeling 
-	 **/
 	public interface IPlayer
 	{
 		public string Name { get; }
-		int Funds { get; }
+		public int Funds { get; }
 		public IPlayerHands<Bitmap, string> hands { get; }
 
 		public bool PlaceBet(HandOwners.HandOwner owner, int amount);

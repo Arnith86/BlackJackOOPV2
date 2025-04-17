@@ -1,22 +1,25 @@
-﻿using System;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/CardDeck/BlackJackCardDeck.cs
+
+/// <summary>
+///
+///		The class simulates a black jack card deck and contains the logic related to the Card Deck. 
+/// 
+///		List<ICard<Bitmap, Bitmap, string>> _originalDeck	:		An undisturbed version of the card deck
+///		List<ICard<Bitmap, Bitmap, string>> _activeDeck		: 		The card deck in active us, can be shuffled and drawn from
+///
+///		ICard<Bitmap, string>	GetTopCard()	: Retrieves top card of the active card deck.
+///		void					ShuffleDeck()	: Shuffles the active card deck.
+///		
+/// </summary>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
-using BlackJackV2.Models.CardFactory;
-using DynamicData;
 
 namespace BlackJackV2.Models.CardDeck
 {
-	/** 
-	 * The class simulates a black jack card deck and contains the logic related to the Card Deck. 
-	 * 
-	 * List<ICard<Bitmap, Bitmap, string>> _originalDeck:		An undisturbed version of the card deck
-	 * List<ICard<Bitmap, Bitmap, string>> _activeDeck: 		The card deck in active us, can be shuffled and drawn from
-	 * */
-
 	public class BlackJackCardDeck : ICardDeck<Bitmap, string>
 	{
 

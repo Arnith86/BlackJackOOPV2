@@ -1,33 +1,33 @@
-﻿using Avalonia.Controls.Shapes;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/Player/PlayerHands.cs
+
+/// <summary>
+///		 Handles a player's card hands in a blackjack game.
+///		 When hands are reset, only the primary hand is kept
+///		 
+///		HandOwner.HandOwner						Id                  : The id of the hand, used to identify the hand in the game
+///		BlackJackCardHand						_PrimeryCardHand    : The player's primary hand
+///		BlackJackCardHand						_splitCardHand      : The player's split hand
+///		Dictionary<HandOwners.HandOwner, int>	Bet					: A Dictionary with bets for the primary and split hands
+///		
+///		int		GetBetFromHand()							: Returns the bet for the specified hand
+///		void	SetBetToHand()								: Sets the bet for the specified hand
+///		bool	TryDoubleDownBet(int, IBlackJackCardHand)	:
+///		bool	TrySplitHand()								: Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
+///		void	AddCardToHand(IBlackJackCardHand, ICard)	: Adds a new card object to the specified hand
+///		void	FoldHand(IBlackJackCardHand)				: Folds the specified hand
+///		void	ResetHand()									: Resets hands for a new round
+/// </summary>
+ 
+
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.Services.Events;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.Player
 {
-	/**
-	 *	Handles a player's card hands in a blackjack game.
-	 *	When hands are reset, only the primary hand is kept 
-	 *
-	 *  Id					: The id of the hand, used to identify the hand in the game
-	 *	_PrimeryCardHand	: The player's primary hand
-	 *	_splitCardHand		: The player's split hand
-	 *	Bet					: A Dictionary with bets for the primary and split hands
-	 *	_betUpdateSubject	: The subject used to notify when the bet is updated
-	 *	
-	 *	GetBetFromHand()	: Returns the bet for the specified hand
-	 *	SetBetToHand()		: Sets the bet for the specified hand
-	 *	SplitHand()			: Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-	 *	ResetHand()			: Empteys all hands of cards
-	 */
-
 	public class PlayerHands : IPlayerHands<Bitmap, string>
 	{
 		// The id of the hand, used to identify the hand in the game

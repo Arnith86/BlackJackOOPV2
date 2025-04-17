@@ -1,21 +1,17 @@
-﻿using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
-using BlackJackV2.Models;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/ViewModels/ViewModelCreator.cs
+
+/// <summary>
+///		This class is used to create the view models for the game		
+/// </summary>
+
+using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.ViewModels
 {
-	/**
-	 * This class is used to create the view models for the game
-	 **/
 	public class ViewModelCreator
 	{
 		public static CardHandViewModel CreateHandCardViewModel(IBlackJackCardHand<Bitmap, string> cardHand)

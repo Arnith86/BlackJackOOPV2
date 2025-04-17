@@ -1,40 +1,32 @@
-﻿using Avalonia;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/GameLogic/GameState.cs
+
+/// <summary>	
+///
+///		Handels the blackjack related actions the players can take 
+///		
+///		Subject<SplitSuccessfulEvent>	_splitSuccessfulEvent	: Subject to notify when a split was successful
+///				
+///		void		Hit()			: They receive exactly one more card
+///		void		DoubleDown()	: The player doubles their original bet. Player receive exactly one more card. 
+///										After that, they are forced to stand — no more cards can be drawn for that hand.
+///		void		Fold()			: No more cards can be drawn for that hand.
+///		void		Split()			: Only on the initial deal – The player must receive two identical rank cards (e.g., two 10s, two Kings).
+///										Each split hand gets a new card – After splitting, the dealer gives one additional card to each hand.
+///										Additional bets – The player must double their original bet to play both hands.
+///										NOT IMPLEMENTED Restrictions on Aces – If a player splits Aces, they typically receive only one additional card per Ace and cannot hit further.
+///	</summary>
+
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace BlackJackV2.Models.GameLogic
 {
-	/**
-	 * Handels the blackjack related actions the players can take 
-	 * 
-	 * The player can take the following actions: 
-	 * 
-	 * Hit			: They receive exactly one more card
-	 * 
-	 * Fold			: No more cards can be drawn for that hand.
-	 * 
-	 * DoubleDown	: The player doubles their original bet. Player receive exactly one more card. 
-	 *					After that, they are forced to stand — no more cards can be drawn for that hand.
-	 * 
-	 * Split		: Only on the initial deal – The player must receive two identical rank cards (e.g., two 10s, two Kings).
-	 *					Each split hand gets a new card – After splitting, the dealer gives one additional card to each hand.
-	 *					Additional bets – The player must double their original bet to play both hands.
-	 *					* NOT IMPLEMENTED Restrictions on Aces – If a player splits Aces, they typically receive only one additional card per Ace and cannot hit further.
-	 **/
-
 	public class PlayerAction
 	{
 		// Subject to notify when a split was successful

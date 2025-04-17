@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/CardHand/BlackJackCardHandCreator.cs
+
+/// <summary>
+///		BlackJackCardHand CreateBlackJackCardHand()	:	Returns a new BlackJackCardHand object 
+/// </summary>
 
 namespace BlackJackV2.Models.CardHand
 {
-	/**
-	 *  Returns a new BlackJackCardHand object
-	 **/
-
 	internal class BlackJackCardHandCreator
 	{
 		public static BlackJackCardHand CreateBlackJackCardHand()

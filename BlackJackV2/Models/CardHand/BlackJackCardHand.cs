@@ -1,34 +1,34 @@
-﻿using Avalonia.Media.Imaging;
-using Avalonia.Platform;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Models/CardHand/BlackJackCardHand.cs
+
+/// <summary>
+/// 
+///		This class represents a single card hand in a blackjack game.
+///		
+///		HandOwners.HandOwner	Id					: The id of the hand, used to identify the hand in the game
+///		bool					IsActive			: True if the hand is active
+///		
+///		ObservableCollection	Hand				: Get the list of card objects of hand
+///		int						HandValue			: Get the current integer value of hand. 
+///		bool					IsBlackJack			: True if card hand is black jack (21 and 2 cards)
+///		bool					IsBusted			: True if card hand is busted (value > 21)
+///		bool					IsFolded			: Is set from outside the class
+///		
+///		void					AddCard()			: Adds a new card object to the hand 
+///		void					RemoveCard()		: Removes a specific card from hand
+///		void					ClearHand()			: Emptys the hand
+///		int						CalculateAceValue()	: Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
+/// 
+/// </summary>
+
+using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
-using BlackJackV2.Models.CardFactory;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.CardHand
 {
-	/**
-	 * Card Hand 
-	 * 
-	 * HandOwners.HandOwner Id		: The id of the hand, used to identify the hand in the game
-	 * bool IsActive				: True if the hand is active
-	 * ObservableCollection Hand	: Get the list of card objects of hand
-	 * int HandValue				: Get the current integer value of hand. 
-	 * bool IsBlackJack				: True if card hand is black jack (21 and 2 cards)
-	 * bool IsBusted				: True if card hand is busted (value > 21)
-	 * bool IsFolded				: Is set from outside the class
-	 * void AddCard()				: Adds a new card object to the hand 
-	 * void RemoveCard()			: Removes a specific card from hand
-	 * void ClearHand()				: Emptys the hand
-	 * int CalculateAceValue()		: Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
-	 * 
-	 **/
-
 	public class BlackJackCardHand : ReactiveObject, IBlackJackCardHand<Bitmap, string> 
 	{
 		// The id of the hand, used to identify the hand in the game
