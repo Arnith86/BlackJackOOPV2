@@ -15,6 +15,7 @@ namespace BlackJackV2.Models.CardHand
 	 * Basic funtionallity present
 	 * 
 	 * Id			: The id of the hand, used to identify the hand in the game
+	 * IsActive		: True if the hand is active
 	 * Hand			: Get the list of card objects of hand
 	 * HandValue	: Get the current integer value of hand. 
 	 * IsBlackJack	: True if card hand is black jack (21 and 2 cards)
@@ -29,6 +30,7 @@ namespace BlackJackV2.Models.CardHand
 	public interface IBlackJackCardHand<TImage, TValue>
 	{
 		public HandOwners.HandOwner Id { get; }
+		public bool IsActive { get; set; }
 		public ObservableCollection<ICard<TImage, TValue>> Hand { get; }
 		public int HandValue { get; }
 		public bool IsBlackJack { get; }

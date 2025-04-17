@@ -32,7 +32,8 @@ namespace BlackJackV2.Models.GameLogic
 		// Subject to notify when the bet is requested
 		public Subject<IPlayer> BetRequestedEvent { get; }
 
-		public Subject<SplitSuccessfulEvent> splitSuccessfulEvent { get; } 
+		// Subject to notify when the player split is successful
+		public Subject<SplitSuccessfulEvent> splitSuccessfulEvent { get; }
 
 		// Subject and IObservable to notify when the game state changes
 		private BehaviorSubject<GameState> _gameStateSubject = new BehaviorSubject<GameState>(new GameState());
@@ -71,13 +72,12 @@ namespace BlackJackV2.Models.GameLogic
 			BetUpdateEvent = new Subject<BetUpdateEvent>();
 			BetRequestedEvent = new Subject<IPlayer>();
 			splitSuccessfulEvent = new Subject<SplitSuccessfulEvent>();
-
+	
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 
 			blackJackCardDeck = (BlackJackCardDeck)BlackJackCardDeckCreator.CreateBlackJackCardDeck();
 			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(HandOwners.HandOwner.Dealer);
 
-			// As of now this is a single player game so we will only have one player
 			Players = new Dictionary<string, IPlayer>();
 
 			playerAction = GameLogicCreator.CreatePlayerAction(splitSuccessfulEvent);

@@ -13,6 +13,7 @@ using BlackJackV2.Models;
 using BlackJackV2.Models.CardFactory;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 using ReactiveUI.Legacy;
@@ -66,30 +67,29 @@ namespace BlackJackV2.ViewModels
 
 		public ReactiveCommand<string, Unit> CardClickedCommand { get; }
 
-		public CardHandViewModel(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand, string handValue)
+		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand)
 		{
-			_id = id;
+			_id = cardHand.Id;
+			HandIsActive = cardHand.IsActive;
 			Bet = 0;
-			_handIsActive = false;
 			_cards = cardHand.Hand;
-			_handValue = cardHand.HandValue.ToString();
+			_handValue = cardHand.HandValue.ToString(); 
 
 			// Update the hand value whenever the cards change
 			_cards.CollectionChanged += (sender, e) => 
 				HandValue = cardHand.HandValue.ToString();
 	
-			
+			cardHand.WhenAnyValue(x => x.IsActive)
+				.Subscribe ( isActive =>
+				{
+					HandIsActive = isActive;
+				});
+		
+
 			// Subscribe to the CardMarkedMessage and update the MarkedCardValue
 			CardClickedCommand = ReactiveCommand.Create<string>(markedCardValue =>
 			{
 				MessageBus.Current.SendMessage(new CardMarkedMessage(markedCardValue));
-			});
-
-			// Subscribe to the ActiveHandMessage and update the HandIsActive property
-			// regester if current hand is active hand
-			MessageBus.Current.Listen<ActiveHandMessage>().Subscribe( newHand =>
-			{
-				HandIsActive = _id == newHand.ActiveHand ? true : false;
 			});
 
 			//// Subscribe to each card in the hand for property changes

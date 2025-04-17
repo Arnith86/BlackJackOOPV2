@@ -24,13 +24,8 @@ namespace BlackJackV2.ViewModels
 		{
 			Player = player;
 
-			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Primary,
-																				player.hands.PrimaryCardHand,
-																				player.hands.PrimaryCardHand.HandValue.ToString());
-
-			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(HandOwners.HandOwner.Split,
-																				player.hands.SplitCardHand,
-																				player.hands.SplitCardHand.HandValue.ToString());
+			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.hands.PrimaryCardHand);
+			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.hands.SplitCardHand);
 
 			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>

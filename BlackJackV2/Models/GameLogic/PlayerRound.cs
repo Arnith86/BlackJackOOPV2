@@ -38,14 +38,16 @@ namespace BlackJackV2.Models.GameLogic
 
 		// Regesters player actions events
 		public Subject<BlackJackActions.PlayerActions> _playerActionSubject = new Subject<BlackJackActions.PlayerActions>();
-
+		
 		//// Notifies when a hand has changed
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
 		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
 
-		Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
+		private Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
+		
 
-		public PlayerRound(PlayerAction playerAction, Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
+		public PlayerRound(	PlayerAction playerAction, 
+							Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
 		{
 			_playerAction = playerAction;
 			_splitSuccessfulEvent = splitSuccessfulEvent;
@@ -64,9 +66,9 @@ namespace BlackJackV2.Models.GameLogic
 			{
 				currentHand = blackJackCardHands.Dequeue();
 
-				// Notify that the current hand is active
-				MessageBus.Current.SendMessage(new ActiveHandMessage(currentHand.Id));
-				
+				// Set the current hand to the one that is being played
+				currentHand.IsActive = true;
+
 				// Each iteration represents a hand in unfinished state 
 				while (!currentHand.IsBusted && !currentHand.IsFolded && !currentHand.IsBlackJack)
 				{
@@ -74,6 +76,9 @@ namespace BlackJackV2.Models.GameLogic
 					BlackJackActions.PlayerActions action = await _playerActionSubject.FirstAsync();
 					ProcessPlayerAction(action);
 				}
+
+				// Hand is finished
+				currentHand.IsActive = false;
 			}
 		}
 

@@ -2,6 +2,7 @@
 using Avalonia.Platform;
 using BlackJackV2.Constants;
 using BlackJackV2.Models.CardFactory;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,7 @@ namespace BlackJackV2.Models.CardHand
 	 * Card Hand 
 	 * 
 	 * HandOwners.HandOwner Id		: The id of the hand, used to identify the hand in the game
+	 * bool IsActive				: True if the hand is active
 	 * ObservableCollection Hand	: Get the list of card objects of hand
 	 * int HandValue				: Get the current integer value of hand. 
 	 * bool IsBlackJack				: True if card hand is black jack (21 and 2 cards)
@@ -27,11 +29,19 @@ namespace BlackJackV2.Models.CardHand
 	 * 
 	 **/
 
-	public class BlackJackCardHand : IBlackJackCardHand<Bitmap, string>
+	public class BlackJackCardHand : ReactiveObject, IBlackJackCardHand<Bitmap, string> 
 	{
 		// The id of the hand, used to identify the hand in the game
 		public HandOwners.HandOwner Id { get; set; }
-				
+
+		// True if the hand is active
+		private bool _isActive = false;
+		public bool IsActive 
+		{
+			get => _isActive;
+			set => this.RaiseAndSetIfChanged(ref _isActive, value);
+		} 
+
 		// The cards in the hand
 		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
 
