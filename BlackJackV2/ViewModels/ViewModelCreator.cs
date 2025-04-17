@@ -3,6 +3,7 @@ using BlackJackV2.Constants;
 using BlackJackV2.Models;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.Player;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,6 +36,11 @@ namespace BlackJackV2.ViewModels
 		public static TableViewModel CreateTableViewModel(GameLogic gameLogic)
 		{
 			return new TableViewModel(gameLogic);
+		}
+
+		public static PlayerViewModel CreatePlayerViewModel(IPlayer player, GameLogic gameLogic)
+		{
+			return new PlayerViewModel(player, gameLogic);
 		}
 	}
 }

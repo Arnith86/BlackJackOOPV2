@@ -18,14 +18,14 @@ namespace BlackJackV2.Models.Player
 
 	internal class BlackJackPlayerHandsCreator
 	{
-		public static IPlayerHands<Bitmap, string> CreateBlackJackPlayerHand(ISubject<BetUpdateEvent> betUpdateSubject, HandOwners.HandOwner id)
+		public static IPlayerHands<Bitmap, string> CreateBlackJackPlayerHand( HandOwners.HandOwner id)
 		{
-			return new PlayerHands(betUpdateSubject, id, BlackJackCardHandCreator.CreateBlackJackCardHand());
+			return new PlayerHands(id, BlackJackCardHandCreator.CreateBlackJackCardHand());
 		}
 
-		public static IPlayer CreatePlayer(IPlayerHands<Bitmap, string> hands, string name = "Player")
+		public static IPlayer CreatePlayer(IPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject, string name = "Player")
 		{
-			return new Player(name, hands);
+			return new Player(name, hands, betUpdateSubject);
 		}
 	}
 }

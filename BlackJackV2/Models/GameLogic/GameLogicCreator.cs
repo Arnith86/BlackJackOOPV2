@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Services.Events;
 
 namespace BlackJackV2.Models.GameLogic
 {
@@ -20,14 +22,14 @@ namespace BlackJackV2.Models.GameLogic
 			return new RoundEvaluator(); 
 		}
 
-		public static PlayerAction CreatePlayerAction() 
+		public static PlayerAction CreatePlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent ) 
 		{ 
-			return new PlayerAction(); 
+			return new PlayerAction(splitSuccessfulEvent); 
 		}
 
-		public static PlayerRound CreatePlayerRound(BlackJackCardDeck cardDeck, PlayerAction playerAction)
+		public static PlayerRound CreatePlayerRound(PlayerAction playerAction, Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
 		{
-			return new PlayerRound(playerAction);
+			return new PlayerRound(playerAction, splitSuccessfulEvent);
 		}
 
 		public static DealerLogic CreateDealerLogic()

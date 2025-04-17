@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlackJackV2.Services.Events;
+using System.Reactive.Subjects;
 
 namespace BlackJackV2.Models.Player
 {
@@ -33,13 +35,16 @@ namespace BlackJackV2.Models.Player
 			set => this.RaiseAndSetIfChanged(ref _funds, value);
 		} 
 
-
 		public IPlayerHands<Bitmap, string> hands { get; }
 
-		public Player(string name, IPlayerHands<Bitmap, string> hands)
+		// The subject used to notify when the bet is updated
+		private readonly ISubject<BetUpdateEvent> _betUpdateSubject;
+
+		public Player(string name, IPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject)
 		{
 			Name = name;
 			this.hands = hands;
+			_betUpdateSubject = betUpdateSubject;
 		}
 
 		public bool PlaceBet(HandOwners.HandOwner owner, int amount)
@@ -48,10 +53,12 @@ namespace BlackJackV2.Models.Player
 			{
 				hands.SetBetToHand(owner, amount);
 				Funds -= amount;
+				_betUpdateSubject.OnNext(new BetUpdateEvent(Name, owner));
 				return true;
 			}
 			return false; 
 		}
+
 		public void PayOut(int amount)
 		{
 			Funds += amount;

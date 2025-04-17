@@ -43,10 +43,9 @@ namespace BlackJackV2.Models.Player
 		// The bet for the primary and split hands
 		public Dictionary<HandOwners.HandOwner, int> Bet;
 
-		// The subject used to notify when the bet is updated
-		private readonly ISubject<BetUpdateEvent> _betUpdateSubject;
+		
 
-		public PlayerHands(ISubject<BetUpdateEvent> betUpdateSubject, HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand) 
+		public PlayerHands(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand) 
 		{
 			Id = id;
 			
@@ -56,8 +55,7 @@ namespace BlackJackV2.Models.Player
 				{ HandOwners.HandOwner.Split, 0 } 
 			};
 
-			_betUpdateSubject = betUpdateSubject;
-			
+						
 			_primeryCardHand = (BlackJackCardHand)cardHand;
 			_splitCardHand = BlackJackCardHandCreator.CreateBlackJackCardHand();
 
@@ -85,7 +83,6 @@ namespace BlackJackV2.Models.Player
 			if (Bet.ContainsKey(owner))
 			{
 				Bet[owner] = bet;
-				_betUpdateSubject.OnNext(new BetUpdateEvent(this));
 			}
 			else
 			{

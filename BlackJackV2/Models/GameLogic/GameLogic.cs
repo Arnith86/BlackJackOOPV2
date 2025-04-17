@@ -23,11 +23,16 @@ namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogic
 	{
+		// Subject to notify if players in game change
+		public Subject<Dictionary<string, IPlayer>> PlayerChangedEvent { get; }
+
 		// Used to notify when the bet value is updated
 		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
 
 		// Subject to notify when the bet is requested
 		public Subject<IPlayer> BetRequestedEvent { get; }
+
+		public Subject<SplitSuccessfulEvent> splitSuccessfulEvent { get; } 
 
 		// Subject and IObservable to notify when the game state changes
 		private BehaviorSubject<GameState> _gameStateSubject = new BehaviorSubject<GameState>(new GameState());
@@ -62,27 +67,25 @@ namespace BlackJackV2.Models.GameLogic
 
 		public GameLogic()
 		{
-			blackJackCardDeck = (BlackJackCardDeck) BlackJackCardDeckCreator.CreateBlackJackCardDeck();
+			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer>>();
 			BetUpdateEvent = new Subject<BetUpdateEvent>();
-			//_playerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player);
-			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Dealer);
+			BetRequestedEvent = new Subject<IPlayer>();
+			splitSuccessfulEvent = new Subject<SplitSuccessfulEvent>();
+
+			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
+
+			blackJackCardDeck = (BlackJackCardDeck)BlackJackCardDeckCreator.CreateBlackJackCardDeck();
+			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(HandOwners.HandOwner.Dealer);
 
 			// As of now this is a single player game so we will only have one player
-			Players = new Dictionary<string, IPlayer>() 
-			{ 
-				{"Player1", BlackJackPlayerHandsCreator.CreatePlayer(
-					BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player), "Player1")},
-				{"Player2", BlackJackPlayerHandsCreator.CreatePlayer(
-					BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(BetUpdateEvent, HandOwners.HandOwner.Player), "Player2")}
-			};
+			Players = new Dictionary<string, IPlayer>();
 
-			playerAction = GameLogicCreator.CreatePlayerAction(/*GameStateObservable*/);
+			playerAction = GameLogicCreator.CreatePlayerAction(splitSuccessfulEvent);
 			dealerLogic = GameLogicCreator.CreateDealerLogic();
 			roundEvaluator = GameLogicCreator.CreateRoundEvaluator();
-			playerRound = GameLogicCreator.CreatePlayerRound(blackJackCardDeck, playerAction);
+			playerRound = GameLogicCreator.CreatePlayerRound(playerAction, splitSuccessfulEvent);
 
-			BetRequestedEvent = new Subject<IPlayer>();
-			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
+			
 		}
 
 		// Updates the FundsAndBet state and notify subscribers
@@ -163,7 +166,7 @@ namespace BlackJackV2.Models.GameLogic
 		}
 
 		// This method is called when the player inputs their bet
-		// It sets the bet input and updates the game state, and completes the _taskBetInputReceived task
+		// Completes the betUpdateCompletionSource task for specified player
 		public void OnBetInputReceived(string playerName, int betInput)
 		{
 			if (_betInputTask.TryGetValue(playerName, out var betUpdateCompletionSource))
@@ -174,6 +177,24 @@ namespace BlackJackV2.Models.GameLogic
 			}
 		}
 
+		// This method is called when the player changes
+		// Notify subscribers about the player changes
+		public void OnPlayerChangedReceived(List<string> playerNames) 
+		{
+			Players.Clear();
 
+			foreach (string playerName in playerNames)
+			{
+				Players.Add(playerName,
+					BlackJackPlayerHandsCreator.CreatePlayer(
+						BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand( HandOwners.HandOwner.Player ), 
+						BetUpdateEvent, 
+						playerName
+					)
+				);
+			}
+
+			PlayerChangedEvent.OnNext(Players);
+		}
 	}
 }

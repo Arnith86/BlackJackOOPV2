@@ -4,12 +4,13 @@ using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Services.Messaging;
+using BlackJackV2.Services.Events;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -36,6 +37,15 @@ namespace BlackJackV2.Models.GameLogic
 
 	public class PlayerAction
 	{
+		// Subject to notify when a split was successful
+		Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
+
+		public PlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
+		{
+			_splitSuccessfulEvent = splitSuccessfulEvent;
+		}
+
+
 		// Performes the action of hitting a card, if the player is not busted
 		// TODO: show that the player has busted
 		public void Hit(IPlayerHands<Bitmap, string> playerHands, 
@@ -75,7 +85,8 @@ namespace BlackJackV2.Models.GameLogic
 				playerHands.FoldHand(cardHand);
 		}
 
-		public void Split(	int playerFunds, 
+		public void Split(	string playerName,
+							int playerFunds, 
 							IPlayerHands<Bitmap, string> playerHands, 
 							ICardDeck<Bitmap, string> blackJackCardDeck)
 		{	
@@ -85,7 +96,7 @@ namespace BlackJackV2.Models.GameLogic
 				playerHands.AddCardToHand(playerHands.SplitCardHand, blackJackCardDeck.GetTopCard());
 
 				// Notify that the split was successful
-				MessageBus.Current.SendMessage(new SplitSuccessfulMessage(true, playerHands));
+				_splitSuccessfulEvent.OnNext(new SplitSuccessfulEvent(playerName));
 			}
 			else
 			{

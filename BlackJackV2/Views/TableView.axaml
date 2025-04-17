@@ -6,7 +6,7 @@
 			 xmlns:Views="clr-namespace:BlackJackV2.Views"
 			 x:Class="BlackJackV2.Views.TableView"
              x:DataType="vm:TableViewModel"
-             mc:Ignorable="d">
+             mc:Ignorable="d" >
 	
 	<!-- A view that simulates the "Table", gathers and presenting all CardHandViews -->
 	<Grid>
@@ -26,8 +26,37 @@
 				<Views:CardHandView DataContext="{Binding DealerCardHandViewModel}"  HorizontalContentAlignment="Center"/>
 			</StackPanel>
 
-			<!-- Shows the player hands -->
-			<!-- Accesses each instance of PlayerCardViewModel in the ObservableCollection -->
+			
+			<!-- Shows views for each player -->
+			<!-- Accesses each instance of PlayerViewModel in the ObservableCollection -->
+			<ItemsControl ItemsSource="{Binding playerViewModels}" MinHeight="200">
+
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal"
+									HorizontalAlignment="Center"
+									Spacing="50"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+
+				<ItemsControl.ItemTemplate>
+
+					<DataTemplate x:DataType="vm:PlayerViewModel">
+						<StackPanel>
+							<TextBlock Text="{Binding Player.Name}" HorizontalAlignment="Center"/>
+							<Views:PlayerView HorizontalContentAlignment="Center"/>
+						</StackPanel>
+					</DataTemplate>
+
+				</ItemsControl.ItemTemplate>
+
+			</ItemsControl>
+			
+			
+			
+			<!-- Shows the player hands --><!--
+			--><!-- Accesses each instance of PlayerCardViewModel in the ObservableCollection --><!--
 	
 			<ItemsControl ItemsSource="{Binding PlayerCardViewModels}" MinHeight="200">
 				
@@ -52,7 +81,7 @@
 				
 				</ItemsControl.ItemTemplate>
 				
-			</ItemsControl>
+			</ItemsControl>-->
 
 		
 		</StackPanel>

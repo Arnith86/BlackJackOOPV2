@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media.Imaging;
+using BlackJackV2.Constants;
 using BlackJackV2.Models.Player;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,13 @@ namespace BlackJackV2.Services.Events
 	 **/
 	public class BetUpdateEvent
 	{
-		public IPlayerHands<Bitmap, string> PlayerHands { get; }
+		public string PlayerName { get; }
+		public HandOwners.HandOwner HandOwner { get; }
 
-		public BetUpdateEvent(IPlayerHands<Bitmap, string> playerHands)
+		public BetUpdateEvent(string playerName, HandOwners.HandOwner handOwner)
 		{
-			PlayerHands = playerHands;
+			PlayerName = playerName;
+			HandOwner = handOwner;
 		}
 	}
 }

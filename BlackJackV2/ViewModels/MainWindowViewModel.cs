@@ -1,4 +1,5 @@
-﻿using Avalonia.Collections;
+﻿using System.Collections.Generic;
+using Avalonia.Collections;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardFactory;
@@ -31,6 +32,7 @@ namespace BlackJackV2.ViewModels
 			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic.playerRound);
 
 			// Move or remove when not needed
+			gameLogic.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
 			gameLogic.InitiateNewRound();
 			gameLogic.StartNewRound(); 
 		}
