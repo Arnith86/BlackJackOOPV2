@@ -23,7 +23,7 @@ using ReactiveUI;
 using System;
 using System.Reactive.Disposables;
 
-namespace BlackJackV2.Models.CardFactory
+namespace BlackJackV2.Models.Card
 {
 	public class BlackJackCard : ReactiveObject,  ICard<Bitmap, string>
 	{

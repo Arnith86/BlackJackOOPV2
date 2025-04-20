@@ -22,6 +22,7 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
+using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
 using System;
 using System.Collections.Generic;

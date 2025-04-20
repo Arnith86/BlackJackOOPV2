@@ -1,6 +1,9 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardDeck/ICardDeck.cs
 
+
+using BlackJackV2.Models.Card;
+
 /// <summary>
 /// 
 ///		A Generic interface for a set of Generic Card objects
@@ -10,7 +13,6 @@
 ///		void					ShuffleDeck()	: Shuffles the card deck.
 ///		
 /// </summary>
-
 namespace BlackJackV2.Models.CardDeck
 {
 	public interface ICardDeck<TImage,TValue>

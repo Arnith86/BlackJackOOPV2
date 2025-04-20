@@ -20,6 +20,7 @@
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Constants;
 using Avalonia.Media.Imaging;
+using BlackJackV2.Models.Card;
 
 namespace BlackJackV2.Models.Player
 {

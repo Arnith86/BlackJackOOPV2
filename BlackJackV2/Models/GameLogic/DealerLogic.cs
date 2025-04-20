@@ -14,7 +14,7 @@
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Models.CardFactory;
+using BlackJackV2.Models.Card;
 
 namespace BlackJackV2.Models.GameLogic
 {

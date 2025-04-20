@@ -23,6 +23,7 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
+using BlackJackV2.Models.Card;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Linq;

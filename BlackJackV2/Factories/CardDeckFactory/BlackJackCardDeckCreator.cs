@@ -1,29 +1,37 @@
 ﻿// Project: BlackJackV2
-// file: BlackJackV2/Models/CardDeck/BlackJackDeckBuilder.cs
+// file: BlackJackV2/Models/CardDeck/BlackJackCardDeckCreator.cs
 
 /// <summary>
-/// 
-///		This class sole responsability is to create the black jack card deck
+///		
+///		A concrete product class, part of the Card Deck Factory Pattern. Creates BlackJack Card Deck objects
 ///		It creates a list of card objects with help from the card factory. 
 ///		
-///		List<ICard<Bitmap, string>> CreateDeck()	:	returns a list of cards.
-/// 
+///		ICardDeck<Bitmap, string> CreateDeck(): Returns a BlackJackCardDeck object
+///		
 /// </summary>
 
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using BlackJackV2.Models.CardFactory;
-using System;
+using BlackJackV2.Factories.CardFactory;
+using BlackJackV2.Models.Card;
+using BlackJackV2.Models.CardDeck;
 using System.Collections.Generic;
+using System;
 
-
-namespace BlackJackV2.Models.CardDeck
+namespace BlackJackV2.Factories.CardDeckFactory
 {
-	internal class BlackJackDeckBuilder
+	internal class BlackJackCardDeckCreator : ICardDeckCreator<Bitmap, string>
 	{
-		public List<ICard<Bitmap, string>> CreateDeck(ICardCreator<Bitmap, string> cardCreator)
+		private ICardCreator<Bitmap, string> _cardCreator;
+		
+		public BlackJackCardDeckCreator(ICardCreator<Bitmap, string> cardCreator) 
 		{
-			List<ICard<Bitmap, string>> _cards = new List<ICard<Bitmap, string>>();
+			_cardCreator = cardCreator;
+		}
+
+		public override ICardDeck<Bitmap, string> CreateDeck()
+		{
+			List<ICard<Bitmap, string>> cards = new List<ICard<Bitmap, string>>();
 
 			string[] suites = { "Hearts", "Dimonds", "Clubs", "Spades" };
 			int[] values = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
@@ -39,9 +47,9 @@ namespace BlackJackV2.Models.CardDeck
 					Uri cardFrontImageUri = new Uri($"avares://BlackJackV2/Assets/Cards/{suite}_{value}.png");
 					Bitmap cardFrontImage = new Bitmap(AssetLoader.Open(cardFrontImageUri));
 
-					ICard<Bitmap, string> card = cardCreator.CreateCard(cardFrontImage, cardBackImage, $"{suite}_{value.ToString()}");
+					ICard<Bitmap, string> card = _cardCreator.CreateCard(cardFrontImage, cardBackImage, $"{suite}_{value.ToString()}");
 
-					_cards.Add(card);
+					cards.Add(card);
 				}
 			}
 
@@ -71,7 +79,7 @@ namespace BlackJackV2.Models.CardDeck
 			//ICard<Bitmap, string> card9 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
 			//_cards.Add(card9);
 
-			return _cards;
+			return new BlackJackCardDeck(cards);
 		}
 	}
 }

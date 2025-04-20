@@ -30,6 +30,7 @@
 						<TextBlock Text="{Binding Id}" HorizontalAlignment="Center"/>
 						<Views:CardHandView HorizontalContentAlignment="Center"/>
 						<TextBlock Text="{Binding Bet, StringFormat='Bet: {0}'}" HorizontalAlignment="Center"/>
+						
 					</StackPanel>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>

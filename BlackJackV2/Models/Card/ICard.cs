@@ -1,6 +1,7 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardFactory/ICard.cs
 
+
 /// <summary>
 ///
 ///		This is the "Product" part of the "Card" factory. 
@@ -15,8 +16,7 @@
 ///		FlipCard()		: Flips the card to the other side
 ///		
 /// </summary>
-
-namespace BlackJackV2.Models
+namespace BlackJackV2.Models.Card
 {
 	public interface ICard<TImage, TValue>
 	{

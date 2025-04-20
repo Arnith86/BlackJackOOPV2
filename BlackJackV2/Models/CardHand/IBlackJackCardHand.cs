@@ -20,6 +20,7 @@
 /// </summary>
 
 using BlackJackV2.Constants;
+using BlackJackV2.Models.Card;
 using System.Collections.ObjectModel;
 
 namespace BlackJackV2.Models.CardHand
