@@ -5,14 +5,10 @@ using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.ViewModels
 {
@@ -47,7 +43,7 @@ namespace BlackJackV2.ViewModels
 
 		private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-		public StatsViewModel(GameLogic gameLogic)
+		public StatsViewModel(IGameCoordinator gameCoordinator)
 		{
 			IsBetEnabled = true;
 
@@ -63,7 +59,7 @@ namespace BlackJackV2.ViewModels
 					(parsedBet < 11 && parsedBet > 0) && 
 					parsedBet <= CurrentPlayer.Funds)
 				{
-					gameLogic.OnBetInputReceived(CurrentPlayer.Name, parsedBet);
+					gameCoordinator.OnBetInputReceived(CurrentPlayer.Name, parsedBet);
 				}
 				else
 				{
@@ -74,7 +70,7 @@ namespace BlackJackV2.ViewModels
 			});
 
 			// Set the current player to the one that is requesting a bet
-			gameLogic.BetRequestedEvent
+			gameCoordinator.BetRequestedEvent
 				.Subscribe(currentPlayer =>{
 
 					CurrentPlayer = currentPlayer;
@@ -84,7 +80,7 @@ namespace BlackJackV2.ViewModels
 				}).DisposeWith(_disposable);
 
 			// This will automatically update bet in the UI due to data binding
-			gameLogic.GameStateObservable
+			gameCoordinator.GameStateObservable
 				.Subscribe(gameState =>	{
 					IsBetEnabled = !gameState.IsBetRecieved;
 			}).DisposeWith(_disposable);

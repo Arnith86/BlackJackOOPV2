@@ -12,7 +12,8 @@
 ///		Subject<BlackJackActions.PlayerActions> _playerActionSubject	: Regesters player actions events. 
 ///		Subject<SplitSuccessfulEvent>			_splitSuccessfulEvent	: Notifies when a split of the hand has happend.
 ///		
-///		async Task		PlayerTurn(ICardDeck cardDeck, IPlayer player)				: This method is called when the player is taking their turn
+///		async Task		PlayerTurn(ICardDeck cardDeck, IPlayer player)				: This method is called when the player is taking their turn and register their actions. 
+///																						It handles both the primary and split hand.
 ///		void			ProcessPlayerAction(BlackJackActions.PlayerActions action)	: This method is called when player has takes an action
 ///		
 ///	</summary>
@@ -30,7 +31,7 @@ using BlackJackV2.Services.Events;
 
 namespace BlackJackV2.Models.GameLogic
 {
-	public class PlayerRound
+	public class PlayerRound : IPlayerRound
 	{
 		private ICardDeck<Bitmap, string> _cardDeck;
 
@@ -46,7 +47,7 @@ namespace BlackJackV2.Models.GameLogic
 		private Queue<IBlackJackCardHand<Bitmap, string>> blackJackCardHands = new Queue<IBlackJackCardHand<Bitmap, string>>();
 
 		// Regesters player actions events
-		public Subject<BlackJackActions.PlayerActions> _playerActionSubject = new Subject<BlackJackActions.PlayerActions>();
+		public Subject<BlackJackActions.PlayerActions> _playerActionSubject {  get; }
 		
 		//// Notifies when a hand has changed
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
@@ -56,13 +57,16 @@ namespace BlackJackV2.Models.GameLogic
 		
 
 		public PlayerRound(	PlayerAction playerAction, 
-							Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
+							Subject<BlackJackActions.PlayerActions> playerActionSubject,
+							Subject<SplitSuccessfulEvent> splitSuccessfulEvent
+			)
 		{
 			_playerAction = playerAction;
+			_playerActionSubject = playerActionSubject;
 			_splitSuccessfulEvent = splitSuccessfulEvent;
 		}
 
-		// This method is called when the player is taking their turn
+		// This method is called when the player is taking their turn and register their actions. It handles both the primary and split hand.
 		public async Task PlayerTurn(ICardDeck<Bitmap, string> cardDeck, IPlayer player) 
 		{
 			_cardDeck = cardDeck;
@@ -90,6 +94,12 @@ namespace BlackJackV2.Models.GameLogic
 				currentHand.IsActive = false;
 			}
 		}
+
+		//// Awaits player action input
+		//private async Task<BlackJackActions.PlayerActions> WaitForPlayerAction()
+		//{
+		//	return await _playerActionSubject.FirstAsync();
+		//}
 
 		// This method is called when player has takes an action
 		private void ProcessPlayerAction(BlackJackActions.PlayerActions action)

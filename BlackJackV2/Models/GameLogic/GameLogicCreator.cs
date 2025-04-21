@@ -14,6 +14,7 @@
 /// </summary>
 
 using System.Reactive.Subjects;
+using BlackJackV2.Constants;
 using BlackJackV2.Services.Events;
 
 namespace BlackJackV2.Models.GameLogic
@@ -35,9 +36,9 @@ namespace BlackJackV2.Models.GameLogic
 			return new PlayerAction(splitSuccessfulEvent); 
 		}
 
-		public static PlayerRound CreatePlayerRound(PlayerAction playerAction, Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
+		public static PlayerRound CreatePlayerRound(PlayerAction playerAction, Subject<BlackJackActions.PlayerActions> playerActionSubject, Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
 		{
-			return new PlayerRound(playerAction, splitSuccessfulEvent);
+			return new PlayerRound(playerAction, playerActionSubject, splitSuccessfulEvent);
 		}
 
 		public static DealerLogic CreateDealerLogic()

@@ -22,14 +22,14 @@ namespace BlackJackV2.ViewModels
 {
 	public class ButtonViewModel : ReactiveObject
 	{
-		private PlayerRound _playerRound;
+		private IPlayerRound _playerRound;
 		
 		public ReactiveCommand<Unit, Unit> HitCommand { get; }
 		public ReactiveCommand<Unit, Unit> FoldCommand { get; }
 		public ReactiveCommand<Unit, Unit> DoubleDownCommand { get; }
 		public ReactiveCommand<Unit, Unit> SplitCommand { get; }
 		
-		public ButtonViewModel(PlayerRound playerRound)
+		public ButtonViewModel(IPlayerRound playerRound)
 		{
 			_playerRound = playerRound;
 

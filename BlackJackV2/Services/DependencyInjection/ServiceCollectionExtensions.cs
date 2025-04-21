@@ -6,17 +6,17 @@
 /// </summary>
 
 using Avalonia.Media.Imaging;
+using BlackJackV2.Constants;
 using BlackJackV2.Factories.CardDeckFactory;
 using BlackJackV2.Factories.CardFactory;
 using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Factories.PlayerFactory;
 using BlackJackV2.Factories.PlayerHandsFactory;
-using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.GameLogic;
-using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Services.Events;
 using BlackJackV2.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reactive.Subjects;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -37,6 +37,14 @@ namespace BlackJackV2.Services.DependencyInjection
 
 			collection.AddSingleton<BetUpdateEvent>();
 
+			
+
+			collection.AddSingleton<IGameCoordinator, GameCoordinator>();
+
+			collection.AddSingleton<IPlayerRound, PlayerRound>();
+			collection.AddSingleton<PlayerAction>();
+			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
+			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
 			collection.AddSingleton<GameLogic>();
 
 			collection.AddSingleton<MainWindowViewModel>();

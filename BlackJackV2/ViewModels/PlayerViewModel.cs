@@ -35,7 +35,7 @@ namespace BlackJackV2.ViewModels
 		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; private set; }
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-		public PlayerViewModel(IPlayer player, GameLogic gameLogic) 
+		public PlayerViewModel(IPlayer player, IGameCoordinator gameCoordinator) 
 		{
 			Player = player;
 
@@ -48,7 +48,7 @@ namespace BlackJackV2.ViewModels
 				PlayerCardHandViewModel
 			};
 
-			gameLogic.BetUpdateEvent
+			gameCoordinator.BetUpdateEvent
 				.Subscribe(betEvent => {
 					// Update the player bet when the bet is updated
 					SyncPlayerBet(betEvent.PlayerName);
@@ -56,7 +56,7 @@ namespace BlackJackV2.ViewModels
 				.DisposeWith(_disposables);
 
 			// Listen for the player split event
-			gameLogic.splitSuccessfulEvent.Subscribe(splitEvent =>
+			gameCoordinator.splitSuccessfulEvent.Subscribe(splitEvent =>
 			{
 				// If the player split was successful, add the split hand to the player card view models
 				// and update the bet values

@@ -13,6 +13,7 @@
 /// </summary>
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BlackJackV2.Models.GameLogic;
 
 namespace BlackJackV2.ViewModels
@@ -20,24 +21,27 @@ namespace BlackJackV2.ViewModels
 	public class MainWindowViewModel : ViewModelBase
     {
 
-		private GameLogic _gameLogic; /*= GameLogicCreator.CreateGameLogic();*/
+		private GameLogic _gameLogic;
 		
 		public StatsViewModel StatsViewModel { get; }
 		public TableViewModel TableViewModel { get; }
 		public ButtonViewModel ButtonViewModel { get; }
 		
-		public MainWindowViewModel(GameLogic gameLogic)
+		public MainWindowViewModel(GameLogic gameLogic, IGameCoordinator gameCoordinator, IPlayerRound playerRound)
 		{
 			_gameLogic = gameLogic;
 
-			StatsViewModel = ViewModelCreator.CreateStatsViewModel(_gameLogic);
-			TableViewModel = ViewModelCreator.CreateTableViewModel(_gameLogic);
-			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(_gameLogic.playerRound);
+			StatsViewModel = ViewModelCreator.CreateStatsViewModel(gameCoordinator);
+			TableViewModel = ViewModelCreator.CreateTableViewModel(gameCoordinator);
+			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(playerRound);
 
-			// Move or remove when not needed
-			_gameLogic.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
-			_gameLogic.InitiateNewRound();
-			_gameLogic.StartNewRound(); 
+			// Schedule game start AFTER UI loads
+			Task.Run(async () =>
+			{
+				await Task.Delay(100); // short delay to ensure window shows
+				gameCoordinator.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
+				gameLogic.RunGameLoop();
+			});
 		}
 	}
 }

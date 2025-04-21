@@ -17,19 +17,19 @@
 /// </summary>
 
 using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.Player;
 using ReactiveUI;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Reactive.Linq;
-using System;
-using BlackJackV2.Models.Player;
 using System.Reactive.Disposables;
 
 namespace BlackJackV2.ViewModels
 {
 	public class TableViewModel : ReactiveObject
 	{
-		GameLogic _gameLogic; 
+		private IGameCoordinator _gameCoordinator; 
 
 		// View models for the dealers
 		public CardHandViewModel DealerCardHandViewModel { get; }
@@ -38,15 +38,15 @@ namespace BlackJackV2.ViewModels
 		public ObservableCollection<PlayerViewModel> playerViewModels { get; private set; }
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
-		public TableViewModel(GameLogic gameLogic)
+		public TableViewModel(IGameCoordinator gameCoordinator)
 		{
-			_gameLogic = gameLogic;
-
-			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(gameLogic.DealerCardHand.PrimaryCardHand);
+			_gameCoordinator = gameCoordinator;
+			
+			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(gameCoordinator.DealerCardHand.PrimaryCardHand);
 
 			playerViewModels = new ObservableCollection<PlayerViewModel>();
 
-			gameLogic.PlayerChangedEvent
+			gameCoordinator.PlayerChangedEvent
 				.Subscribe(playerEvent =>{
 					// Update the player view models when the player event is received
 					UpdatePlayerViewModels(playerEvent);
@@ -62,7 +62,7 @@ namespace BlackJackV2.ViewModels
 
 			foreach (var player in playerEvent)
 			{
-				PlayerViewModel playerViewModel = ViewModelCreator.CreatePlayerViewModel(player.Value, _gameLogic);
+				PlayerViewModel playerViewModel = ViewModelCreator.CreatePlayerViewModel(player.Value, _gameCoordinator);
 				playerViewModels.Add(playerViewModel);
 			}
 		}

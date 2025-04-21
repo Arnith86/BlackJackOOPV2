@@ -19,24 +19,24 @@ namespace BlackJackV2.ViewModels
 			return new CardHandViewModel(cardHand);
 		}
 
-		public static StatsViewModel CreateStatsViewModel(GameLogic gameLogic)
+		public static StatsViewModel CreateStatsViewModel(IGameCoordinator gameCoordinator)
 		{
-			return new StatsViewModel(gameLogic);
+			return new StatsViewModel(gameCoordinator);
 		}
 
-		public static ButtonViewModel CreateButtonViewModel(PlayerRound playerRound)
+		public static ButtonViewModel CreateButtonViewModel(IPlayerRound playerRound)
 		{
 			return new ButtonViewModel(playerRound);
 		}
 
-		public static TableViewModel CreateTableViewModel(GameLogic gameLogic)
+		public static TableViewModel CreateTableViewModel(IGameCoordinator gameCoordinator)
 		{
-			return new TableViewModel(gameLogic);
+			return new TableViewModel(gameCoordinator);
 		}
 
-		public static PlayerViewModel CreatePlayerViewModel(IPlayer player, GameLogic gameLogic)
+		public static PlayerViewModel CreatePlayerViewModel(IPlayer player, IGameCoordinator gameCoordinator)
 		{
-			return new PlayerViewModel(player, gameLogic);
+			return new PlayerViewModel(player, gameCoordinator);
 		}
 	}
 }
