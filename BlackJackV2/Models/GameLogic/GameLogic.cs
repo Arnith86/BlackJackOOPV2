@@ -12,17 +12,15 @@
 ///		IObservable<GameState>							GameStateObservable
 ///		Dictionary<string, TaskCompletionSource<int>>	_betInputTask		: Used to wait for specific player bet input to be received
 ///		
-///		BlackJackCardDeck	blackJackCardDeck	: Card deck used in the game.
+///		ICardDeck<>			_cardDeck; 			: Card deck used in the game.
 ///		PlayerAction		playerAction		: Handles the blackjack related actions the players can take.
 ///		DealerLogic			dealerLogic			: Handles the dealer's turn in a blackjack game.
 ///		RoundEvaluator		roundEvaluator		: Handles the evaluation of the round.
 ///		PlayerRound			playerRound			: Handles all rounds related to a players hands.
 ///		
 ///		Dictionary<string, IPlayer>		Players			: A collection of players in the game
-///		IPlayerHands<Bitmap, string>	_playerCardHand	: Represents the player hands.
-///		IPlayerHands<Bitmap, string>	PlayerCardHand
 ///		IPlayerHands<Bitmap, string>	_dealerCardHand	: Represents the dealer hands.
-///		IPlayerHands<Bitmap, string> DealerCardHand
+///		IPlayerHands<Bitmap, string>	 DealerCardHand
 ///
 ///		void		UpdateGameState(Action<GameState> updateAction)		: Updates the game states and notifies subscribers
 ///		async void	InitiateNewRound()									: Initiates a new round of the game and wait for player bets
@@ -38,6 +36,7 @@ using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Factories.CardDeckFactory;
 using BlackJackV2.Services.Events;
 using System;
 using System.Collections.Generic;
@@ -46,11 +45,18 @@ using System.Threading.Tasks;
 using System.Reactive.Subjects;
 using System.Reactive.Linq;
 using Avalonia.Media.Imaging;
+using BlackJackV2.Factories.CardHandFactory;
+using BlackJackV2.Models.PlayerHands;
+using BlackJackV2.Factories.PlayerFactory;
+using BlackJackV2.Factories.PlayerHandsFactory;
+
+
 
 namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogic
 	{
+		
 		// Subject to notify if players in game change
 		public Subject<Dictionary<string, IPlayer>> PlayerChangedEvent { get; }
 
@@ -69,11 +75,11 @@ namespace BlackJackV2.Models.GameLogic
 
 
 		// Used to wait for specific player bet input to be received
-		private Dictionary<string, TaskCompletionSource<int>> _betInputTask; 
+		private Dictionary<string, TaskCompletionSource<int>> _betInputTask;
 
 
 		// Used to create a deck of cards
-		private BlackJackCardDeck blackJackCardDeck;
+		private ICardDeck<Bitmap, string> _cardDeck; 
 		// Handles the blackjack related actions the players can take
 		private PlayerAction playerAction;
 		// Handles the dealer's turn in a blackjack game
@@ -86,16 +92,24 @@ namespace BlackJackV2.Models.GameLogic
 		// A collection of players in the game
 		public Dictionary<string, IPlayer> Players { get; }
 
-		// Represents the player and dealer hands
-		IPlayerHands<Bitmap, string> _playerCardHand;
-		IPlayerHands<Bitmap, string> _dealerCardHand;
-		public IPlayerHands<Bitmap, string> PlayerCardHand { get => _playerCardHand; }
-		public IPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
+		// Represents the dealers hands
+		IBlackJackPlayerHands<Bitmap, string> _dealerCardHand;
+		public IBlackJackPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
 
+		// These objects will be removed when the coordinator is implemented
+		ICardHandCreator<Bitmap, string> _cardHandCreator;
+		IBlackJackPlayerHandsCreator<Bitmap, string> _playerCardHandsCreator;
+		IPlayerCreator<Bitmap, string> _playerCreator;
 
-
-		public GameLogic()
+		public GameLogic(
+			ICardDeckCreator<Bitmap, string> cardDeckCreator,
+			ICardHandCreator<Bitmap, string> cardHandCreator,
+			IBlackJackPlayerHandsCreator<Bitmap, string> playerCardHandsCreator,
+			IPlayerCreator<Bitmap, string> playerCreator
+			)
 		{
+
+
 			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer>>();
 			BetUpdateEvent = new Subject<BetUpdateEvent>();
 			BetRequestedEvent = new Subject<IPlayer>();
@@ -103,10 +117,17 @@ namespace BlackJackV2.Models.GameLogic
 	
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 
-			blackJackCardDeck = (BlackJackCardDeck)BlackJackCardDeckCreator.CreateBlackJackCardDeck();
-			_dealerCardHand = BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand(HandOwners.HandOwner.Dealer);
-
 			Players = new Dictionary<string, IPlayer>();
+
+			_cardHandCreator = cardHandCreator;
+			_playerCardHandsCreator = playerCardHandsCreator;
+			_playerCreator = playerCreator;
+
+			_cardDeck = cardDeckCreator.CreateDeck();
+			_dealerCardHand = _playerCardHandsCreator.CreatePlayerHands(HandOwners.HandOwner.Dealer, _cardHandCreator);
+
+		
+
 
 			playerAction = GameLogicCreator.CreatePlayerAction(splitSuccessfulEvent);
 			dealerLogic = GameLogicCreator.CreateDealerLogic();
@@ -162,20 +183,20 @@ namespace BlackJackV2.Models.GameLogic
 		
 		public async void StartNewRound()
 		{
-			blackJackCardDeck.ShuffleDeck();
+			_cardDeck.ShuffleDeck();
 
 			// Gives dealer his initial cards
-			dealerLogic.InitialDeal(DealerCardHand, blackJackCardDeck);
+			dealerLogic.InitialDeal(DealerCardHand, _cardDeck);
 
 			foreach (KeyValuePair<string, IPlayer> player in Players)
 			{
 				// Player conducts their turn
-				await playerRound.PlayerTurn(blackJackCardDeck, player.Value);
+				await playerRound.PlayerTurn(_cardDeck, player.Value);
 
 			}
 		
 			// Dealer finishes his turn
-			dealerLogic.DealerFinishTurn(DealerCardHand, blackJackCardDeck);
+			dealerLogic.DealerFinishTurn(DealerCardHand, _cardDeck);
 			
 			EvaluateRound();
 		}
@@ -185,7 +206,7 @@ namespace BlackJackV2.Models.GameLogic
 		private void EvaluateRound()
 		{
 			// Evaluate the round and determine the winner
-			Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
+			//Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
 		}
 
 		private void EvaluateSingleHand(BlackJackCardHand cardHand) 
@@ -211,15 +232,26 @@ namespace BlackJackV2.Models.GameLogic
 		{
 			Players.Clear();
 
+			///// Keep on creating Player factory, then create dependancy ionjection for player->playerHand 
+
 			foreach (string playerName in playerNames)
 			{
-				Players.Add(playerName,
-					BlackJackPlayerHandsCreator.CreatePlayer(
-						BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand( HandOwners.HandOwner.Player ), 
-						BetUpdateEvent, 
-						playerName
-					)
-				);
+				Players.Add( playerName,
+					_playerCreator.CreatePlayer(
+						_playerCardHandsCreator.CreatePlayerHands(HandOwners.HandOwner.Player, _cardHandCreator),
+						BetUpdateEvent,
+						playerName)
+					);
+				
+				
+				//Players.Add(playerName,
+
+				//		BlackJackPlayerHandsCreator.CreatePlayer(
+				//		BlackJackPlayerHandsCreator.CreateBlackJackPlayerHand( HandOwners.HandOwner.Player ), 
+				//		BetUpdateEvent, 
+				//		playerName
+				//	)
+				//);
 			}
 
 			PlayerChangedEvent.OnNext(Players);
