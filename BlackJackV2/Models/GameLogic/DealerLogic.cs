@@ -13,15 +13,15 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardDeck;
-using BlackJackV2.Models.Player;
 using BlackJackV2.Models.Card;
+using BlackJackV2.Models.PlayerHands;
 
 namespace BlackJackV2.Models.GameLogic
 {
 	public class DealerLogic
 	{
 		// Deals two cards to the dealer, the first card is flipped face down, the second card is face up
-		public void InitialDeal(IPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
+		public void InitialDeal(IBlackJackPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
 		{
 			BlackJackCard firstCard = (BlackJackCard)cardDeck.GetTopCard();
 			firstCard.FlipCard();
@@ -31,7 +31,7 @@ namespace BlackJackV2.Models.GameLogic
 		}
 
 		// Dealer finishes their turn by hitting until they reach a total of 17 or higher (or busts)
-		public void DealerFinishTurn(IPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
+		public void DealerFinishTurn(IBlackJackPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
 		{
 			// Flip the first card face up
 			dealerHands.PrimaryCardHand.Hand[0].FlipCard();

@@ -19,23 +19,25 @@ namespace BlackJackV2.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
     {
-		
-		private GameLogic gameLogic = GameLogicCreator.CreateGameLogic();
+
+		private GameLogic _gameLogic; /*= GameLogicCreator.CreateGameLogic();*/
 		
 		public StatsViewModel StatsViewModel { get; }
 		public TableViewModel TableViewModel { get; }
 		public ButtonViewModel ButtonViewModel { get; }
 		
-		public MainWindowViewModel()
+		public MainWindowViewModel(GameLogic gameLogic)
 		{
-			StatsViewModel = ViewModelCreator.CreateStatsViewModel(gameLogic);
-			TableViewModel = ViewModelCreator.CreateTableViewModel(gameLogic);
-			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic.playerRound);
+			_gameLogic = gameLogic;
+
+			StatsViewModel = ViewModelCreator.CreateStatsViewModel(_gameLogic);
+			TableViewModel = ViewModelCreator.CreateTableViewModel(_gameLogic);
+			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(_gameLogic.playerRound);
 
 			// Move or remove when not needed
-			gameLogic.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
-			gameLogic.InitiateNewRound();
-			gameLogic.StartNewRound(); 
+			_gameLogic.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
+			_gameLogic.InitiateNewRound();
+			_gameLogic.StartNewRound(); 
 		}
 	}
 }

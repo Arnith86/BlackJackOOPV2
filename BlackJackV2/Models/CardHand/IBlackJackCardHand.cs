@@ -27,7 +27,7 @@ namespace BlackJackV2.Models.CardHand
 {
 	public interface IBlackJackCardHand<TImage, TValue>
 	{
-		public HandOwners.HandOwner Id { get; }
+		public HandOwners.HandOwner Id { get; set; }
 		public bool IsActive { get; set; }
 		public ObservableCollection<ICard<TImage, TValue>> Hand { get; }
 		public int HandValue { get; }

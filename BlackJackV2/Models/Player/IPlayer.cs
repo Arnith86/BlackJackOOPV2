@@ -14,6 +14,7 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
+using BlackJackV2.Models.PlayerHands;
 
 namespace BlackJackV2.Models.Player
 {
@@ -21,7 +22,7 @@ namespace BlackJackV2.Models.Player
 	{
 		public string Name { get; }
 		public int Funds { get; }
-		public IPlayerHands<Bitmap, string> hands { get; }
+		public IBlackJackPlayerHands<Bitmap, string> hands { get; }
 
 		public bool PlaceBet(HandOwners.HandOwner owner, int amount);
 		public void PayOut(int amount);

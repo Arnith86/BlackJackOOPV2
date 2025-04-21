@@ -18,35 +18,36 @@
 ///		void	FoldHand(IBlackJackCardHand)				: Folds the specified hand
 ///		void	ResetHand()									: Resets hands for a new round
 /// </summary>
- 
+
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
+using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
 using System;
 using System.Collections.Generic;
 
-namespace BlackJackV2.Models.Player
+namespace BlackJackV2.Models.PlayerHands
 {
-	public class PlayerHands : IPlayerHands<Bitmap, string>
+	public class BlackJackPlayerHands : IBlackJackPlayerHands<Bitmap, string>
 	{
 		// The id of the hand, used to identify the hand in the game
 		public HandOwners.HandOwner Id { get; private set; }
 		
 		// Represents the player's primary hand and split hand
-		private BlackJackCardHand _primeryCardHand;
-		private BlackJackCardHand _splitCardHand;
+		private IBlackJackCardHand<Bitmap, string> _primeryCardHand;
+		private IBlackJackCardHand<Bitmap, string> _splitCardHand;
 
-		public BlackJackCardHand PrimaryCardHand => _primeryCardHand;
-		public BlackJackCardHand SplitCardHand => _splitCardHand;
+		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand => _primeryCardHand;
+		public IBlackJackCardHand<Bitmap, string> SplitCardHand => _splitCardHand;
 
 		// The bet for the primary and split hands
 		public Dictionary<HandOwners.HandOwner, int> Bet;
 
 		
 
-		public PlayerHands(HandOwners.HandOwner id, IBlackJackCardHand<Bitmap, string> cardHand) 
+		public BlackJackPlayerHands(HandOwners.HandOwner id, /*IBlackJackCardHand<Bitmap, string> cardHand*/ ICardHandCreator<Bitmap, string> cardHandCreator) 
 		{
 			Id = id;
 			
@@ -56,9 +57,9 @@ namespace BlackJackV2.Models.Player
 				{ HandOwners.HandOwner.Split, 0 } 
 			};
 
-						
-			_primeryCardHand = (BlackJackCardHand)cardHand;
-			_splitCardHand = BlackJackCardHandCreator.CreateBlackJackCardHand();
+
+			_primeryCardHand = cardHandCreator.CreateCardHand();//(BlackJackCardHand)cardHand;
+			_splitCardHand = cardHandCreator.CreateCardHand();// BlackJackCardHandCreator.CreateBlackJackCardHand();
 
 			// Set the id of the primary and split hands if the player is the "Player"
 			if (Id == HandOwners.HandOwner.Player)

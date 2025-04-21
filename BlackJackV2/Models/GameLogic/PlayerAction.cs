@@ -20,7 +20,7 @@
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.Models.Player;
+using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Services.Events;
 using System.Diagnostics;
 using System.Reactive.Subjects;
@@ -40,7 +40,7 @@ namespace BlackJackV2.Models.GameLogic
 
 		// Performes the action of hitting a card, if the player is not busted
 		// TODO: show that the player has busted
-		public void Hit(IPlayerHands<Bitmap, string> playerHands, 
+		public void Hit(IBlackJackPlayerHands<Bitmap, string> playerHands, 
 						IBlackJackCardHand<Bitmap, string> cardHand, 
 						ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
@@ -50,7 +50,7 @@ namespace BlackJackV2.Models.GameLogic
 
 		// Performes the action of doubling down, if the player is not busted and not folded
 		public void DoubleDown(	int playerFunds,
-								IPlayerHands<Bitmap, string> playerHands,
+								IBlackJackPlayerHands<Bitmap, string> playerHands,
 								IBlackJackCardHand<Bitmap, string> cardHand,
 								ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
@@ -69,7 +69,7 @@ namespace BlackJackV2.Models.GameLogic
 
 		// Performes the action of folding a hand, if the player is not busted
 		// TODO: Show that the player has busted
-		public void Fold(	IPlayerHands<Bitmap, string> playerHands, 
+		public void Fold(	IBlackJackPlayerHands<Bitmap, string> playerHands, 
 							IBlackJackCardHand<Bitmap, string> cardHand, 
 							ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
@@ -79,7 +79,7 @@ namespace BlackJackV2.Models.GameLogic
 
 		public void Split(	string playerName,
 							int playerFunds, 
-							IPlayerHands<Bitmap, string> playerHands, 
+							IBlackJackPlayerHands<Bitmap, string> playerHands, 
 							ICardDeck<Bitmap, string> blackJackCardDeck)
 		{	
 			if (playerHands.TrySplitHand())

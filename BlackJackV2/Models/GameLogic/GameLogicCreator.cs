@@ -20,10 +20,10 @@ namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogicCreator
 	{
-		public static GameLogic CreateGameLogic()
-		{
-			return new GameLogic();
-		}
+		//public static GameLogic CreateGameLogic()
+		//{
+		//	return new GameLogic();
+		//}
 
 		public static RoundEvaluator CreateRoundEvaluator() 
 		{ 

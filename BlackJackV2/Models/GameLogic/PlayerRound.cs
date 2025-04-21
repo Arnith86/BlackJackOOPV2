@@ -43,7 +43,7 @@ namespace BlackJackV2.Models.GameLogic
 		private IBlackJackCardHand<Bitmap, string> currentHand;
 
 		// Queue of card hands to handle
-		private Queue<BlackJackCardHand> blackJackCardHands = new Queue<BlackJackCardHand>();
+		private Queue<IBlackJackCardHand<Bitmap, string>> blackJackCardHands = new Queue<IBlackJackCardHand<Bitmap, string>>();
 
 		// Regesters player actions events
 		public Subject<BlackJackActions.PlayerActions> _playerActionSubject = new Subject<BlackJackActions.PlayerActions>();

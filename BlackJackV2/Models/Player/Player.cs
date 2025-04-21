@@ -20,6 +20,7 @@ using ReactiveUI;
 using BlackJackV2.Constants;
 using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;
+using BlackJackV2.Models.PlayerHands;
 
 namespace BlackJackV2.Models.Player
 {
@@ -34,12 +35,12 @@ namespace BlackJackV2.Models.Player
 			set => this.RaiseAndSetIfChanged(ref _funds, value);
 		} 
 
-		public IPlayerHands<Bitmap, string> hands { get; }
+		public IBlackJackPlayerHands<Bitmap, string> hands { get; }
 
 		// The subject used to notify when the bet is updated
 		private readonly ISubject<BetUpdateEvent> _betUpdateSubject;
 
-		public Player(string name, IPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject)
+		public Player(string name, IBlackJackPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject)
 		{
 			Name = name;
 			this.hands = hands;

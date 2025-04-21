@@ -22,13 +22,13 @@ using BlackJackV2.Constants;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Card;
 
-namespace BlackJackV2.Models.Player
+namespace BlackJackV2.Models.PlayerHands
 {
 
-	public interface IPlayerHands<TImage, TValue>
+	public interface IBlackJackPlayerHands<TImage, TValue>
 	{
-		public BlackJackCardHand PrimaryCardHand { get; }
-		public BlackJackCardHand SplitCardHand { get; }
+		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand { get; }
+		public IBlackJackCardHand<Bitmap, string> SplitCardHand { get; }
 
 		public int GetBetFromHand(HandOwners.HandOwner owner);
 		public void SetBetToHand(HandOwners.HandOwner owner, int bet);
