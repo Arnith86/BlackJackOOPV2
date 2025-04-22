@@ -8,12 +8,13 @@ using BlackJackV2.Models.CardDeck;
 /// This is part of the Card Deck factory pattern used to build specific deck types (e.g., Blackjack).
 /// </summary>
 
+
 namespace BlackJackV2.Factories.CardDeckFactory
 {
 	public abstract class CardDeckCreator<TImage, TValue>
 	{
 		/// <summary>
-		///		Creates and returns a new carfd deck instance.
+		///		Creates and returns a new card deck instance.
 		/// </summary>
 		/// <returns> An inialized card deck of type <see cref="ICardDeck{TImage, TValue}"/>.</returns>
 		public abstract ICardDeck<TImage, TValue> CreateDeck();

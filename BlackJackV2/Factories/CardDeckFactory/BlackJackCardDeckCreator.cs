@@ -11,9 +11,9 @@ using System;
 
 /// <summary>
 ///	Concrete creator class for the Card Deck Factory pattern.
-///	Responsible for creating a fully initialized <see cref="ICardDeck{TImage, TValue}"/> for use in a blackjack game.
+///	Responsible for creating a fully initialized <see cref="BlackJackCardDeck"/> for use in a blackjack game.
 ///	
-/// The deck is constructed using a provided <see cref="ICardCreator{TImage, TValue}"/> to generate all 52 cards.
+/// The deck is constructed using a provided <see cref="CardCreator{TImage, TValue}"/> to generate all 52 cards.
 /// (13 cards across 4 suites), each with a front and back image.
 /// </summary>
 
@@ -23,9 +23,9 @@ namespace BlackJackV2.Factories.CardDeckFactory
 {
 	internal class BlackJackCardDeckCreator : CardDeckCreator<Bitmap, string>
 	{
-		private ICardCreator<Bitmap, string> _cardCreator;
+		private CardCreator<Bitmap, string> _cardCreator;
 		
-		public BlackJackCardDeckCreator(ICardCreator<Bitmap, string> cardCreator) 
+		public BlackJackCardDeckCreator(CardCreator<Bitmap, string> cardCreator) 
 		{
 			_cardCreator = cardCreator;
 		}
@@ -34,7 +34,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 		/// Builds and returns a complete BlackJack card deck, with face and back images for each card.
 		/// </summary>
 		/// <returns>
-		/// Fully populated <see cref="ICardDeck{TImage, TValue}"/> representing a standard 52-card Blackjack deck. 
+		/// Fully populated <see cref="BlackJackCardDeck"/> representing a standard 52-card Blackjack deck. 
 		/// </returns>
 		public override ICardDeck<Bitmap, string> CreateDeck()
 		{

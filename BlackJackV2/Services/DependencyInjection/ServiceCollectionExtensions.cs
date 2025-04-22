@@ -25,7 +25,7 @@ namespace BlackJackV2.Services.DependencyInjection
 		public static void AddLogicServices(this IServiceCollection collection) 
 		{
 			
-			collection.AddSingleton<ICardCreator<Bitmap, string>, BlackJackCardCreator>();
+			collection.AddSingleton<CardCreator<Bitmap, string>, BlackJackCardCreator>();
 			collection.AddSingleton<CardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator>();
 
 			collection.AddSingleton<ICardHandCreator<Bitmap, string>, BlackJackCardHandCreator>();
