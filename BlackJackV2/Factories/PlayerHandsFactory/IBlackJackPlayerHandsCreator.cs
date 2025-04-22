@@ -16,6 +16,6 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 {
 	public abstract class IBlackJackPlayerHandsCreator<TImage, TValue>
 	{
-		public abstract IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, ICardHandCreator<Bitmap, string> cardHandCreator);
+		public abstract IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<Bitmap, string> cardHandCreator);
 	}
 }

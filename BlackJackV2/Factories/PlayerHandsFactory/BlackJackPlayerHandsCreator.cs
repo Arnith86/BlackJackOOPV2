@@ -17,7 +17,7 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 {
 	public class BlackJackPlayerHandsCreator : IBlackJackPlayerHandsCreator<Bitmap, string>
 	{
-		public override IBlackJackPlayerHands<Bitmap, string> CreatePlayerHands(HandOwners.HandOwner id, ICardHandCreator<Bitmap, string> cardHandCreator)
+		public override IBlackJackPlayerHands<Bitmap, string> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<Bitmap, string> cardHandCreator)
 		{
 			return new BlackJackPlayerHands(id, cardHandCreator);
 		}

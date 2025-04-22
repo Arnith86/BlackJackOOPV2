@@ -47,7 +47,7 @@ namespace BlackJackV2.Models.PlayerHands
 
 		
 
-		public BlackJackPlayerHands(HandOwners.HandOwner id, /*IBlackJackCardHand<Bitmap, string> cardHand*/ ICardHandCreator<Bitmap, string> cardHandCreator) 
+		public BlackJackPlayerHands(HandOwners.HandOwner id, /*IBlackJackCardHand<Bitmap, string> cardHand*/ CardHandCreator<Bitmap, string> cardHandCreator) 
 		{
 			Id = id;
 			
