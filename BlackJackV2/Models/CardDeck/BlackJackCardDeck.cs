@@ -35,10 +35,7 @@ namespace BlackJackV2.Models.CardDeck
 			_activeDeck = new List<ICard<Bitmap, string>>();
 		}
 
-		/// <summary>
-		/// Removes and returns the top card from the active deck.
-		/// </summary>
-		/// <returns>The top <see cref="ICard{TImage, TValue}"/> from the active deck of cards.</returns>
+		/// <inheritdoc/>
 		public ICard<Bitmap, string> GetTopCard()
 		{
 			ICard<Bitmap, string> topCard = _activeDeck[0];

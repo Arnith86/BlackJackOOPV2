@@ -13,17 +13,17 @@ namespace BlackJackV2.Models.Card
 	public interface ICard<TImage, TValue>
 	{
 		/// <summary>
-		/// Gets the image currently displayed (front or back), depending on whether the card is face down.
+		/// Gets the image currently displayed (front or back), dependings on the value of <see cref="FaceDown"/>.
 		/// </summary>
 		public TImage CurrentImage { get; }
 
 		/// <summary>
-		/// Gets the image shown when the card is face up.
+		/// Gets the image representing the front side of the card (i.e., card face).
 		/// </summary>
 		public TImage FrontImage { get; }
 
 		/// <summary>
-		/// Gets the image shown when the card is face down.
+		/// Gets the image representing the back side of the card.
 		/// </summary>
 		public TImage BackImage { get; }
 

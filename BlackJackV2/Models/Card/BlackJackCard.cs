@@ -15,19 +15,13 @@ namespace BlackJackV2.Models.Card
 	/// </summary>
 	public class BlackJackCard : ReactiveObject,  ICard<Bitmap, string>
 	{
-		/// <summary>
-		/// Gets the image currently displayed (front or back), depending on whether the card is face down <see cref="FaceDown"/>.
-		/// </summary>
+		/// <inheritdoc/>
 		public Bitmap CurrentImage => FaceDown ? BackImage : FrontImage;
-		
-		/// <summary>
-		/// Gets the image representing the front side of the card (i.e., card face).
-		/// </summary> 
+
+		/// <inheritdoc/>
 		public Bitmap FrontImage { get; private set; }
 
-		/// <summary>
-		/// Gets the image representing the back side of the card.
-		/// </summary>
+		/// <inheritdoc/>
 		public Bitmap BackImage { get; private set; }
 
 		/// <summary>

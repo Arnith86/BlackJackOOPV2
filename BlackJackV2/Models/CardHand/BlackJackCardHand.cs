@@ -1,26 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardHand/BlackJackCardHand.cs
 
-/// <summary>
-/// 
-///		This class represents a single card hand in a blackjack game.
-///		
-///		HandOwners.HandOwner	Id					: The id of the hand, used to identify the hand in the game
-///		bool					IsActive			: True if the hand is active
-///		
-///		ObservableCollection	Hand				: Get the list of card objects of hand
-///		int						HandValue			: Get the current integer value of hand. 
-///		bool					IsBlackJack			: True if card hand is black jack (21 and 2 cards)
-///		bool					IsBusted			: True if card hand is busted (value > 21)
-///		bool					IsFolded			: Is set from outside the class
-///		
-///		void					AddCard()			: Adds a new card object to the hand 
-///		void					RemoveCard()		: Removes a specific card from hand
-///		void					ClearHand()			: Emptys the hand
-///		int						CalculateAceValue()	: Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
-/// 
-/// </summary>
-
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Models.Card;
@@ -30,40 +10,49 @@ using System.Linq;
 
 namespace BlackJackV2.Models.CardHand
 {
+	/// <summary>
+	/// Represents a hand of cards in a Blackjack game, handling card collection and rule-based state (e.g., bust, blackjack, folded).
+	/// Automatically recalculates the hand value when cards are added or removed.
+	/// </summary>
 	public class BlackJackCardHand : ReactiveObject, IBlackJackCardHand<Bitmap, string> 
 	{
-		// The id of the hand, used to identify the hand in the game
+		/// <inheritdoc/>
 		public HandOwners.HandOwner Id { get; set; }
 
-		// True if the hand is active
 		private bool _isActive = false;
+		/// <inheritdoc/>
 		public bool IsActive 
 		{
 			get => _isActive;
 			set => this.RaiseAndSetIfChanged(ref _isActive, value);
-		} 
-
-		// The cards in the hand
+		}
+		
+		/// <inheritdoc/>
 		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
 
-		// The current integer value of hand.
 		private int _handValue;
+		/// <inheritdoc/>
 		public int HandValue => _handValue;
 
-		// True if card hand is black jack (21 and 2 cards)
+		/// <inheritdoc/>
 		public bool IsBlackJack => _handValue == 21 && Hand.Count == 2;
-		
-		// True if card hand is busted (value > 21)
+
+		/// <inheritdoc/>
 		public bool IsBusted => _handValue > 21;
 
-		// Is set from outside the class or if _handValue = 21, if true, the hand is folded
+		
 		private bool _isFolded = false;
+		/// <inheritdoc/>
 		public bool IsFolded
 		{
 			get => _isFolded;
 			set => _isFolded = value;
-		} 
+		}
 
+		/// <summary>
+		/// Initializes a new instance of <see cref="BlackJackCardHand"/> with an empty hand.
+		/// Automatically updates the hand value when cards are added, removed, or cleared.
+		/// </summary>
 		public BlackJackCardHand()
 		{	
 			_handValue = 0;
@@ -77,66 +66,84 @@ namespace BlackJackV2.Models.CardHand
 			};
 		}
 
+
+		/// <inheritdoc/>
 		public void AddCard(ICard<Bitmap, string> card)
 		{
-			Hand.Add(card);
+			if ( card != null)
+				Hand.Add(card);
 		}
 
+		/// <inheritdoc/>
 		public void RemoveCard(string cardValue)
 		{
 			ICard<Bitmap, string> cardsToRemove = Hand.FirstOrDefault(card => card.Value == cardValue);
-			
-			if (cardsToRemove != null) Hand.Remove(cardsToRemove);
+			if (cardsToRemove != null) 
+				Hand.Remove(cardsToRemove);
 		}
 
-		public void ClearHand()
-		{
-			Hand.Clear();
-		}
+		/// <inheritdoc/>
+		public void ClearHand() => Hand.Clear();
 
-		// Calculate the current hands value, while accounting for that ace can have a value of either 1 or 11 
+		/// <summary>
+		/// Calculates the total value of the hand, considering Blackjack rules for face cards and aces (ace can have a value of either 1 or 11).
+		/// </summary>
+		/// <returns>The computed integer value of the current hand.</returns>
 		public int CalculateHandValue()
 		{
-			// Hand is empty, value is zero
+			// Hand is empty
 			if (Hand.Count == 0) return 0;
 
-			int currentHandValue = 0;
+			int total = 0;
 			int aceCount = 0;
 
 			// Sums the values of the current except for aces which it counts.
 			foreach (ICard<Bitmap,string> card in Hand)
 			{
-				// If card is face down, skip it
+				// Face down card are not counted
 				if (card.FaceDown == true) continue;
 
 				// Seperates int value and suite
 				string[] valueString = card.Value.Split('_');
 
 				// If king, Queen or Knight then value = 10, all other values (excluding ace) keep their value
-				if (int.TryParse(valueString[1], out int value) && value == 1) aceCount++;
-				else currentHandValue += value > 10 ? 10 : value;
+				if (int.TryParse(valueString[1], out int value))
+				{ 
+					if (value == 1) aceCount++;
+					else total += value > 10 ? 10 : value;
+				}
 			}
 
-
-			// Ace card(s) are present in hand
+						
 			/**
 			 *	Ace recives the value of 11 iff the total value of the hand does not exceed the value of 21. 
 			 *	When checking an ace value and there are more aces present in the hand, then 
 			 *	(currentValueOfHand + 11 + numberOfAcesLeft) cannot exceed 21, otherwise ace gets the value 1.
 			 */
+			/// <summary>
+			/// Calculates the total value of the hand, considering Blackjack rules for face cards and aces.
+			/// </summary>
+			/// <returns>
+			/// The computed integer value of the current hand.
+			/// </returns>
 			if (aceCount > 0)
 			{
 				while (aceCount > 0)
 				{
 					aceCount--;
-					int handValueAttempt = currentHandValue + 11;
+					if (total + 11 + aceCount <= 21)
+						total += 11;
+					else
+						total += 1;
+					//	aceCount--;
+					//	int handValueAttempt = total + 11;
 
-					if (handValueAttempt <= 21 && handValueAttempt + aceCount <= 21) currentHandValue += 11;
-					else currentHandValue++;
+					//	if (handValueAttempt <= 21 && handValueAttempt + aceCount <= 21) total += 11;
+					//	else total++;
 				}
 			}
 
-			return currentHandValue;
+			return total;
 		}
 	}
 }
