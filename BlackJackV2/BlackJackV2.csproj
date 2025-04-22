@@ -6,6 +6,8 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <BaseOutputPath></BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,5 +40,9 @@
     <Compile Update="Views\StatsView.axaml.cs">
       <DependentUpon>StatsView.axaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SharedReference\" />
   </ItemGroup>
 </Project>

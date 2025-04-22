@@ -4,17 +4,16 @@
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Card;
 
-/// <summary>
-///		Concrete creator class for the Card factory patter, specifically for BlackJack.
-///		Responsible for creating a fully initialized <see cref="BlackJackCard"/> object for use in the game.
-/// </summary>
-
 namespace BlackJackV2.Factories.CardFactory
 {
+	/// <summary>
+	///	Concrete creator class for the Card factory patter, specifically for BlackJack.
+	///	Responsible for creating a fully initialized <see cref="BlackJackCard"/> object for use in the game.
+	/// </summary>
 	internal class BlackJackCardCreator : CardCreator<Bitmap, string>
 	{
 		/// <summary>
-		///		Creates a card used in BlackJack, using the provided front and back images, and value, and returns an initialized card.
+		///	Creates a card used in BlackJack, using the provided front and back images, and value, and returns an initialized card.
 		/// </summary>
 		/// <param name="frontImage">	The image representing the front of the card. </param>
 		/// <param name="backImage">	The image representing the back of the card. </param>
@@ -23,7 +22,7 @@ namespace BlackJackV2.Factories.CardFactory
 		///								Values: 1 - 10, Knight, Queen, King
 		///	</param>
 		/// <returns>
-		///		An instance of <see cref="BlackJackCard"/> that represent the created card.
+		///	An instance of <see cref="BlackJackCard"/> that represent the created card.
 		/// </returns>
 		public override ICard<Bitmap, string> CreateCard(Bitmap frontImage, Bitmap backImage, string value) 
 			=> new BlackJackCard(frontImage, backImage, value);

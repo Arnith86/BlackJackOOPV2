@@ -2,29 +2,44 @@
 // file: BlackJackV2/Models/CardFactory/ICard.cs
 
 
-/// <summary>
-///
-///		This is the "Product" part of the "Card" factory. 
-///		Common aspect to all cards is image, generic types are used to ease reuse of this interface
-///		
-///		CurrentImage	: The current side image of the card
-///		FrontImage		: The front side image of the card
-///		BackImage		: The back side image of the card
-///		Value			: The value of the card
-///		FaceDown		: The state of the card, true if the card is face down	
-/// 
-///		FlipCard()		: Flips the card to the other side
-///		
-/// </summary>
 namespace BlackJackV2.Models.Card
 {
+	/// <summary>
+	///	Represents a playing card with a front and back image, a value, and a face-down state.
+	///	This interface serves as the product in the Card Factory pattern, using generics for image and value types to support reuse across games.
+	///	</summary>
+	/// <typeparam name="TImage">The type representing the image used on the card (e.g., bitmap).</typeparam>
+	/// <typeparam name="TValue">The type representing the card's value (e.g., string, int).</typeparam>
 	public interface ICard<TImage, TValue>
 	{
-		public TImage CurrentImage{ get; }
+		/// <summary>
+		/// Gets the image currently displayed (front or back), depending on whether the card is face down.
+		/// </summary>
+		public TImage CurrentImage { get; }
+
+		/// <summary>
+		/// Gets the image shown when the card is face up.
+		/// </summary>
 		public TImage FrontImage { get; }
+
+		/// <summary>
+		/// Gets the image shown when the card is face down.
+		/// </summary>
 		public TImage BackImage { get; }
+
+		/// <summary>
+		/// Gets the logical value of the card (e.g., "Ace", "10", "King").
+		/// </summary>
 		public TValue Value { get; }
+
+		/// <summary>
+		/// Gets a value indicating whether the card is currently face down.
+		/// </summary>
 		public bool FaceDown { get; }
-		public void FlipCard();
+
+		/// <summary>
+		/// Flips the card, toggling between face up and face down.
+		/// </summary>
+		void FlipCard();
 	}
 }

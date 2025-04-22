@@ -9,18 +9,15 @@ using BlackJackV2.Models.CardDeck;
 using System.Collections.Generic;
 using System;
 
-/// <summary>
-///	Concrete creator class for the Card Deck Factory pattern.
-///	Responsible for creating a fully initialized <see cref="BlackJackCardDeck"/> for use in a blackjack game.
-///	
-/// The deck is constructed using a provided <see cref="CardCreator{TImage, TValue}"/> to generate all 52 cards.
-/// (13 cards across 4 suites), each with a front and back image.
-/// </summary>
-
-
-
 namespace BlackJackV2.Factories.CardDeckFactory
 {
+	/// <summary>
+	///	Concrete creator class for the Card Deck Factory pattern.
+	///	Responsible for creating a fully initialized <see cref="BlackJackCardDeck"/> for use in a blackjack game.
+	///	
+	/// The deck is constructed using a provided <see cref="CardCreator{TImage, TValue}"/> to generate all 52 cards.
+	/// (13 cards across 4 suites), each with a front and back image.
+	/// </summary>
 	internal class BlackJackCardDeckCreator : CardDeckCreator<Bitmap, string>
 	{
 		private CardCreator<Bitmap, string> _cardCreator;
