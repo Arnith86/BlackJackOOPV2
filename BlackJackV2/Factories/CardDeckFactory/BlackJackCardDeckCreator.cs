@@ -1,15 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardDeck/BlackJackCardDeckCreator.cs
 
-/// <summary>
-///		
-///		A concrete product class, part of the Card Deck Factory Pattern. Creates BlackJack Card Deck objects
-///		It creates a list of card objects with help from the card factory. 
-///		
-///		ICardDeck<Bitmap, string> CreateDeck(): Returns a BlackJackCardDeck object
-///		
-/// </summary>
-
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using BlackJackV2.Factories.CardFactory;
@@ -18,9 +9,19 @@ using BlackJackV2.Models.CardDeck;
 using System.Collections.Generic;
 using System;
 
+/// <summary>
+///	Concrete creator class for the Card Deck Factory pattern.
+///	Responsible for creating a fully initialized <see cref="ICardDeck{TImage, TValue}"/> for use in a blackjack game.
+///	
+/// The deck is constructed using a provided <see cref="ICardCreator{TImage, TValue}"/> to generate all 52 cards.
+/// (13 cards across 4 suites), each with a front and back image.
+/// </summary>
+
+
+
 namespace BlackJackV2.Factories.CardDeckFactory
 {
-	internal class BlackJackCardDeckCreator : ICardDeckCreator<Bitmap, string>
+	internal class BlackJackCardDeckCreator : CardDeckCreator<Bitmap, string>
 	{
 		private ICardCreator<Bitmap, string> _cardCreator;
 		
@@ -29,6 +30,12 @@ namespace BlackJackV2.Factories.CardDeckFactory
 			_cardCreator = cardCreator;
 		}
 
+		/// <summary>
+		/// Builds and returns a complete BlackJack card deck, with face and back images for each card.
+		/// </summary>
+		/// <returns>
+		/// Fully populated <see cref="ICardDeck{TImage, TValue}"/> representing a standard 52-card Blackjack deck. 
+		/// </returns>
 		public override ICardDeck<Bitmap, string> CreateDeck()
 		{
 			List<ICard<Bitmap, string>> cards = new List<ICard<Bitmap, string>>();

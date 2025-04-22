@@ -3,9 +3,6 @@
 
 /// <summary>
 ///		Contains possible hands in the blackjack game
-///		
-///		enum HandOwner	: Possible hands in the blackjack game
-///		
 /// </summary>
 
 

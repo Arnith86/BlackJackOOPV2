@@ -26,7 +26,7 @@ namespace BlackJackV2.Services.DependencyInjection
 		{
 			
 			collection.AddSingleton<ICardCreator<Bitmap, string>, BlackJackCardCreator>();
-			collection.AddSingleton<ICardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator>();
+			collection.AddSingleton<CardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator>();
 
 			collection.AddSingleton<ICardHandCreator<Bitmap, string>, BlackJackCardHandCreator>();
 

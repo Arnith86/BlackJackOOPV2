@@ -3,9 +3,6 @@
 
 /// <summary>
 ///		Contains possible actions in the blackjack game
-///		
-///		enum PlayerActions	: Possible actions in this black jack game.
-///		
 /// </summary> 
 
 namespace BlackJackV2.Constants
