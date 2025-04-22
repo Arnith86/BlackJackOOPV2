@@ -33,7 +33,7 @@ namespace BlackJackV2.Services.DependencyInjection
 			//collection.AddSingleton<IBlackJackPlayerHands<Bitmap, string>, BlackJackPlayerHands>();
 			collection.AddSingleton<IBlackJackPlayerHandsCreator<Bitmap, string>, BlackJackPlayerHandsCreator>();
 	
-			collection.AddSingleton<IPlayerCreator<Bitmap, string>, PlayerCreator>();
+			collection.AddSingleton<PlayerCreator<Bitmap, string>, BlackJackPlayerCreator>();
 
 			collection.AddSingleton<BetUpdateEvent>();
 
