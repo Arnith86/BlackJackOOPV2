@@ -35,7 +35,7 @@ namespace BlackJackV2.Models.GameLogic
 		public Subject<Dictionary<string, IPlayer>> PlayerChangedEvent { get; }
 		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
 		public Subject<IPlayer> BetRequestedEvent { get; }
-		public Subject<SplitSuccessfulEvent> splitSuccessfulEvent { get; }
+		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
 		public IObservable<GameState> GameStateObservable { get; }
 
 		public IBlackJackPlayerHands<Bitmap, string> DealerCardHand {  get; }

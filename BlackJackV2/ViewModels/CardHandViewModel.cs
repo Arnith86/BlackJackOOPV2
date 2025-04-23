@@ -22,8 +22,9 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
-using BlackJackV2.Models;
+using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Services.Messaging;
 using ReactiveUI;
 
@@ -65,6 +66,7 @@ namespace BlackJackV2.ViewModels
 		}
 
 		public ReactiveCommand<string, Unit> CardClickedCommand { get; }
+		public ButtonViewModel ButtonViewModel { get; }
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -74,16 +76,19 @@ namespace BlackJackV2.ViewModels
 			HandIsActive = cardHand.IsActive;
 			Bet = 0;
 			_cards = cardHand.Hand;
-			_handValue = cardHand.HandValue.ToString(); 
+			_handValue = cardHand.HandValue.ToString();
 
-			// Update the hand value whenever the cards change
+
 			_cards.CollectionChanged += (sender, e) => 
 				HandValue = cardHand.HandValue.ToString();
-	
-			cardHand.WhenAnyValue(x => x.IsActive)
-				.Subscribe ( isActive =>
+			
+			// Automatically update values if the subscribed values change
+			cardHand.WhenAnyValue(x => x.IsActive, x => x.HandValue)
+				.Subscribe (  tuple =>
 				{
+					var(isActive, handValue) = tuple;
 					HandIsActive = isActive;
+					HandValue = handValue.ToString();
 				})
 				.DisposeWith(_disposables);
 		

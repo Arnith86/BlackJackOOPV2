@@ -70,5 +70,10 @@ namespace BlackJackV2.Models.CardHand
 		/// Clears the hand of any cards, reseting its state.
 		/// </summary>
 		public void ClearHand();
+
+		/// <summary>
+		/// Used to manually recalculate the hand value after card flip.
+		/// </summary>
+		public void RecalculateHandAfterCardFlip();
 	}
 }

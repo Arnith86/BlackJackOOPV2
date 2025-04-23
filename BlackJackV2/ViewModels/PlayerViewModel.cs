@@ -56,7 +56,7 @@ namespace BlackJackV2.ViewModels
 				.DisposeWith(_disposables);
 
 			// Listen for the player split event
-			gameCoordinator.splitSuccessfulEvent.Subscribe(splitEvent =>
+			gameCoordinator.SplitSuccessfulEvent.Subscribe(splitEvent =>
 			{
 				// If the player split was successful, add the split hand to the player card view models
 				// and update the bet values

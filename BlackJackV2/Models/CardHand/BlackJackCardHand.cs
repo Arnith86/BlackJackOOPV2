@@ -32,7 +32,11 @@ namespace BlackJackV2.Models.CardHand
 
 		private int _handValue;
 		/// <inheritdoc/>
-		public int HandValue => _handValue;
+		public int HandValue
+		{
+			get => _handValue;
+			set => this.RaiseAndSetIfChanged(ref _handValue, value);
+		} 
 
 		/// <inheritdoc/>
 		public bool IsBlackJack => _handValue == 21 && Hand.Count == 2;
@@ -85,11 +89,17 @@ namespace BlackJackV2.Models.CardHand
 		/// <inheritdoc/>
 		public void ClearHand() => Hand.Clear();
 
+		/// <inheritdoc/>
+		public void RecalculateHandAfterCardFlip()
+		{
+			HandValue = CalculateHandValue();
+		}
+
 		/// <summary>
 		/// Calculates the total value of the hand, considering Blackjack rules for face cards and aces (ace can have a value of either 1 or 11).
 		/// </summary>
 		/// <returns>The computed integer value of the current hand.</returns>
-		public int CalculateHandValue()
+		private int CalculateHandValue()
 		{
 			// Hand is empty
 			if (Hand.Count == 0) return 0;
