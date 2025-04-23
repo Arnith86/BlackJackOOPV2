@@ -10,6 +10,7 @@ using BlackJackV2.Factories.PlayerFactory;
 using BlackJackV2.Factories.PlayerHandsFactory;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Services.Events;
@@ -55,7 +56,7 @@ namespace BlackJackV2.Models.GameLogic
 		public Subject<IPlayer> BetRequestedEvent { get; }
 
 		// Subject to notify when the player split is successful
-		public Subject<SplitSuccessfulEvent> splitSuccessfulEvent { get; }
+		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
 
 		// Subject and IObservable to notify when the game state changes
 		private BehaviorSubject<GameState> _gameStateSubject = new BehaviorSubject<GameState>(new GameState());
@@ -70,7 +71,7 @@ namespace BlackJackV2.Models.GameLogic
 		// Handles the blackjack related actions the players can take
 		private PlayerAction playerAction;
 		// Handles the dealer's turn in a blackjack game
-		private DealerLogic dealerLogic;
+		private DealerServices dealerLogic;
 		// Handles the evaluation of the round
 		private RoundEvaluator roundEvaluator;
 		// Handles all rounds related to a players hands
@@ -85,24 +86,25 @@ namespace BlackJackV2.Models.GameLogic
 		public IBlackJackPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
 
 		// These objects will be removed when the coordinator is implemented
-		ICardHandCreator<Bitmap, string> _cardHandCreator;
-		IBlackJackPlayerHandsCreator<Bitmap, string> _playerCardHandsCreator;
-		IPlayerCreator<Bitmap, string> _playerCreator;
+		CardHandCreator<Bitmap, string> _cardHandCreator;
+		PlayerHandsCreator<Bitmap, string> _playerCardHandsCreator;
+		PlayerCreator<Bitmap, string> _playerCreator;
 
 
 		public GameCoordinator(
-				ICardDeckCreator<Bitmap, string> cardDeckCreator,
-				ICardHandCreator<Bitmap, string> cardHandCreator,
-				IBlackJackPlayerHandsCreator<Bitmap, string> playerCardHandsCreator,
-				IPlayerCreator<Bitmap, string> playerCreator,
-				IPlayerRound playerRound
+				CardDeckCreator<Bitmap, string> cardDeckCreator,
+				CardHandCreator<Bitmap, string> cardHandCreator,
+				PlayerHandsCreator<Bitmap, string> playerCardHandsCreator,
+				PlayerCreator<Bitmap, string> playerCreator,
+				IPlayerRound playerRound,
+				Subject<SplitSuccessfulEvent> splitSuccessfulEvent
 			) 
 		{
 			//TODO:: Seperate into different services, player, dealer, evaluation?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer>>();
 			BetUpdateEvent = new Subject<BetUpdateEvent>();
 			BetRequestedEvent = new Subject<IPlayer>();
-			splitSuccessfulEvent = new Subject<SplitSuccessfulEvent>();
+			SplitSuccessfulEvent = splitSuccessfulEvent;
 
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 

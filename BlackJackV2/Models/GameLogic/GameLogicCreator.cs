@@ -16,15 +16,12 @@
 using System.Reactive.Subjects;
 using BlackJackV2.Constants;
 using BlackJackV2.Services.Events;
+using BlackJackV2.Models.GameLogic.Dealer_Services;
 
 namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogicCreator
 	{
-		//public static GameLogic CreateGameLogic()
-		//{
-		//	return new GameLogic();
-		//}
 
 		public static RoundEvaluator CreateRoundEvaluator() 
 		{ 
@@ -41,9 +38,9 @@ namespace BlackJackV2.Models.GameLogic
 			return new PlayerRound(playerAction, playerActionSubject, splitSuccessfulEvent);
 		}
 
-		public static DealerLogic CreateDealerLogic()
+		public static DealerServices CreateDealerLogic()
 		{
-			return new DealerLogic();
+			return new DealerServices();
 		}
 	}
 }
