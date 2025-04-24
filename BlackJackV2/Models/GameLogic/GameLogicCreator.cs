@@ -17,6 +17,7 @@ using System.Reactive.Subjects;
 using BlackJackV2.Constants;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 
 namespace BlackJackV2.Models.GameLogic
 {

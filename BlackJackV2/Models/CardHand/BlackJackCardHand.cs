@@ -59,13 +59,13 @@ namespace BlackJackV2.Models.CardHand
 		/// </summary>
 		public BlackJackCardHand()
 		{	
-			_handValue = 0;
+			HandValue = 0;
 			Hand = new ObservableCollection<ICard<Bitmap, string>>();
 
 			// When the hand is changed (card added, removed or hand cleard), the hand value is recalculated
 			Hand.CollectionChanged += (sender, e) => 
-			{ 
-				_handValue = CalculateHandValue();
+			{
+				HandValue = CalculateHandValue();
 				if (_handValue == 21) IsFolded = true;
 			};
 		}

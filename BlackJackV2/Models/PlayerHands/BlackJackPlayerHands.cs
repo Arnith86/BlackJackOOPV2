@@ -47,7 +47,7 @@ namespace BlackJackV2.Models.PlayerHands
 
 		
 
-		public BlackJackPlayerHands(HandOwners.HandOwner id, /*IBlackJackCardHand<Bitmap, string> cardHand*/ CardHandCreator<Bitmap, string> cardHandCreator) 
+		public BlackJackPlayerHands(HandOwners.HandOwner id, CardHandCreator<Bitmap, string> cardHandCreator) 
 		{
 			Id = id;
 			
@@ -58,8 +58,8 @@ namespace BlackJackV2.Models.PlayerHands
 			};
 
 
-			_primeryCardHand = cardHandCreator.CreateCardHand();//(BlackJackCardHand)cardHand;
-			_splitCardHand = cardHandCreator.CreateCardHand();// BlackJackCardHandCreator.CreateBlackJackCardHand();
+			_primeryCardHand = cardHandCreator.CreateCardHand();
+			_splitCardHand = cardHandCreator.CreateCardHand();
 
 			// Set the id of the primary and split hands if the player is the "Player"
 			if (Id == HandOwners.HandOwner.Player)
@@ -92,26 +92,24 @@ namespace BlackJackV2.Models.PlayerHands
 			}
 		}
 
-		public bool TryDoubleDownBet(int points, IBlackJackCardHand<Bitmap, string> cardHand)
+		public bool TryDoubleDownBet(HandOwners.HandOwner handOwner, IBlackJackCardHand<Bitmap, string> cardHand)
 		{
-			// Check if the player has enough funds to double down
-			bool enoughFunds = GetBetFromHand(cardHand.Id) <= points;
-
 			// Checks if the hand has two cards
-			if (enoughFunds && cardHand.Hand.Count == 2)
+			if (cardHand.Hand.Count == 2)
 			{
 				// Doubles the bet for the hand
-				SetBetToHand(cardHand.Id, GetBetFromHand(cardHand.Id) * 2);
-				Bet[HandOwners.HandOwner.Primary] *= 2;
+				SetBetToHand(handOwner, GetBetFromHand(handOwner) * 2);
 				return true;
 			}
 			return false;
 		}
 
 		// Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-		// If successfull, returns true
-		public bool TrySplitHand()
+		// If successfull, returns true & and both split hands
+		public bool TrySplitHand(out (IBlackJackCardHand<Bitmap, string> primary, IBlackJackCardHand<Bitmap, string> split) splitHands)
 		{
+			splitHands = default;
+
 			// Checks if the primary hand has two cards, and if the split hand is empty
 			if (_primeryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1 )
 			{
@@ -128,6 +126,7 @@ namespace BlackJackV2.Models.PlayerHands
 					// Copy the bet from the primary hand to the split hand
 					Bet[HandOwners.HandOwner.Split] = Bet[HandOwners.HandOwner.Primary];
 
+					splitHands = (_primeryCardHand, _splitCardHand);
 					return true;
 				}
 			}

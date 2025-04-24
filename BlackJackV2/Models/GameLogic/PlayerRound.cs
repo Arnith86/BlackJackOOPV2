@@ -28,6 +28,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Services.Events;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 
 namespace BlackJackV2.Models.GameLogic
 {
@@ -58,14 +59,16 @@ namespace BlackJackV2.Models.GameLogic
 
 		public PlayerRound(	PlayerAction playerAction, 
 							Subject<BlackJackActions.PlayerActions> playerActionSubject,
-							Subject<SplitSuccessfulEvent> splitSuccessfulEvent
-			)
+							Subject<SplitSuccessfulEvent> splitSuccessfulEvent )
 		{
 			_playerAction = playerAction;
 			_playerActionSubject = playerActionSubject;
 			_splitSuccessfulEvent = splitSuccessfulEvent;
 		}
 
+
+
+		//TODO: DOES NOT HANDLE SPLIT HAND !!!!! FIX
 		// This method is called when the player is taking their turn and register their actions. It handles both the primary and split hand.
 		public async Task PlayerTurn(ICardDeck<Bitmap, string> cardDeck, IPlayer player) 
 		{
@@ -107,16 +110,16 @@ namespace BlackJackV2.Models.GameLogic
 			switch (action)
 			{
 				case BlackJackActions.PlayerActions.Hit:
-					_playerAction.Hit(_player.hands, currentHand, _cardDeck);
+					_playerAction.PerformHit(_player.hands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.DoubleDown:
-					_playerAction.DoubleDown(_player.Funds, _player.hands, currentHand, _cardDeck);
+					_playerAction.PerformDoubleDown(_player, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Fold:
-					_playerAction.Fold(_player.hands, currentHand, _cardDeck);
+					_playerAction.PerformFold(_player.hands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Split:
-					_playerAction.Split(_player.Name, _player.Funds, _player.hands, _cardDeck);
+					_playerAction.PerformSplit(_player, _cardDeck);
 					break;
 				default:
 					break;

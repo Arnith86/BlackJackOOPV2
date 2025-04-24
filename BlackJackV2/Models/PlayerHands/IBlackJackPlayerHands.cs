@@ -32,8 +32,8 @@ namespace BlackJackV2.Models.PlayerHands
 
 		public int GetBetFromHand(HandOwners.HandOwner owner);
 		public void SetBetToHand(HandOwners.HandOwner owner, int bet);
-		public bool TryDoubleDownBet(int points, IBlackJackCardHand<Bitmap, string> hand);
-		public bool TrySplitHand();
+		public bool TryDoubleDownBet(HandOwners.HandOwner handOwner, IBlackJackCardHand<Bitmap, string> cardHand);
+		public bool TrySplitHand(out (IBlackJackCardHand<Bitmap, string> primary, IBlackJackCardHand<Bitmap, string> split) splitHands);
 		public void AddCardToHand(IBlackJackCardHand<Bitmap, string> cardHand, ICard<Bitmap, string> card);
 		public void FoldHand(IBlackJackCardHand<Bitmap, string> cardHand);
 		public void ResetHand();

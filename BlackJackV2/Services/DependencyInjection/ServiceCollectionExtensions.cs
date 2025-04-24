@@ -13,6 +13,7 @@ using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Factories.PlayerFactory;
 using BlackJackV2.Factories.PlayerHandsFactory;
 using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Services.Events;
 using BlackJackV2.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
