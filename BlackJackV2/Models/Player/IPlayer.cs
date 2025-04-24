@@ -24,7 +24,8 @@ namespace BlackJackV2.Models.Player
 		public int Funds { get; }
 		public IBlackJackPlayerHands<Bitmap, string> hands { get; }
 
-		public bool PlaceBet(HandOwners.HandOwner owner, int amount);
+		public bool PlaceBet(HandOwners.HandOwner owner, int amount, bool doubleDown = false);
+		public bool EnoughFundsForBet(int amount);
 		public void PayOut(int amount);
 
 	}

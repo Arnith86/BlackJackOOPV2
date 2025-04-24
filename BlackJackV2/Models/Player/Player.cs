@@ -38,7 +38,8 @@ namespace BlackJackV2.Models.Player
 		public IBlackJackPlayerHands<Bitmap, string> hands { get; }
 
 		// The subject used to notify when the bet is updated
-		private readonly ISubject<BetUpdateEvent> _betUpdateSubject;
+		/*private*/
+		public ISubject<BetUpdateEvent> _betUpdateSubject;
 
 		public Player(string name, IBlackJackPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject)
 		{
@@ -47,16 +48,24 @@ namespace BlackJackV2.Models.Player
 			_betUpdateSubject = betUpdateSubject;
 		}
 
-		public bool PlaceBet(HandOwners.HandOwner owner, int amount)
+		public bool PlaceBet(HandOwners.HandOwner owner, int amount, bool doubleDown = false)
 		{
 			if (Funds >= amount)
 			{
-				hands.SetBetToHand(owner, amount);
+				// Check if the player is trying to double down
+				int totalBet = doubleDown ? amount * 2 : amount; 
+
+				hands.SetBetToHand(owner, totalBet);
 				Funds -= amount;
 				_betUpdateSubject.OnNext(new BetUpdateEvent(Name, owner));
 				return true;
 			}
 			return false; 
+		}
+
+		public bool EnoughFundsForBet(int amount)
+		{
+			return Funds >= amount;
 		}
 
 		public void PayOut(int amount)
