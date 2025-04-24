@@ -52,14 +52,14 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 										IBlackJackCardHand<Bitmap, string> cardHand,
 										ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
-			int bet = player.hands.GetBetFromHand(cardHand.Id);
+			int bet = player.Hands.GetBetFromHand(cardHand.Id);
 
 			// If the player has enough funds, double the bet and add a card to the hand
-			if (player.EnoughFundsForBet(bet) && player.hands.TryDoubleDownBet(cardHand.Id, cardHand))
+			if (player.EnoughFundsForBet(bet) && player.Hands.TryDoubleDownBet(cardHand.Id, cardHand))
 			{
 				player.PlaceBet(cardHand.Id, bet, true);
-				player.hands.AddCardToHand(cardHand, blackJackCardDeck.GetTopCard());
-				player.hands.FoldHand(cardHand);
+				player.Hands.AddCardToHand(cardHand, blackJackCardDeck.GetTopCard());
+				player.Hands.FoldHand(cardHand);
 			}
 			else
 			{
@@ -85,13 +85,13 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		public void PerformSplit(	IPlayer player,
 									ICardDeck<Bitmap, string> blackJackCardDeck)
 		{
-			int primaryBet = player.hands.GetBetFromHand(HandOwners.HandOwner.Primary);
+			int primaryBet = player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
 
 			if (player.EnoughFundsForBet(primaryBet) && 
-				player.hands.TrySplitHand(out var splitHands) )
+				player.Hands.TrySplitHand(out var splitHands) )
 			{
-				player.hands.AddCardToHand(splitHands.primary, blackJackCardDeck.GetTopCard());
-				player.hands.AddCardToHand(splitHands.split, blackJackCardDeck.GetTopCard());
+				player.Hands.AddCardToHand(splitHands.primary, blackJackCardDeck.GetTopCard());
+				player.Hands.AddCardToHand(splitHands.split, blackJackCardDeck.GetTopCard());
 
 				// Notify that the split was successful
 				_splitSuccessfulEvent.OnNext(new SplitSuccessfulEvent(player.Name));

@@ -1,73 +1,80 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/Player/Player.cs
 
-/// <summary>
-/// 
-///		 This class represents a player in the game.
-///		 The player will start with a set amount of money and can place bets on their hands.
-///		 
-///		string			Name		: The name of the player
-///		int				Funds		: The amount of money the player has
-///		IPlayerHands	PlayerHands : The player's hands in the game
-///		
-///		bool	PlaceBet()	: Places a bet for the player for the specified hand
-///		void	PayOut()	: Add specified amount to the player funds
-///		
-/// </summary>
-
 using Avalonia.Media.Imaging;
 using ReactiveUI;
 using BlackJackV2.Constants;
 using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.PlayerHands;
+using BlackJackV2.Models.CardHand;
 
 namespace BlackJackV2.Models.Player
 {
+	/// <summary>
+	/// This class represents a player in a blackjack game.
+	///	The player will start with a set amount of funds and can place bets on their hands.
+	/// </summary>
 	public class Player : ReactiveObject, IPlayer
 	{
+		/// <inheritdoc/>
 		public string Name { get; private set; }
 		
 		private int _funds = 10;
+		/// <inheritdoc/>
 		public int Funds 
 		{ 
 			get => _funds;
 			set => this.RaiseAndSetIfChanged(ref _funds, value);
-		} 
+		}
 
-		public IBlackJackPlayerHands<Bitmap, string> hands { get; }
+		/// <summary>
+		/// Gets the wrapper class containing the player's primary and split hands.
+		/// </summary>
+		public IBlackJackPlayerHands<Bitmap, string> Hands { get; }
 
-		// The subject used to notify when the bet is updated
-		/*private*/
-		public ISubject<BetUpdateEvent> _betUpdateSubject;
+		/// <summary>
+		///	The subject used to notify when the bet is updated 
+		/// </summary>
+		private readonly ISubject<BetUpdateEvent> _betUpdateSubject;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Player"/> class.
+		/// </summary>
+		/// <param name="name">The player's chosen name.</param>
+		/// <param name="hands">The wrapper for the primary and split hands.</param>
+		/// <param name="betUpdateSubject">Subject used to notify when a bet has been placed.</param>
 		public Player(string name, IBlackJackPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject)
 		{
 			Name = name;
-			this.hands = hands;
+			this.Hands = hands;
 			_betUpdateSubject = betUpdateSubject;
 		}
 
+		/// <inheritdoc/>
 		public bool PlaceBet(HandOwners.HandOwner owner, int amount, bool doubleDown = false)
 		{
 			if (Funds >= amount)
 			{
 				// Check if the player is trying to double down
 				int totalBet = doubleDown ? amount * 2 : amount; 
-
-				hands.SetBetToHand(owner, totalBet);
+				Hands.SetBetToHand(owner, totalBet);
+				
 				Funds -= amount;
 				_betUpdateSubject.OnNext(new BetUpdateEvent(Name, owner));
+				
 				return true;
 			}
 			return false; 
 		}
 
+		/// <inheritdoc/>
 		public bool EnoughFundsForBet(int amount)
 		{
 			return Funds >= amount;
 		}
 
+		/// <inheritdoc/>
 		public void PayOut(int amount)
 		{
 			Funds += amount;

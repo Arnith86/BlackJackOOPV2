@@ -75,7 +75,7 @@ namespace BlackJackV2.Models.GameLogic
 			_cardDeck = cardDeck;
 			_player = player;
 
-			blackJackCardHands.Enqueue(_player.hands.PrimaryCardHand);
+			blackJackCardHands.Enqueue(_player.Hands.PrimaryCardHand);
 
 			// If a split was registered through the MessageBuss, then it is added to the queue of hands to handle
 			while (blackJackCardHands.Count > 0)
@@ -110,13 +110,13 @@ namespace BlackJackV2.Models.GameLogic
 			switch (action)
 			{
 				case BlackJackActions.PlayerActions.Hit:
-					_playerAction.PerformHit(_player.hands, currentHand, _cardDeck);
+					_playerAction.PerformHit(_player.Hands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.DoubleDown:
 					_playerAction.PerformDoubleDown(_player, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Fold:
-					_playerAction.PerformFold(_player.hands, currentHand, _cardDeck);
+					_playerAction.PerformFold(_player.Hands, currentHand, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Split:
 					_playerAction.PerformSplit(_player, _cardDeck);

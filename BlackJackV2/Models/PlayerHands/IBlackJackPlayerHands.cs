@@ -29,7 +29,6 @@ namespace BlackJackV2.Models.PlayerHands
 	{
 		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand { get; }
 		public IBlackJackCardHand<Bitmap, string> SplitCardHand { get; }
-
 		public int GetBetFromHand(HandOwners.HandOwner owner);
 		public void SetBetToHand(HandOwners.HandOwner owner, int bet);
 		public bool TryDoubleDownBet(HandOwners.HandOwner handOwner, IBlackJackCardHand<Bitmap, string> cardHand);

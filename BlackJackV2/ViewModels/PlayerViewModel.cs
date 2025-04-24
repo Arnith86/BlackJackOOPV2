@@ -39,8 +39,8 @@ namespace BlackJackV2.ViewModels
 		{
 			Player = player;
 
-			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.hands.PrimaryCardHand);
-			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.hands.SplitCardHand);
+			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.Hands.PrimaryCardHand);
+			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.Hands.SplitCardHand);
 
 			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>
@@ -73,8 +73,8 @@ namespace BlackJackV2.ViewModels
 		{
 			if (playeName == Player.Name) 
 			{
-				PlayerCardHandViewModel.Bet =  Player.hands.GetBetFromHand(HandOwners.HandOwner.Primary);
-				PlayerSplitCardHandViewModel.Bet = Player.hands.GetBetFromHand(HandOwners.HandOwner.Split);
+				PlayerCardHandViewModel.Bet =  Player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
+				PlayerSplitCardHandViewModel.Bet = Player.Hands.GetBetFromHand(HandOwners.HandOwner.Split);
 			}
 		}
 
