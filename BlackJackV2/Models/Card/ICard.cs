@@ -10,6 +10,7 @@ namespace BlackJackV2.Models.Card
 	///	</summary>
 	/// <typeparam name="TImage">The type representing the image used on the card (e.g., bitmap).</typeparam>
 	/// <typeparam name="TValue">The type representing the card's value (e.g., string, int).</typeparam>
+	/// <remarks> Related files <see cref="BlackJackV2.Factories.CardFactory"/></remarks>
 	public interface ICard<TImage, TValue>
 	{
 		/// <summary>

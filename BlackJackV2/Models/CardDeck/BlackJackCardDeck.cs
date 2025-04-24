@@ -13,6 +13,7 @@ namespace BlackJackV2.Models.CardDeck
 	/// Represents a standard BlackJack card deck that suppors shuffeling and retrieval of cards.
 	/// Implements <see cref="ICard{TImage, TValue}"/> to define game specific behavior.  
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Factories.CardDeckFactory"/></remarks>
 	public class BlackJackCardDeck : ICardDeck<Bitmap, string>
 	{
 		/// <summary>

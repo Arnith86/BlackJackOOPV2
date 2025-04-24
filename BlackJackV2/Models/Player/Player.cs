@@ -44,6 +44,7 @@ namespace BlackJackV2.Models.Player
 		/// <param name="name">The player's chosen name.</param>
 		/// <param name="hands">The wrapper for the primary and split hands.</param>
 		/// <param name="betUpdateSubject">Subject used to notify when a bet has been placed.</param>
+		/// <remarks> Related files <see cref="BlackJackV2.Factories.PlayerFactory"/></remarks>
 		public Player(string name, IBlackJackPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject)
 		{
 			Name = name;

@@ -14,6 +14,7 @@ namespace BlackJackV2.Models.CardHand
 	/// Represents a hand of cards in a Blackjack game, handling card collection and rule-based state (e.g., bust, blackjack, folded).
 	/// Automatically recalculates the hand value when cards are added or removed.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Factories.CardHandFactory"/></remarks>
 	public class BlackJackCardHand : ReactiveObject, IBlackJackCardHand<Bitmap, string> 
 	{
 		/// <inheritdoc/>

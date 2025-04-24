@@ -13,6 +13,7 @@ namespace BlackJackV2.Models.Card
 	/// Combines front and back images, a suit/value string, and face-down state.
 	/// Implements the <see cref="ICard{TImage, TValue}"/> interface for use in a card factory.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Factories.CardFactory"/></remarks>
 	public class BlackJackCard : ReactiveObject,  ICard<Bitmap, string>
 	{
 		/// <inheritdoc/>

@@ -36,6 +36,7 @@ namespace BlackJackV2.Models.Player
 		/// <param name="amount">The bet amount.</param>
 		/// <param name="doubleDown">Set to true if this is a double down bet.</param>
 		/// <returns>True if the bet was placed successfully; otherwise, false.</returns>
+		/// <remarks> Related files <see cref="BlackJackV2.Factories.PlayerFactory"/></remarks>
 		public bool PlaceBet(HandOwners.HandOwner owner, int amount, bool doubleDown = false);
 
 		/// <summary>
