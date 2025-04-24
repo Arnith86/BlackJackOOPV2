@@ -9,6 +9,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 	/// Defines the interface for a creator class responsible for creating <see cref="ICardDeck{TImage, TValue}"/> objects.
 	/// This is part of the Card Deck factory pattern used to build specific deck types (e.g., Blackjack).
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.CardDeck"/></remarks>
 	public abstract class CardDeckCreator<TImage, TValue>
 	{
 		/// <summary>

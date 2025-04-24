@@ -10,6 +10,7 @@ namespace BlackJackV2.Factories.CardFactory
 	///	Concrete creator class for the Card factory patter, specifically for BlackJack.
 	///	Responsible for creating a fully initialized <see cref="BlackJackCard"/> object for use in the game.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.Card"/></remarks>
 	internal class BlackJackCardCreator : CardCreator<Bitmap, string>
 	{
 		/// <summary>

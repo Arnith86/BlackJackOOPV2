@@ -13,6 +13,7 @@ namespace BlackJackV2.Factories.PlayerFactory
 	/// This is part of the Player factory pattern, which instantiates a player in a Blackjack game with specific 
 	/// hands, bet update handling, and a player name.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.Player"/></remarks>
 	public abstract class PlayerCreator<TImage, TValue>
 	{
 		/// <summary>

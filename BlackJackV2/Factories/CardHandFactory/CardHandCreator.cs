@@ -9,6 +9,7 @@ namespace BlackJackV2.Factories.CardHandFactory
 	///	Defines an abstract for a creator class responsible for creating <see cref="IBlackJackCardHand{TImage, TValue}"/> objects.
 	///	This is part of the CardHand factory pattern, which provides a way of creating a collection of cards representiing a hand in BlackJack.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.CardHand"/></remarks>
 	public abstract class CardHandCreator<TImage, TValue>
 	{
 		/// <summary>

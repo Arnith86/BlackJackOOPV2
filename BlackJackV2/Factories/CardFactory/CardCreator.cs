@@ -9,6 +9,7 @@ namespace BlackJackV2.Factories.CardFactory
 	///	Defines an abstract for a creator class responsible for creating <see cref="ICard{TImage, TValue}"/> objects.
 	///	This is part of the Card factory pattern which provides a way to create card objects.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.Card"/></remarks>
 	public abstract class CardCreator<TImage, TValue>
 	{
 		/// <summary>

@@ -13,6 +13,7 @@ namespace BlackJackV2.Factories.PlayerFactory
 	/// Concrete creator class for the Player factory pattern, responsible for creating fully initialized <see cref="Player"/> objects.
 	/// Used to instantiate players with names, hands, and reactive bet handling in a Blackjack game.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.Player"/></remarks>
 	public class BlackJackPlayerCreator : PlayerCreator<Bitmap, string>
 	{
 		/// <summary>

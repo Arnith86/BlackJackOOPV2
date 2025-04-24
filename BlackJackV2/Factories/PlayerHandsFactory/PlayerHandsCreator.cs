@@ -12,6 +12,7 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 	/// Defines the abstract base class for a creator responsible for creating <see cref="IBlackJackPlayerHands{TImage, TValue}"/> objects.
 	/// This is part of the Player Hands factory pattern, which instantiates player or dealer hands used in a Blackjack game.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.Player"/></remarks>
 	public abstract class PlayerHandsCreator<TImage, TValue>
 	{
 		/// <summary>

@@ -10,6 +10,7 @@ namespace BlackJackV2.Factories.CardHandFactory
 	///	Concrete creator class for the CardHand factory pattern, which provides a way of creating a collection of cards representing a hand in BlackJack.
 	///	This class creates a fully initialized <see cref="BlackJackCardHand"/> object.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.CardHand"/></remarks>
 	internal class BlackJackCardHandCreator : CardHandCreator<Bitmap, string>
 	{
 		/// <summary>

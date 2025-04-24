@@ -18,6 +18,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 	/// The deck is constructed using a provided <see cref="CardCreator{TImage, TValue}"/> to generate all 52 cards.
 	/// (13 cards across 4 suites), each with a front and back image.
 	/// </summary>
+	/// <remarks> Related files <see cref="BlackJackV2.Models.CardDeck"/></remarks>
 	internal class BlackJackCardDeckCreator : CardDeckCreator<Bitmap, string>
 	{
 		private CardCreator<Bitmap, string> _cardCreator;
