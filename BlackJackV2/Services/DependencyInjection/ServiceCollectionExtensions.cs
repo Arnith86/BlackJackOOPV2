@@ -40,9 +40,9 @@ namespace BlackJackV2.Services.DependencyInjection
 
 			
 
-			collection.AddSingleton<IGameCoordinator, GameCoordinator>();
+			collection.AddSingleton<IGameCoordinator<Bitmap, string>, GameCoordinator>();
 
-			collection.AddSingleton<IPlayerRound, PlayerRound>();
+			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound>();
 			collection.AddSingleton<PlayerAction>();
 			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();

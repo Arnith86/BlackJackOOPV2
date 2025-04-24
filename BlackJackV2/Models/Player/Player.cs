@@ -15,7 +15,7 @@ namespace BlackJackV2.Models.Player
 	/// This class represents a player in a blackjack game.
 	///	The player will start with a set amount of funds and can place bets on their hands.
 	/// </summary>
-	public class Player : ReactiveObject, IPlayer
+	public class Player : ReactiveObject, IPlayer<Bitmap, string>
 	{
 		/// <inheritdoc/>
 		public string Name { get; private set; }
@@ -62,6 +62,7 @@ namespace BlackJackV2.Models.Player
 				Hands.SetBetToHand(owner, totalBet);
 				
 				Funds -= amount;
+				
 				_betUpdateSubject.OnNext(new BetUpdateEvent(Name, owner));
 				
 				return true;

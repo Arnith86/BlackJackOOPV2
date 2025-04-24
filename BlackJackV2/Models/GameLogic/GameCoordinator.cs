@@ -45,16 +45,16 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.GameLogic
 {
-	public class GameCoordinator : IGameCoordinator
+	public class GameCoordinator : IGameCoordinator<Bitmap, string>
 	{
 		// Subject to notify if players in game change
-		public Subject<Dictionary<string, IPlayer>> PlayerChangedEvent { get; }
+		public Subject<Dictionary<string, IPlayer<Bitmap, string>>> PlayerChangedEvent { get; }
 
 		// Used to notify when the bet value is updated
 		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
 
 		// Subject to notify when the bet is requested
-		public Subject<IPlayer> BetRequestedEvent { get; }
+		public Subject<IPlayer<Bitmap, string>> BetRequestedEvent { get; }
 
 		// Subject to notify when the player split is successful
 		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
@@ -76,11 +76,11 @@ namespace BlackJackV2.Models.GameLogic
 		// Handles the evaluation of the round
 		private RoundEvaluator roundEvaluator;
 		// Handles all rounds related to a players hands
-		public IPlayerRound _playerRound;
+		public IPlayerRound<Bitmap, string> _playerRound;
 
 
 		// A collection of players in the game
-		public Dictionary<string, IPlayer> Players { get; }
+		public Dictionary<string, IPlayer<Bitmap, string>> Players { get; }
 
 		// Represents the dealers hands
 		private IBlackJackPlayerHands<Bitmap, string> _dealerCardHand;
@@ -97,19 +97,19 @@ namespace BlackJackV2.Models.GameLogic
 				CardHandCreator<Bitmap, string> cardHandCreator,
 				PlayerHandsCreator<Bitmap, string> playerCardHandsCreator,
 				PlayerCreator<Bitmap, string> playerCreator,
-				IPlayerRound playerRound,
+				IPlayerRound<Bitmap, string> playerRound,
 				Subject<SplitSuccessfulEvent> splitSuccessfulEvent
 			) 
 		{
 			//TODO:: Seperate into different services, player, dealer, evaluation?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer>>();
+			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer<Bitmap, string>>>();
 			BetUpdateEvent = new Subject<BetUpdateEvent>();
-			BetRequestedEvent = new Subject<IPlayer>();
+			BetRequestedEvent = new Subject<IPlayer<Bitmap, string>>();
 			SplitSuccessfulEvent = splitSuccessfulEvent;
 
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 
-			Players = new Dictionary<string, IPlayer>();
+			Players = new Dictionary<string, IPlayer<Bitmap, string>>();
 
 			_playerRound = playerRound;
 
@@ -147,11 +147,11 @@ namespace BlackJackV2.Models.GameLogic
 		// Initiates and wait for player bets retrival
 		public async Task RegisterBetForNewRound()
 		{
-			foreach (KeyValuePair<string, IPlayer> player in Players)
+			foreach (KeyValuePair<string, IPlayer<Bitmap, string>> player in Players)
 			{
 
 				string playerName = player.Key;
-				IPlayer currentPlayer = player.Value;
+				IPlayer<Bitmap, string> currentPlayer = player.Value;
 
 				// Adds a new completion source for the bet input task
 				TaskCompletionSource<int> betInputTask = new TaskCompletionSource<int>();
@@ -197,7 +197,7 @@ namespace BlackJackV2.Models.GameLogic
 			// Gives dealer his initial cards
 			dealerLogic.InitialDeal(DealerCardHand, _cardDeck);
 
-			foreach (KeyValuePair<string, IPlayer> player in Players)
+			foreach (KeyValuePair<string, IPlayer<Bitmap, string>> player in Players)
 			{
 				// Player conducts their turn
 				await _playerRound.PlayerTurn(_cardDeck, player.Value);

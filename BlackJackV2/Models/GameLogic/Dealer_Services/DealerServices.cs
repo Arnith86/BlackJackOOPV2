@@ -15,7 +15,7 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 	/// Including the initial deal and the dealer's logic during their turn.
 	/// The dealer only uses the <see cref="IBlackJackPlayerHands{TImage, TValue}.PrimaryCardHand"/>.
 	/// </summary>
-	public class DealerServices : IDealerServices
+	public class DealerServices : IDealerServices<Bitmap, string>
 	{
 		///<inheritdoc/>
 		public void InitialDeal(IBlackJackPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)

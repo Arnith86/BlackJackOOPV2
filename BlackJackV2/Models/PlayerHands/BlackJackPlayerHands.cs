@@ -1,52 +1,53 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/Player/PlayerHands.cs
 
-/// <summary>
-///		 Handles a player's card hands in a blackjack game.
-///		 When hands are reset, only the primary hand is kept
-///		 
-///		HandOwner.HandOwner						Id                  : The id of the hand, used to identify the hand in the game
-///		BlackJackCardHand						_PrimeryCardHand    : The player's primary hand
-///		BlackJackCardHand						_splitCardHand      : The player's split hand
-///		Dictionary<HandOwners.HandOwner, int>	Bet					: A Dictionary with bets for the primary and split hands
-///		
-///		int		GetBetFromHand()							: Returns the bet for the specified hand
-///		void	SetBetToHand()								: Sets the bet for the specified hand
-///		bool	TryDoubleDownBet(int, IBlackJackCardHand)	:
-///		bool	TrySplitHand()								: Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-///		void	AddCardToHand(IBlackJackCardHand, ICard)	: Adds a new card object to the specified hand
-///		void	FoldHand(IBlackJackCardHand)				: Folds the specified hand
-///		void	ResetHand()									: Resets hands for a new round
-/// </summary>
-
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.UtilityClasses;
 using System;
 using System.Collections.Generic;
 
 namespace BlackJackV2.Models.PlayerHands
 {
+	/// <summary>
+	///	This class is used as a wrapper for the <see cref="IBlackJackCardHand{TImage, TValue}"/> used as primary and split hands. 
+	///	It handles the bets related to each card hand and which hands that an action is performed on.
+	///	Serves as the product in the PlayerHands Factory pattern.
+	/// </summary>
+	/// <remarks>
+	/// Related files: <see cref = "BlackJackV2.Factories.PlayerHandsFactory" />
+	/// </remarks>
 	public class BlackJackPlayerHands : IBlackJackPlayerHands<Bitmap, string>
 	{
-		// The id of the hand, used to identify the hand in the game
+		/// <summary>
+		/// The identafier of the Player owning the hands, used to identify the hands in the game.
+		/// </summary>
 		public HandOwners.HandOwner Id { get; private set; }
 		
-		// Represents the player's primary hand and split hand
-		private IBlackJackCardHand<Bitmap, string> _primeryCardHand;
-		private IBlackJackCardHand<Bitmap, string> _splitCardHand;
+		private IBlackJackCardHand<Bitmap, string> _primaryCardHand;
+		/// <inheritdoc/>
+		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand => _primaryCardHand;
 
-		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand => _primeryCardHand;
+		private IBlackJackCardHand<Bitmap, string> _splitCardHand;
+		/// <inheritdoc/>
 		public IBlackJackCardHand<Bitmap, string> SplitCardHand => _splitCardHand;
 
-		// The bet for the primary and split hands
-		public Dictionary<HandOwners.HandOwner, int> Bet;
+		/// <summary>
+		/// The bets for the primary and split hands
+		/// </summary>
+		private Dictionary<HandOwners.HandOwner, int> Bet;
 
 		
-
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BlackJackPlayerHands"/> class.
+		/// </summary>
+		/// <param name="id">The identifier of the player owning the hands.</param>
+		/// <param name="cardHandCreator"> Creates new <see cref="BlackJackCardHand"/>
+		/// </param>
 		public BlackJackPlayerHands(HandOwners.HandOwner id, CardHandCreator<Bitmap, string> cardHandCreator) 
 		{
 			Id = id;
@@ -58,18 +59,18 @@ namespace BlackJackV2.Models.PlayerHands
 			};
 
 
-			_primeryCardHand = cardHandCreator.CreateCardHand();
+			_primaryCardHand = cardHandCreator.CreateCardHand();
 			_splitCardHand = cardHandCreator.CreateCardHand();
 
 			// Set the id of the primary and split hands if the player is the "Player"
 			if (Id == HandOwners.HandOwner.Player)
 			{
-				_primeryCardHand.Id = HandOwners.HandOwner.Primary;
+				_primaryCardHand.Id = HandOwners.HandOwner.Primary;
 				_splitCardHand.Id = HandOwners.HandOwner.Split;
 			}
 		}
 
-		// Returns the bet for the specified hand
+		/// <inheritdoc/>
 		public int GetBetFromHand(HandOwners.HandOwner owner)
 		{
 			if (Bet.ContainsKey(owner))
@@ -78,8 +79,7 @@ namespace BlackJackV2.Models.PlayerHands
 				throw new ArgumentException("Invalid hand owner");
 		}
 
-		// Sets the bet for the specified hand
-		// Notifies the bet update subject when the bet is updated
+		///<inheritdoc/>
 		public void SetBetToHand(HandOwners.HandOwner owner, int bet)
 		{
 			if (Bet.ContainsKey(owner))
@@ -92,41 +92,43 @@ namespace BlackJackV2.Models.PlayerHands
 			}
 		}
 
-		public bool TryDoubleDownBet(HandOwners.HandOwner handOwner, IBlackJackCardHand<Bitmap, string> cardHand)
+		/// <inheritdoc/>
+		public bool TryDoubleDownBet( IBlackJackCardHand<Bitmap, string> cardHand)
 		{
 			// Checks if the hand has two cards
 			if (cardHand.Hand.Count == 2)
 			{
 				// Doubles the bet for the hand
-				SetBetToHand(handOwner, GetBetFromHand(handOwner) * 2);
+				SetBetToHand(cardHand.Id, GetBetFromHand(cardHand.Id) * 2);
 				return true;
 			}
 			return false;
 		}
 
-		// Splits a hand into two hands. The card chosen for the split is removed and placed in a new hand
-		// If successfull, returns true & and both split hands
+		/// <inheritdoc/>
 		public bool TrySplitHand(out (IBlackJackCardHand<Bitmap, string> primary, IBlackJackCardHand<Bitmap, string> split) splitHands)
 		{
 			splitHands = default;
 
+
+			//TODO: extract game rule validation to another class (GameRuleServices)
 			// Checks if the primary hand has two cards, and if the split hand is empty
-			if (_primeryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1 )
+			if (_primaryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1 )
 			{
 				// Retrieves the value of the first two cards in the primary hand
-				string value1 = _primeryCardHand.Hand[0].Value.Split('_')[1];
-				string value2 = _primeryCardHand.Hand[1].Value.Split('_')[1];
+				string value1 = CardToValueUtility.GetNumericCardValue(_primaryCardHand.Hand[0]); 
+				string value2 = CardToValueUtility.GetNumericCardValue(_primaryCardHand.Hand[1]); 
 
 				// Checks to see if the numeric value of the cards are the same 
 				if (value1 == value2)
 				{
 					// Splits the hand
-					_splitCardHand.AddCard(_primeryCardHand.Hand[1]);
-					_primeryCardHand.RemoveCard(_primeryCardHand.Hand[1].Value);
+					_splitCardHand.AddCard(_primaryCardHand.Hand[1]);
+					_primaryCardHand.RemoveCard(_primaryCardHand.Hand[1].Value);
 					// Copy the bet from the primary hand to the split hand
 					Bet[HandOwners.HandOwner.Split] = Bet[HandOwners.HandOwner.Primary];
 
-					splitHands = (_primeryCardHand, _splitCardHand);
+					splitHands = (_primaryCardHand, _splitCardHand);
 					return true;
 				}
 			}
@@ -134,34 +136,34 @@ namespace BlackJackV2.Models.PlayerHands
 			return false;
 		}
 
-		// Adds a new card object to the specified hand
-		public void AddCardToHand(IBlackJackCardHand<Bitmap, string> cardHand, ICard<Bitmap, string> card)
+		/// <summary>
+		/// Returns a <see cref="IBlackJackCardHand{Bitmap, string}"/> based on the specified owner.
+		/// </summary>
+		/// <param name="owner">The owner of the requested hand.</param>
+		/// <returns>The <see cref="IBlackJackCardHand{Bitmap, string}"/> requested.</returns>
+		private IBlackJackCardHand<Bitmap, string> GetCardHand(HandOwners.HandOwner owner)
 		{
-			if (cardHand.Id == HandOwners.HandOwner.Primary)
-				_primeryCardHand.AddCard(card);
-			else
-				_splitCardHand.AddCard(card);
+			return owner == HandOwners.HandOwner.Primary ? _primaryCardHand : _splitCardHand;
 		}
 
-		// Folds the specified hand
-		public void FoldHand(IBlackJackCardHand<Bitmap, string> cardHand)
-		{
-			if (cardHand.Id == HandOwners.HandOwner.Primary)
-				_primeryCardHand.IsFolded = true;
-			else
-				_splitCardHand.IsFolded = true;
-		}
+		/// <inheritdoc/>
+		public void AddCardToHand(IBlackJackCardHand<Bitmap, string> cardHand, ICard<Bitmap, string> card) =>
+			GetCardHand(cardHand.Id).AddCard(card);
+		
+		/// <inheritdoc/>
+		public void FoldHand(IBlackJackCardHand<Bitmap, string> cardHand) =>
+			GetCardHand(cardHand.Id).IsFolded = true;
 
-		// Resets hands for a new round
+		/// <inheritdoc/>
 		public void ResetHand()
 		{
 			// Emptys the hands
-			_primeryCardHand.ClearHand();
+			_primaryCardHand.ClearHand();
 			_splitCardHand.ClearHand();
 			// Reset the bets for both hands
 			Bet[HandOwners.HandOwner.Primary] = Bet[HandOwners.HandOwner.Split] = 0;
 			// Reset the folded state of the hands
-			_primeryCardHand.IsFolded = false;
+			_primaryCardHand.IsFolded = false;
 			_splitCardHand.IsFolded = false;
 		}
 	}

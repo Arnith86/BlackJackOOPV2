@@ -1,40 +1,75 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/Player/IPlayerHands.cs
 
-/// <summary>
-///		Interface for Player hands handeling 
-///		
-///		BlackJackCardHand	PrimaryCardHand						: The player's primary hand
-///		BlackJackCardHand	SplitCardHand						: The player's split hand
-///
-///		int					GetBetFromHand(HandOwners.HandOwner)		: Returns the bet for the specified hand
-///		void				SetBetToHand(HandOwners.HandOwner, int)		: Sets the bet for the specified hand
-///		bool				TryDoubleDownBet(int, IBlackJackCardHand)	: Tries to double down the bet for the specified hand
-///		bool				TrySplitHand()								: Tries to split the hand
-///		void				AddCardToHand(IBlackJackCardHand, ICard)	: Adds a card to the specified hand
-///		void				FoldHand(IBlackJackCardHand)				: Folds the specified hand
-///		void				ResetHand()									: Resets all player hands
-///		
-/// </summary>
-
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Constants;
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Card;
 
 namespace BlackJackV2.Models.PlayerHands
 {
-
+	/// <summary>
+	///	Interface for the player hands wrapper class. Used as a container for the primary and split hands, and the bets related to them. It also handles which hands that an action is performed on.
+	///	Serves as the product in the PlayerHands Factory pattern.
+	///	</summary>
+	/// <remarks>
+	/// Related files: <see cref = "BlackJackV2.Factories.PlayerHandsFactory" />
+	/// </remarks>
 	public interface IBlackJackPlayerHands<TImage, TValue>
 	{
-		public IBlackJackCardHand<Bitmap, string> PrimaryCardHand { get; }
-		public IBlackJackCardHand<Bitmap, string> SplitCardHand { get; }
+		/// <summary>
+		/// Gets the primary hand or the Player.
+		/// </summary>
+		public IBlackJackCardHand<TImage, TValue> PrimaryCardHand { get; }
+
+		/// <summary>
+		/// Gets the split hand of the Player.
+		/// </summary>
+		public IBlackJackCardHand<TImage, TValue> SplitCardHand { get; }
+
+		/// <summary>
+		/// Gets the current bet associated with hand owner.
+		/// </summary>
+		/// <param name="owner">The owner of the hand (primary or split).</param>
+		/// <returns>The current bet.</returns>
 		public int GetBetFromHand(HandOwners.HandOwner owner);
+
+		/// <summary>
+		/// Sets the bet for the specified hand owner.
+		/// </summary>
+		/// <param name="owner">The owner of the card hand (primary or split).</param>
+		/// <param name="bet">The supplied bet.</param>
 		public void SetBetToHand(HandOwners.HandOwner owner, int bet);
-		public bool TryDoubleDownBet(HandOwners.HandOwner handOwner, IBlackJackCardHand<Bitmap, string> cardHand);
-		public bool TrySplitHand(out (IBlackJackCardHand<Bitmap, string> primary, IBlackJackCardHand<Bitmap, string> split) splitHands);
-		public void AddCardToHand(IBlackJackCardHand<Bitmap, string> cardHand, ICard<Bitmap, string> card);
-		public void FoldHand(IBlackJackCardHand<Bitmap, string> cardHand);
+
+		/// <summary>
+		/// Attempts to double down the bet for the specified card hand.
+		/// </summary>
+		/// <param name="cardHand">The hand associated with the double down attempt.</param>
+		/// <returns>True, if the attempt was successfull, false, if not.</returns>
+		public bool TryDoubleDownBet(IBlackJackCardHand<TImage, TValue> cardHand);
+
+		/// <summary>
+		/// Attempts to split the players primary hand into two hands.
+		/// </summary>
+		/// <param name="splitHands">The resulting <see cref="IBlackJackCardHand{TImage, TValue}"/> from the split.</param>
+		/// <returns>True, if the split was successful, otherwise false.</returns>
+		public bool TrySplitHand(out (IBlackJackCardHand<TImage, TValue> primary, IBlackJackCardHand<TImage, TValue> split) splitHands);
+
+		/// <summary>
+		/// Adds a new <see cref="ICard{TImage, TValue}"/> to the specified hand.
+		/// </summary>
+		/// <param name="cardHand">The <see cref="IBlackJackCardHand{TImage, TValue}"/> which is to receive a new <see cref="ICard{TImage, TValue}"/>.</param>
+		/// <param name="card">The <see cref="ICard{TImage, TValue}"/> to add.</param>
+		public void AddCardToHand(IBlackJackCardHand<TImage, TValue> cardHand, ICard<TImage, TValue> card);
+
+		/// <summary>
+		/// Folds the specified hand, marking it as inactive.
+		/// </summary>
+		/// <param name="cardHand">The specified <see cref="IBlackJackCardHand{TImage, TValue}"/> to fold.</param>
+		public void FoldHand(IBlackJackCardHand<TImage, TValue> cardHand);
+
+		/// <summary>
+		/// Resetting the hands for a new round. This includes clearing the hands and resetting the bets.
+		/// </summary>
 		public void ResetHand();
 		
 	}

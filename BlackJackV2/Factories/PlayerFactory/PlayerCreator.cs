@@ -31,6 +31,6 @@ namespace BlackJackV2.Factories.PlayerFactory
 		/// <returns>
 		/// A new instance of <see cref="IPlayer"/> that represents the created player.
 		/// </returns>
-		public abstract IPlayer CreatePlayer(IBlackJackPlayerHands<TImage, TValue> playerHands, ISubject<BetUpdateEvent> betUpdatedSubject, string name);
+		public abstract IPlayer<TImage, TValue> CreatePlayer(IBlackJackPlayerHands<TImage, TValue> playerHands, ISubject<BetUpdateEvent> betUpdatedSubject, string name);
 	}
 }

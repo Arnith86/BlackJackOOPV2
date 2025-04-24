@@ -28,7 +28,7 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 		/// <returns>
 		/// A fully initialized <see cref="BlackJackPlayerHands"/> instance representing the player or dealer's hands.
 		/// </returns>
-		public override IBlackJackPlayerHands<Bitmap, string> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<Bitmap, string> cardHandCreator)
+		public override IBlackJackPlayerHands<Bitmap, string> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<Bitmap, string> cardHandCreator) // should i use CardHandCreator(abstract) or BlackJackCardHandCreator(concrete creator)
 		{
 			return new BlackJackPlayerHands(id, cardHandCreator);
 		}

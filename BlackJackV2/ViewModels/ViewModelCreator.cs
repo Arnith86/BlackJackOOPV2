@@ -19,22 +19,22 @@ namespace BlackJackV2.ViewModels
 			return new CardHandViewModel(cardHand);
 		}
 
-		public static StatsViewModel CreateStatsViewModel(IGameCoordinator gameCoordinator)
+		public static StatsViewModel CreateStatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
 		{
 			return new StatsViewModel(gameCoordinator);
 		}
 
-		public static ButtonViewModel CreateButtonViewModel(IPlayerRound playerRound)
+		public static ButtonViewModel CreateButtonViewModel(IPlayerRound<Bitmap, string> playerRound)
 		{
 			return new ButtonViewModel(playerRound);
 		}
 
-		public static TableViewModel CreateTableViewModel(IGameCoordinator gameCoordinator)
+		public static TableViewModel CreateTableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
 		{
 			return new TableViewModel(gameCoordinator);
 		}
 
-		public static PlayerViewModel CreatePlayerViewModel(IPlayer player, IGameCoordinator gameCoordinator)
+		public static PlayerViewModel CreatePlayerViewModel(IPlayer<Bitmap, string> player, IGameCoordinator<Bitmap, string> gameCoordinator)
 		{
 			return new PlayerViewModel(player, gameCoordinator);
 		}

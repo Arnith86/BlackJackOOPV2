@@ -14,6 +14,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic;
 
 namespace BlackJackV2.ViewModels
@@ -27,7 +28,7 @@ namespace BlackJackV2.ViewModels
 		public TableViewModel TableViewModel { get; }
 		public ButtonViewModel ButtonViewModel { get; }
 		
-		public MainWindowViewModel(GameLogic gameLogic, IGameCoordinator gameCoordinator, IPlayerRound playerRound)
+		public MainWindowViewModel(GameLogic gameLogic, IGameCoordinator<Bitmap, string> gameCoordinator, IPlayerRound<Bitmap, string> playerRound)
 		{
 			_gameLogic = gameLogic;
 

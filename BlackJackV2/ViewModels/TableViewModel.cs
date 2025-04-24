@@ -24,12 +24,13 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Disposables;
+using Avalonia.Media.Imaging;
 
 namespace BlackJackV2.ViewModels
 {
 	public class TableViewModel : ReactiveObject
 	{
-		private IGameCoordinator _gameCoordinator; 
+		private IGameCoordinator<Bitmap, string> _gameCoordinator; 
 
 		// View models for the dealers
 		public CardHandViewModel DealerCardHandViewModel { get; }
@@ -38,7 +39,7 @@ namespace BlackJackV2.ViewModels
 		public ObservableCollection<PlayerViewModel> playerViewModels { get; private set; }
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
-		public TableViewModel(IGameCoordinator gameCoordinator)
+		public TableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
 		{
 			_gameCoordinator = gameCoordinator;
 			
@@ -55,7 +56,7 @@ namespace BlackJackV2.ViewModels
 		}
 
 		// Update the player view models when the player changed event is received
-		public void UpdatePlayerViewModels(Dictionary<string, IPlayer> playerEvent)
+		public void UpdatePlayerViewModels(Dictionary<string, IPlayer<Bitmap, string>> playerEvent)
 		{
 			// Replace the old player view models with the new ones
 			playerViewModels = new ObservableCollection<PlayerViewModel>();

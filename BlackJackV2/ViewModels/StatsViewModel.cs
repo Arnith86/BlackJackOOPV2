@@ -1,6 +1,7 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/ViewModels/StatsViewModel.cs
 
+using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
@@ -15,13 +16,13 @@ namespace BlackJackV2.ViewModels
 	public class StatsViewModel : ReactiveObject
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");
-		private IPlayer _currentPlayer;
+		private IPlayer<Bitmap, string> _currentPlayer;
 
 		private int _funds;
 		private bool _isBetEnabled;
 		
 		
-		public IPlayer CurrentPlayer
+		public IPlayer<Bitmap, string> CurrentPlayer
 		{
 			get => _currentPlayer;
 			set => this.RaiseAndSetIfChanged(ref _currentPlayer, value);
@@ -43,7 +44,7 @@ namespace BlackJackV2.ViewModels
 
 		private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-		public StatsViewModel(IGameCoordinator gameCoordinator)
+		public StatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
 		{
 			IsBetEnabled = true;
 

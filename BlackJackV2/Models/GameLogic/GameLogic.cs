@@ -1,6 +1,10 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/GameLogic.cs
 
+
+
+using Avalonia.Media.Imaging;
+
 /// <summary>
 ///		TODO: write a summery for this class
 ///		
@@ -31,15 +35,13 @@
 ///		void		OnPlayerChangedReceived(List<string> playerNames)   : Called when the current players are changed
 /// 
 /// </summary>
-
-
 namespace BlackJackV2.Models.GameLogic
 {
 	public class GameLogic
 	{
-		private readonly IGameCoordinator _gameCoordinator;
+		private readonly IGameCoordinator<Bitmap, string> _gameCoordinator;
 
-		public GameLogic( IGameCoordinator gameCoordinator )
+		public GameLogic( IGameCoordinator<Bitmap, string> gameCoordinator )
 		{
 			_gameCoordinator = gameCoordinator;
 		}

@@ -13,6 +13,7 @@
 ///
 /// </summary>
 
+using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Models.GameLogic;
 using ReactiveUI;
@@ -22,14 +23,14 @@ namespace BlackJackV2.ViewModels
 {
 	public class ButtonViewModel : ReactiveObject
 	{
-		private IPlayerRound _playerRound;
+		private IPlayerRound<Bitmap, string> _playerRound;
 		
 		public ReactiveCommand<Unit, Unit> HitCommand { get; }
 		public ReactiveCommand<Unit, Unit> FoldCommand { get; }
 		public ReactiveCommand<Unit, Unit> DoubleDownCommand { get; }
 		public ReactiveCommand<Unit, Unit> SplitCommand { get; }
 		
-		public ButtonViewModel(IPlayerRound playerRound)
+		public ButtonViewModel(IPlayerRound<Bitmap, string> playerRound)
 		{
 			_playerRound = playerRound;
 

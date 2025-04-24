@@ -20,9 +20,9 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.GameLogic
 {
-	public interface IPlayerRound
+	public interface IPlayerRound <TImage, TValue>
 	{
 		public Subject<BlackJackActions.PlayerActions> _playerActionSubject { get; }
-		public Task PlayerTurn(ICardDeck<Bitmap, string> cardDeck, IPlayer player);
+		public Task PlayerTurn(ICardDeck<TImage, TValue> cardDeck, IPlayer<TImage, TValue> player);
 	}
 }

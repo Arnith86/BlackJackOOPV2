@@ -30,11 +30,11 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.GameLogic
 {
-	public interface IGameCoordinator
+	public interface IGameCoordinator<TImage, TValue>
 	{
-		public Subject<Dictionary<string, IPlayer>> PlayerChangedEvent { get; }
+		public Subject<Dictionary<string, IPlayer<TImage, TValue>>> PlayerChangedEvent { get; }
 		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
-		public Subject<IPlayer> BetRequestedEvent { get; }
+		public Subject<IPlayer<TImage, TValue>> BetRequestedEvent { get; }
 		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
 		public IObservable<GameState> GameStateObservable { get; }
 

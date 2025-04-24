@@ -1,7 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/Player/IPlayer.cs
 
-using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Models.PlayerHands;
 
@@ -12,7 +11,7 @@ namespace BlackJackV2.Models.Player
 	/// This interface also supports placing bets, checking fund sufficiency, and receiving payouts.
 	/// Serves as the product in the Player Factory pattern.
 	/// </summary>
-	public interface IPlayer
+	public interface IPlayer<TImage, TValue>
 	{
 		/// <summary>
 		/// Gets the player's name.
@@ -27,7 +26,7 @@ namespace BlackJackV2.Models.Player
 		/// <summary>
 		/// Gets the player's hand wrapper, which includes both primary and split hands.
 		/// </summary>
-		public IBlackJackPlayerHands<Bitmap, string> Hands { get; }
+		public IBlackJackPlayerHands<TImage, TValue> Hands { get; }
 
 		/// <summary>
 		/// Places a bet on the specified hand.

@@ -18,6 +18,7 @@
 ///		
 /// </summary>
 
+using Avalonia.Media.Imaging;
 using BlackJackV2.Constants;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
@@ -29,13 +30,13 @@ namespace BlackJackV2.ViewModels
 {
 	public class PlayerViewModel
 	{
-		public IPlayer Player { get; private set; }
+		public IPlayer<Bitmap,string> Player { get; private set; }
 		public CardHandViewModel PlayerCardHandViewModel { get; }
 		public CardHandViewModel PlayerSplitCardHandViewModel { get; }
 		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; private set; }
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-		public PlayerViewModel(IPlayer player, IGameCoordinator gameCoordinator) 
+		public PlayerViewModel(IPlayer<Bitmap, string> player, IGameCoordinator<Bitmap, string> gameCoordinator) 
 		{
 			Player = player;
 
