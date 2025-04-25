@@ -97,14 +97,14 @@ namespace BlackJackV2.Models.GameLogic
 				PlayerHandsCreator<TImage, TValue> playerCardHandsCreator,
 				PlayerCreator<TImage, TValue> playerCreator,
 				IPlayerRound<TImage, TValue> playerRound,
-				Subject<SplitSuccessfulEvent> splitSuccessfulEvent
+				PlayerAction<TImage, TValue> playerAction,
+				Subject<BetUpdateEvent> betUpdateEvent
 			) 
 		{
 			//TODO:: Seperate into different services, player, dealer, evaluation?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer<TImage, TValue>>>();
-			BetUpdateEvent = new Subject<BetUpdateEvent>();
+			BetUpdateEvent = betUpdateEvent;
 			BetRequestedEvent = new Subject<IPlayer<TImage, TValue>>();
-			SplitSuccessfulEvent = splitSuccessfulEvent;
 
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 
@@ -120,8 +120,6 @@ namespace BlackJackV2.Models.GameLogic
 			_cardDeck = cardDeckCreator.CreateDeck();
 			_dealerCardHand = _playerCardHandsCreator.CreatePlayerHands(HandOwners.HandOwner.Dealer, _cardHandCreator);
 
-
-			playerAction = GameLogicCreator<TImage, TValue>.CreatePlayerAction(splitSuccessfulEvent);
 			dealerLogic = GameLogicCreator<TImage, TValue>.CreateDealerLogic();
 			roundEvaluator = GameLogicCreator<TImage, TValue>.CreateRoundEvaluator();
 			

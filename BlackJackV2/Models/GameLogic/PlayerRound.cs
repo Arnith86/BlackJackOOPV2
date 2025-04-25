@@ -18,6 +18,7 @@
 ///		
 ///	</summary>
 
+using System;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
@@ -28,6 +29,8 @@ using System.Threading.Tasks;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Shared.Constants;
+using System.Reactive.Disposables;
+
 
 namespace BlackJackV2.Models.GameLogic
 {
@@ -47,27 +50,36 @@ namespace BlackJackV2.Models.GameLogic
 		private Queue<IBlackJackCardHand<TImage, TValue>> blackJackCardHands = new Queue<IBlackJackCardHand<TImage, TValue>>();
 
 		// Regesters player actions events
-		public Subject<BlackJackActions.PlayerActions> _playerActionSubject {  get; }
+		public Subject<BlackJackActions.PlayerActions> PlayerActionSubject { get; }
 		
 		//// Notifies when a hand has changed
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
 		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
 
-		private Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
-		
+		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		public PlayerRound(	PlayerAction<TImage, TValue> playerAction, 
 							Subject<BlackJackActions.PlayerActions> playerActionSubject,
 							Subject<SplitSuccessfulEvent> splitSuccessfulEvent )
 		{
 			_playerAction = playerAction;
-			_playerActionSubject = playerActionSubject;
-			_splitSuccessfulEvent = splitSuccessfulEvent;
+			PlayerActionSubject = playerActionSubject;
+			
+			splitSuccessfulEvent
+			.Subscribe(splitEvent =>
+			{
+				// If the player split was successful, add the split hand to the player card view models
+				// and update the bet values
+				if (splitEvent.PlayerName == _player.Name)
+				{
+					blackJackCardHands.Enqueue(_player.Hands.SplitCardHand);
+				}
+			}).DisposeWith(_disposables);
 		}
 
+		// Dispose of the resources
+		public void Dispose() => _disposables.Dispose();
 
-
-		//TODO: DOES NOT HANDLE SPLIT HAND !!!!! FIX
 		// This method is called when the player is taking their turn and register their actions. It handles both the primary and split hand.
 		public async Task PlayerTurn(ICardDeck<TImage, TValue> cardDeck, IPlayer<TImage, TValue> player) 
 		{
@@ -88,7 +100,7 @@ namespace BlackJackV2.Models.GameLogic
 				while (!currentHand.IsBusted && !currentHand.IsFolded && !currentHand.IsBlackJack)
 				{
 					// Pause here and wait until a player does something (Hit, Fold, etc ), and once they do, continue with the loop or logic.
-					BlackJackActions.PlayerActions action = await _playerActionSubject.FirstAsync();
+					BlackJackActions.PlayerActions action = await PlayerActionSubject.FirstAsync();
 					ProcessPlayerAction(action);
 				}
 

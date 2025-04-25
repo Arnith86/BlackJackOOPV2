@@ -9,6 +9,8 @@ using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Services.Events;
+using System.Reactive.Subjects;
 
 namespace BlackJackV2.ViewModels
 {
@@ -29,14 +31,14 @@ namespace BlackJackV2.ViewModels
 			return new ButtonViewModel(playerRound);
 		}
 
-		public static TableViewModel CreateTableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
+		public static TableViewModel CreateTableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
 		{
-			return new TableViewModel(gameCoordinator);
+			return new TableViewModel(gameCoordinator, splitEvent, betUpdateEvent);
 		}
 
-		public static PlayerViewModel CreatePlayerViewModel(IPlayer<Bitmap, string> player, IGameCoordinator<Bitmap, string> gameCoordinator)
+		public static PlayerViewModel CreatePlayerViewModel(IPlayer<Bitmap, string> player, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
 		{
-			return new PlayerViewModel(player, gameCoordinator);
+			return new PlayerViewModel(player, splitEvent, betUpdateEvent);
 		}
 	}
 }

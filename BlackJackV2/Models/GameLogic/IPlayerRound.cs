@@ -20,7 +20,7 @@ namespace BlackJackV2.Models.GameLogic
 {
 	public interface IPlayerRound <TImage, TValue>
 	{
-		public Subject<BlackJackActions.PlayerActions> _playerActionSubject { get; }
+		public Subject<BlackJackActions.PlayerActions> PlayerActionSubject { get; }
 		public Task PlayerTurn(ICardDeck<TImage, TValue> cardDeck, IPlayer<TImage, TValue> player);
 	}
 }

@@ -35,16 +35,16 @@ namespace BlackJackV2.ViewModels
 			_playerRound = playerRound;
 
 			HitCommand = ReactiveCommand.Create(() => 
-				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.Hit)); 
+				_playerRound.PlayerActionSubject.OnNext(BlackJackActions.PlayerActions.Hit)); 
 
 			FoldCommand = ReactiveCommand.Create(() => 
-				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.Fold));
+				_playerRound.PlayerActionSubject.OnNext(BlackJackActions.PlayerActions.Fold));
 			
 			DoubleDownCommand = ReactiveCommand.Create(() =>
-				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.DoubleDown));
+				_playerRound.PlayerActionSubject.OnNext(BlackJackActions.PlayerActions.DoubleDown));
 
 			SplitCommand = ReactiveCommand.Create(() =>
-				_playerRound._playerActionSubject.OnNext(BlackJackActions.PlayerActions.Split));	
+				_playerRound.PlayerActionSubject.OnNext(BlackJackActions.PlayerActions.Split));	
 		}
 	}
 }

@@ -25,12 +25,16 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Disposables;
 using Avalonia.Media.Imaging;
+using BlackJackV2.Services.Events;
+using System.Reactive.Subjects;
 
 namespace BlackJackV2.ViewModels
 {
 	public class TableViewModel : ReactiveObject
 	{
-		private IGameCoordinator<Bitmap, string> _gameCoordinator; 
+		private IGameCoordinator<Bitmap, string> _gameCoordinator;
+		private readonly Subject<SplitSuccessfulEvent> _splitEvent;
+		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
 
 		// View models for the dealers
 		public CardHandViewModel DealerCardHandViewModel { get; }
@@ -39,10 +43,12 @@ namespace BlackJackV2.ViewModels
 		public ObservableCollection<PlayerViewModel> playerViewModels { get; private set; }
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
-		public TableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
+		public TableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
 		{
 			_gameCoordinator = gameCoordinator;
-			
+			_splitEvent = splitEvent;
+			_betUpdateEvent = betUpdateEvent;
+
 			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(gameCoordinator.DealerCardHand.PrimaryCardHand);
 
 			playerViewModels = new ObservableCollection<PlayerViewModel>();
@@ -63,7 +69,7 @@ namespace BlackJackV2.ViewModels
 
 			foreach (var player in playerEvent)
 			{
-				PlayerViewModel playerViewModel = ViewModelCreator.CreatePlayerViewModel(player.Value, _gameCoordinator);
+				PlayerViewModel playerViewModel = ViewModelCreator.CreatePlayerViewModel(player.Value, _splitEvent, _betUpdateEvent);
 				playerViewModels.Add(playerViewModel);
 			}
 		}

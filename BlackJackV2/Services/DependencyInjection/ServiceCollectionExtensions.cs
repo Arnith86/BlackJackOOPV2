@@ -13,6 +13,7 @@ using BlackJackV2.Factories.PlayerFactory;
 using BlackJackV2.Factories.PlayerHandsFactory;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.GameLogic.PlayerServices;
+using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Shared.Utilities.ImageLoader;
@@ -27,28 +28,33 @@ namespace BlackJackV2.Services.DependencyInjection
 		public static void AddLogicServices(this IServiceCollection collection) 
 		{
 			collection.AddSingleton<IImageLoader<Bitmap>, AvaloniaImageLoader>();
+
+			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
+			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
+			collection.AddSingleton<Subject<BetUpdateEvent>>();
+
 			collection.AddSingleton<CardCreator<Bitmap, string>, BlackJackCardCreator<Bitmap, string>>();
 			collection.AddSingleton<CardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator<Bitmap, string>>();
 
 			collection.AddSingleton<CardHandCreator<Bitmap, string>, BlackJackCardHandCreator<Bitmap, string>>();
-
-			//collection.AddSingleton<IBlackJackPlayerHands<Bitmap, string>, BlackJackPlayerHands>();
 			collection.AddSingleton<PlayerHandsCreator<Bitmap, string>, BlackJackPlayerHandsCreator<Bitmap, string>>();
 	
 			collection.AddSingleton<PlayerCreator<Bitmap, string>, BlackJackPlayerCreator<Bitmap, string>>();
-
-			collection.AddSingleton<BetUpdateEvent>();
-
 			
+
 
 			collection.AddSingleton<IGameCoordinator<Bitmap, string>, GameCoordinator<Bitmap, string>>();
 
+
+			collection.AddSingleton<IPlayer<Bitmap, string>, Player<Bitmap, string>>();
+
 			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound<Bitmap, string>>();
 			collection.AddSingleton<PlayerAction<Bitmap, string>>();
-			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
-			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
 			collection.AddSingleton<GameLogic<Bitmap, string>>();
+			
+		
 
+			collection.AddSingleton<TableViewModel>();
 			collection.AddSingleton<MainWindowViewModel>();
 		}
 	}

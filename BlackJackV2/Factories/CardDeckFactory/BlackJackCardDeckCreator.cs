@@ -48,7 +48,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 			int[] values = Enumerable.Range(1, 13).ToArray();
 
 			TImage cardBackImage = _imageLoader.Load("avares://BlackJackV2/Assets/Cards/Card_Back.png");
-			
+
 			foreach (string suite in suites)
 			{
 				foreach (int value in values)
@@ -64,29 +64,29 @@ namespace BlackJackV2.Factories.CardDeckFactory
 
 
 			////// these are not important, only present to allow for continued testing 
-			//Uri cardBackImageUri = new Uri("avares://BlackJackV2/Assets/Cards/Card_Back.png");
-			//Bitmap cardBackImage = new Bitmap(AssetLoader.Open(cardBackImageUri));
-			//Uri cardFrontImageUri = new Uri($"avares://BlackJackV2/Assets/Cards/Hearts_1.png");
-			//Bitmap cardFrontImage = new Bitmap(AssetLoader.Open(cardFrontImageUri));
+			//TImage cardBackImage = _imageLoader.Load("avares://BlackJackV2/Assets/Cards/Card_Back.png");
+			////Bitmap cardBackImage = new Bitmap(AssetLoader.Open(cardBackImageUri));
+			//TImage cardFrontImage = _imageLoader.Load($"avares://BlackJackV2/Assets/Cards/Hearts_1.png");
+			////Bitmap cardFrontImage = new Bitmap(AssetLoader.Open(cardFrontImageUri));
 
-			//ICard<Bitmap, string> card7 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
-			//_cards.Add(card7);
-			//ICard<Bitmap, string> card6 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
-			//_cards.Add(card6);
-			//ICard<Bitmap, string> card1 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
-			//_cards.Add(card1);
-			//ICard<Bitmap, string> card2 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Clubs_1");
-			//_cards.Add(card2);
-			//ICard<Bitmap, string> card3 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Spades_1");
-			//_cards.Add(card3);
-			//ICard<Bitmap, string> card4 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Dimonds_1");
-			//_cards.Add(card4);
-			//ICard<Bitmap, string> card5 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
-			//_cards.Add(card5);
-			//ICard<Bitmap, string> card8 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
-			//_cards.Add(card8);
-			//ICard<Bitmap, string> card9 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
-			//_cards.Add(card9);
+			//ICard<TImage, TValue> card7 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card7);
+			//ICard<TImage, TValue> card6 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card6);
+			//ICard<TImage, TValue> card1 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card1);
+			//ICard<TImage, TValue> card2 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Clubs_1");
+			//cards.Add(card2);
+			//ICard<TImage, TValue> card3 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Spades_1");
+			//cards.Add(card3);
+			//ICard<TImage, TValue> card4 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Dimonds_1");
+			//cards.Add(card4);
+			//ICard<TImage, TValue> card5 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card5);
+			//ICard<TImage, TValue> card8 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card8);
+			//ICard<TImage, TValue> card9 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card9);
 
 			return new BlackJackCardDeck<TImage, TValue>(cards);
 		}

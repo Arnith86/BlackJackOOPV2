@@ -19,12 +19,13 @@
 /// </summary>
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using System.Reactive.Subjects;
 
 namespace BlackJackV2.ViewModels
 {
@@ -36,7 +37,7 @@ namespace BlackJackV2.ViewModels
 		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; private set; }
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-		public PlayerViewModel(IPlayer<Bitmap, string> player, IGameCoordinator<Bitmap, string> gameCoordinator) 
+		public PlayerViewModel(IPlayer<Bitmap, string> player, Subject<SplitSuccessfulEvent> splitSuccessfulEvent, Subject<BetUpdateEvent> betUpdateEvent) 
 		{
 			Player = player;
 
@@ -49,15 +50,17 @@ namespace BlackJackV2.ViewModels
 				PlayerCardHandViewModel
 			};
 
-			gameCoordinator.BetUpdateEvent
-				.Subscribe(betEvent => {
-					// Update the player bet when the bet is updated
-					SyncPlayerBet(betEvent.PlayerName);
-				})
-				.DisposeWith(_disposables);
+			betUpdateEvent
+			.Subscribe(betEvent => 
+			{
+				// Update the player bet when the bet is updated
+				SyncPlayerBet(betEvent.PlayerName);
+			
+			}).DisposeWith(_disposables);
 
 			// Listen for the player split event
-			gameCoordinator.SplitSuccessfulEvent.Subscribe(splitEvent =>
+			splitSuccessfulEvent
+			.Subscribe(splitEvent =>
 			{
 				// If the player split was successful, add the split hand to the player card view models
 				// and update the bet values
