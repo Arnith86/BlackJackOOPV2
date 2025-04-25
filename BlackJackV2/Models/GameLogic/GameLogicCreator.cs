@@ -14,10 +14,10 @@
 /// </summary>
 
 using System.Reactive.Subjects;
-using BlackJackV2.Constants;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.PlayerServices;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.GameLogic
 {

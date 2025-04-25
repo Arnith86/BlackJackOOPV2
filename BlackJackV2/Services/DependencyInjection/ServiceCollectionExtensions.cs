@@ -6,7 +6,6 @@
 /// </summary>
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Factories.CardDeckFactory;
 using BlackJackV2.Factories.CardFactory;
 using BlackJackV2.Factories.CardHandFactory;
@@ -15,6 +14,7 @@ using BlackJackV2.Factories.PlayerHandsFactory;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Services.Events;
+using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reactive.Subjects;

@@ -19,9 +19,9 @@
 /// </summary>
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Shared.Constants;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;

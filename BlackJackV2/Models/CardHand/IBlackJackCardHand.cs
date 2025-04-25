@@ -1,8 +1,8 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardHand/BlackJackCardHandCreator.cs
 
-using BlackJackV2.Constants;
 using BlackJackV2.Models.Card;
+using BlackJackV2.Shared.Constants;
 using System.Collections.ObjectModel;
 
 namespace BlackJackV2.Models.CardHand

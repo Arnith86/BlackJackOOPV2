@@ -2,8 +2,8 @@
 // file: BlackJackV2/Models/CardHand/BlackJackCardHand.cs
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Models.Card;
+using BlackJackV2.Shared.Constants;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Linq;

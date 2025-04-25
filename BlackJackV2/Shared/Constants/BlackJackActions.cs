@@ -1,11 +1,11 @@
 ﻿// Project: BlackJackV2
-// file: BlackJackV2/Constants/BlackJackActions.cs 
+// file: BlackJackV2/Shared/Constants/BlackJackActions.cs 
+
 
 /// <summary>
 ///		Contains possible actions in the blackjack game
 /// </summary> 
-
-namespace BlackJackV2.Constants
+namespace BlackJackV2.Shared.Constants
 {
 	public static class BlackJackActions
 	{

@@ -1,12 +1,11 @@
-﻿using Avalonia.Media.Imaging;
-using BlackJackV2.Models.Card;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/Shared/Utilities/CardToValueUtility.cs
 
-namespace BlackJackV2.UtilityClasses
+using Avalonia.Media.Imaging;
+using BlackJackV2.Models.Card;
+using System.Linq;
+
+namespace BlackJackV2.Shared.UtilityClasses
 {
 	public static class CardToValueUtility
 	{

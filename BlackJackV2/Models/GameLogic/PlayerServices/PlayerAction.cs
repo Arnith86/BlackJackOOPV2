@@ -2,7 +2,6 @@
 // file: BlackJackV2/Models/GameLogic/PlayerServices/PlayerAction.cs
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.PlayerHands;
@@ -10,6 +9,7 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using System.Diagnostics;
 using System.Reactive.Subjects;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.GameLogic.PlayerServices
 {

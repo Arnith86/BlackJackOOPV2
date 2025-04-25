@@ -10,7 +10,7 @@
 ///
 /// </summary>
 
-using BlackJackV2.Constants;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Services.Events
 {

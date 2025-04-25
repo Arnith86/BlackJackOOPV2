@@ -3,11 +3,11 @@
 
 using Avalonia.Media.Imaging;
 using ReactiveUI;
-using BlackJackV2.Constants;
 using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.Player
 {

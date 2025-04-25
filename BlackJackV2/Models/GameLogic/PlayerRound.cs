@@ -18,7 +18,6 @@
 ///		
 ///	</summary>
 
-using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.Player;
@@ -29,6 +28,7 @@ using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Models.GameLogic.PlayerServices;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.GameLogic
 {

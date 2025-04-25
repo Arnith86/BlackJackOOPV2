@@ -3,11 +3,11 @@
 
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.UtilityClasses;
+using BlackJackV2.Shared.Constants;
+using BlackJackV2.Shared.UtilityClasses;
 using System;
 using System.Collections.Generic;
 

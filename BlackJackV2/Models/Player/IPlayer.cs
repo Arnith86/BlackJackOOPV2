@@ -1,8 +1,8 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/Player/IPlayer.cs
 
-using BlackJackV2.Constants;
 using BlackJackV2.Models.PlayerHands;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.Player
 {

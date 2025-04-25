@@ -2,8 +2,8 @@
 // file: BlackJackV2/Models/Player/IPlayerHands.cs
 
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.Constants;
 using BlackJackV2.Models.Card;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.PlayerHands
 {

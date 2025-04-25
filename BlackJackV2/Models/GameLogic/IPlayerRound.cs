@@ -3,9 +3,9 @@
 
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Shared.Constants;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 

@@ -3,7 +3,6 @@
 
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Constants;
 using BlackJackV2.Factories.CardDeckFactory;
 using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Factories.PlayerFactory;
@@ -15,6 +14,7 @@ using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Services.Events;
+using BlackJackV2.Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
