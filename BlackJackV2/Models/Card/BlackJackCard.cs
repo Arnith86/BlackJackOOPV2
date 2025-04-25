@@ -1,7 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardFactory/BlackJackCard.cs
 
-using Avalonia.Media.Imaging;
 using ReactiveUI;
 using System;
 using System.Reactive.Disposables;
@@ -14,21 +13,21 @@ namespace BlackJackV2.Models.Card
 	/// Implements the <see cref="ICard{TImage, TValue}"/> interface for use in a card factory.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Factories.CardFactory"/></remarks>
-	public class BlackJackCard : ReactiveObject,  ICard<Bitmap, string>
+	public class BlackJackCard<TImage, TValue> : ReactiveObject,  ICard<TImage, TValue>
 	{
 		/// <inheritdoc/>
-		public Bitmap CurrentImage => FaceDown ? BackImage : FrontImage;
+		public TImage CurrentImage => FaceDown ? BackImage : FrontImage;
 
 		/// <inheritdoc/>
-		public Bitmap FrontImage { get; private set; }
+		public TImage FrontImage { get; private set; }
 
 		/// <inheritdoc/>
-		public Bitmap BackImage { get; private set; }
+		public TImage BackImage { get; private set; }
 
 		/// <summary>
 		/// Gets the the string representation of the card's value (e.g., "Hearts_10", "Diamons_Knight"). 
 		/// </summary>
-		public string Value { get; private set; }
+		public TValue Value { get; private set; }
 		
 		/// <summary>
 		/// Gets or sets a value indicating whether the card is face down.
@@ -58,7 +57,7 @@ namespace BlackJackV2.Models.Card
 		/// <param name="frontImage">The image representing the front of the card.</param>
 		/// <param name="backImage">The image representing the back of the card.</param>
 		/// <param name="value">The string value of the card (e.g., "Spades_Knight" or "Hearts_2").</param>
-		public BlackJackCard(Bitmap frontImage, Bitmap backImage, string value)
+		public BlackJackCard(TImage frontImage, TImage backImage, TValue value)
 		{
 			FrontImage = frontImage;
 			BackImage = backImage;

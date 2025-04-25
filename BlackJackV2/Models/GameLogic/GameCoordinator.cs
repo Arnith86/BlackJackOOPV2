@@ -2,7 +2,6 @@
 // file: BlackJackV2/Models/GameLogic/GameCoordinator.cs
 
 
-using Avalonia.Media.Imaging;
 using BlackJackV2.Factories.CardDeckFactory;
 using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Factories.PlayerFactory;
@@ -45,16 +44,16 @@ using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.GameLogic
 {
-	public class GameCoordinator : IGameCoordinator<Bitmap, string>
+	public class GameCoordinator<TImage, TValue> : IGameCoordinator<TImage, TValue>
 	{
 		// Subject to notify if players in game change
-		public Subject<Dictionary<string, IPlayer<Bitmap, string>>> PlayerChangedEvent { get; }
+		public Subject<Dictionary<string, IPlayer<TImage, TValue>>> PlayerChangedEvent { get; }
 
 		// Used to notify when the bet value is updated
 		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
 
 		// Subject to notify when the bet is requested
-		public Subject<IPlayer<Bitmap, string>> BetRequestedEvent { get; }
+		public Subject<IPlayer<TImage, TValue>> BetRequestedEvent { get; }
 
 		// Subject to notify when the player split is successful
 		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
@@ -68,48 +67,48 @@ namespace BlackJackV2.Models.GameLogic
 		private Dictionary<string, TaskCompletionSource<int>> _betInputTask;
 
 		// Used to create a deck of cards
-		private ICardDeck<Bitmap, string> _cardDeck;
+		private ICardDeck<TImage, TValue> _cardDeck;
 		// Handles the blackjack related actions the players can take
-		private PlayerAction playerAction;
+		private PlayerAction<TImage, TValue> playerAction;
 		// Handles the dealer's turn in a blackjack game
-		private DealerServices dealerLogic;
+		private DealerServices<TImage, TValue> dealerLogic;
 		// Handles the evaluation of the round
-		private RoundEvaluator roundEvaluator;
+		private RoundEvaluator<TImage, TValue> roundEvaluator;
 		// Handles all rounds related to a players hands
-		public IPlayerRound<Bitmap, string> _playerRound;
+		public IPlayerRound<TImage, TValue> _playerRound;
 
 
 		// A collection of players in the game
-		public Dictionary<string, IPlayer<Bitmap, string>> Players { get; }
+		public Dictionary<string, IPlayer<TImage, TValue>> Players { get; }
 
 		// Represents the dealers hands
-		private IBlackJackPlayerHands<Bitmap, string> _dealerCardHand;
-		public IBlackJackPlayerHands<Bitmap, string> DealerCardHand { get => _dealerCardHand; }
+		private IBlackJackPlayerHands<TImage, TValue> _dealerCardHand;
+		public IBlackJackPlayerHands<TImage, TValue> DealerCardHand { get => _dealerCardHand; }
 
 		// These objects will be removed when the coordinator is implemented
-		CardHandCreator<Bitmap, string> _cardHandCreator;
-		PlayerHandsCreator<Bitmap, string> _playerCardHandsCreator;
-		PlayerCreator<Bitmap, string> _playerCreator;
+		CardHandCreator<TImage, TValue> _cardHandCreator;
+		PlayerHandsCreator<TImage, TValue> _playerCardHandsCreator;
+		PlayerCreator<TImage, TValue> _playerCreator;
 
 
 		public GameCoordinator(
-				CardDeckCreator<Bitmap, string> cardDeckCreator,
-				CardHandCreator<Bitmap, string> cardHandCreator,
-				PlayerHandsCreator<Bitmap, string> playerCardHandsCreator,
-				PlayerCreator<Bitmap, string> playerCreator,
-				IPlayerRound<Bitmap, string> playerRound,
+				CardDeckCreator<TImage, TValue> cardDeckCreator,
+				CardHandCreator<TImage, TValue> cardHandCreator,
+				PlayerHandsCreator<TImage, TValue> playerCardHandsCreator,
+				PlayerCreator<TImage, TValue> playerCreator,
+				IPlayerRound<TImage, TValue> playerRound,
 				Subject<SplitSuccessfulEvent> splitSuccessfulEvent
 			) 
 		{
 			//TODO:: Seperate into different services, player, dealer, evaluation?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer<Bitmap, string>>>();
+			PlayerChangedEvent = new Subject<Dictionary<string, IPlayer<TImage, TValue>>>();
 			BetUpdateEvent = new Subject<BetUpdateEvent>();
-			BetRequestedEvent = new Subject<IPlayer<Bitmap, string>>();
+			BetRequestedEvent = new Subject<IPlayer<TImage, TValue>>();
 			SplitSuccessfulEvent = splitSuccessfulEvent;
 
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 
-			Players = new Dictionary<string, IPlayer<Bitmap, string>>();
+			Players = new Dictionary<string, IPlayer<TImage, TValue>>();
 
 			_playerRound = playerRound;
 
@@ -122,9 +121,9 @@ namespace BlackJackV2.Models.GameLogic
 			_dealerCardHand = _playerCardHandsCreator.CreatePlayerHands(HandOwners.HandOwner.Dealer, _cardHandCreator);
 
 
-			playerAction = GameLogicCreator.CreatePlayerAction(splitSuccessfulEvent);
-			dealerLogic = GameLogicCreator.CreateDealerLogic();
-			roundEvaluator = GameLogicCreator.CreateRoundEvaluator();
+			playerAction = GameLogicCreator<TImage, TValue>.CreatePlayerAction(splitSuccessfulEvent);
+			dealerLogic = GameLogicCreator<TImage, TValue>.CreateDealerLogic();
+			roundEvaluator = GameLogicCreator<TImage, TValue>.CreateRoundEvaluator();
 			
 		}
 
@@ -147,11 +146,11 @@ namespace BlackJackV2.Models.GameLogic
 		// Initiates and wait for player bets retrival
 		public async Task RegisterBetForNewRound()
 		{
-			foreach (KeyValuePair<string, IPlayer<Bitmap, string>> player in Players)
+			foreach (KeyValuePair<string, IPlayer<TImage, TValue>> player in Players)
 			{
 
 				string playerName = player.Key;
-				IPlayer<Bitmap, string> currentPlayer = player.Value;
+				IPlayer<TImage, TValue> currentPlayer = player.Value;
 
 				// Adds a new completion source for the bet input task
 				TaskCompletionSource<int> betInputTask = new TaskCompletionSource<int>();
@@ -197,7 +196,7 @@ namespace BlackJackV2.Models.GameLogic
 			// Gives dealer his initial cards
 			dealerLogic.InitialDeal(DealerCardHand, _cardDeck);
 
-			foreach (KeyValuePair<string, IPlayer<Bitmap, string>> player in Players)
+			foreach (KeyValuePair<string, IPlayer<TImage, TValue>> player in Players)
 			{
 				// Player conducts their turn
 				await _playerRound.PlayerTurn(_cardDeck, player.Value);
@@ -217,7 +216,7 @@ namespace BlackJackV2.Models.GameLogic
 			//Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
 		}
 
-		private void EvaluateSingleHand(BlackJackCardHand cardHand)
+		private void EvaluateSingleHand(BlackJackCardHand<TImage, TValue> cardHand)
 		{
 
 		}

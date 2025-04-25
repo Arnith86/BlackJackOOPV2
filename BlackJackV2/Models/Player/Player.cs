@@ -1,12 +1,10 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/Player/Player.cs
 
-using Avalonia.Media.Imaging;
 using ReactiveUI;
 using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.PlayerHands;
-using BlackJackV2.Models.CardHand;
 using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.Player
@@ -15,7 +13,7 @@ namespace BlackJackV2.Models.Player
 	/// This class represents a player in a blackjack game.
 	///	The player will start with a set amount of funds and can place bets on their hands.
 	/// </summary>
-	public class Player : ReactiveObject, IPlayer<Bitmap, string>
+	public class Player<TImage, TValue> : ReactiveObject, IPlayer<TImage, TValue>
 	{
 		/// <inheritdoc/>
 		public string Name { get; private set; }
@@ -31,7 +29,7 @@ namespace BlackJackV2.Models.Player
 		/// <summary>
 		/// Gets the wrapper class containing the player's primary and split hands.
 		/// </summary>
-		public IBlackJackPlayerHands<Bitmap, string> Hands { get; }
+		public IBlackJackPlayerHands<TImage, TValue> Hands { get; }
 
 		/// <summary>
 		///	The subject used to notify when the bet is updated 
@@ -45,7 +43,7 @@ namespace BlackJackV2.Models.Player
 		/// <param name="hands">The wrapper for the primary and split hands.</param>
 		/// <param name="betUpdateSubject">Subject used to notify when a bet has been placed.</param>
 		/// <remarks> Related files <see cref="BlackJackV2.Factories.PlayerFactory"/></remarks>
-		public Player(string name, IBlackJackPlayerHands<Bitmap, string> hands, ISubject<BetUpdateEvent> betUpdateSubject)
+		public Player(string name, IBlackJackPlayerHands<TImage, TValue> hands, ISubject<BetUpdateEvent> betUpdateSubject)
 		{
 			Name = name;
 			this.Hands = hands;

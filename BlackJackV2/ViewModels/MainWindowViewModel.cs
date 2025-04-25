@@ -22,13 +22,13 @@ namespace BlackJackV2.ViewModels
 	public class MainWindowViewModel : ViewModelBase
     {
 
-		private GameLogic _gameLogic;
+		private GameLogic<Bitmap, string> _gameLogic;
 		
 		public StatsViewModel StatsViewModel { get; }
 		public TableViewModel TableViewModel { get; }
 		public ButtonViewModel ButtonViewModel { get; }
 		
-		public MainWindowViewModel(GameLogic gameLogic, IGameCoordinator<Bitmap, string> gameCoordinator, IPlayerRound<Bitmap, string> playerRound)
+		public MainWindowViewModel(GameLogic<Bitmap, string> gameLogic, IGameCoordinator<Bitmap, string> gameCoordinator, IPlayerRound<Bitmap, string> playerRound)
 		{
 			_gameLogic = gameLogic;
 

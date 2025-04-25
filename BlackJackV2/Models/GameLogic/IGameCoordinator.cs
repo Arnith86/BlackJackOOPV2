@@ -18,8 +18,6 @@
 ///		void		OnBetInputReceived(string playerName, int betInput)	: Called when the player inputs their bet
 ///		void		OnPlayerChangedReceived(List<string> playerNames)   : Called when the current players are changed
 /// </summary>
-
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Services.Events;
@@ -38,7 +36,7 @@ namespace BlackJackV2.Models.GameLogic
 		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
 		public IObservable<GameState> GameStateObservable { get; }
 
-		public IBlackJackPlayerHands<Bitmap, string> DealerCardHand {  get; }
+		public IBlackJackPlayerHands<TImage, TValue> DealerCardHand {  get; }
 
 		public Task RegisterBetForNewRound();
 		public Task StartNewRound();

@@ -25,27 +25,26 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.GameLogic
 {
-	public class PlayerRound : IPlayerRound<Bitmap, string>
+	public class PlayerRound<TImage, TValue> : IPlayerRound<TImage, TValue>
 	{
-		private ICardDeck<Bitmap, string> _cardDeck;
+		private ICardDeck<TImage, TValue> _cardDeck;
 
-		private IPlayer<Bitmap, string> _player;
+		private IPlayer<TImage, TValue> _player;
 		
 		// The player action class handles the blackjack related actions the players can take
-		private PlayerAction _playerAction;
+		private PlayerAction<TImage, TValue> _playerAction;
 
 		// The current active hand in the game
-		private IBlackJackCardHand<Bitmap, string> currentHand;
+		private IBlackJackCardHand<TImage, TValue> currentHand;
 
 		// Queue of card hands to handle
-		private Queue<IBlackJackCardHand<Bitmap, string>> blackJackCardHands = new Queue<IBlackJackCardHand<Bitmap, string>>();
+		private Queue<IBlackJackCardHand<TImage, TValue>> blackJackCardHands = new Queue<IBlackJackCardHand<TImage, TValue>>();
 
 		// Regesters player actions events
 		public Subject<BlackJackActions.PlayerActions> _playerActionSubject {  get; }
@@ -57,7 +56,7 @@ namespace BlackJackV2.Models.GameLogic
 		private Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
 		
 
-		public PlayerRound(	PlayerAction playerAction, 
+		public PlayerRound(	PlayerAction<TImage, TValue> playerAction, 
 							Subject<BlackJackActions.PlayerActions> playerActionSubject,
 							Subject<SplitSuccessfulEvent> splitSuccessfulEvent )
 		{
@@ -70,7 +69,7 @@ namespace BlackJackV2.Models.GameLogic
 
 		//TODO: DOES NOT HANDLE SPLIT HAND !!!!! FIX
 		// This method is called when the player is taking their turn and register their actions. It handles both the primary and split hand.
-		public async Task PlayerTurn(ICardDeck<Bitmap, string> cardDeck, IPlayer<Bitmap, string> player) 
+		public async Task PlayerTurn(ICardDeck<TImage, TValue> cardDeck, IPlayer<TImage, TValue> player) 
 		{
 			_cardDeck = cardDeck;
 			_player = player;

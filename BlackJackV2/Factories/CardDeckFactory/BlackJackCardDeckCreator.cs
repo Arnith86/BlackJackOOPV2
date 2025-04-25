@@ -1,13 +1,12 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardDeck/BlackJackCardDeckCreator.cs
 
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using BlackJackV2.Factories.CardFactory;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardDeck;
 using System.Collections.Generic;
-using System;
+using System.Linq;
+using BlackJackV2.Shared.Utilities.ImageLoader;
 
 namespace BlackJackV2.Factories.CardDeckFactory
 {
@@ -19,13 +18,20 @@ namespace BlackJackV2.Factories.CardDeckFactory
 	/// (13 cards across 4 suites), each with a front and back image.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Models.CardDeck"/></remarks>
-	internal class BlackJackCardDeckCreator : CardDeckCreator<Bitmap, string>
+	internal class BlackJackCardDeckCreator<TImage, TValue> : CardDeckCreator<TImage, TValue>
 	{
-		private CardCreator<Bitmap, string> _cardCreator;
-		
-		public BlackJackCardDeckCreator(CardCreator<Bitmap, string> cardCreator) 
+		private readonly CardCreator<TImage, TValue> _cardCreator;
+		private readonly IImageLoader<TImage> _imageLoader;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BlackJackCardDeckCreator"/> class.
+		/// </summary>
+		/// <param name="cardCreator">Creator for individual cards, used to generate the deck.</param>
+		/// <param name="imageLoader">Loader for card images, used to load front and back images.</param>
+		public BlackJackCardDeckCreator(CardCreator<TImage, TValue> cardCreator, IImageLoader<TImage> imageLoader) 
 		{
 			_cardCreator = cardCreator;
+			_imageLoader = imageLoader;
 		}
 
 		/// <summary>
@@ -34,25 +40,23 @@ namespace BlackJackV2.Factories.CardDeckFactory
 		/// <returns>
 		/// Fully populated <see cref="BlackJackCardDeck"/> representing a standard 52-card Blackjack deck. 
 		/// </returns>
-		public override ICardDeck<Bitmap, string> CreateDeck()
+		public override ICardDeck<TImage, TValue> CreateDeck()
 		{
-			List<ICard<Bitmap, string>> cards = new List<ICard<Bitmap, string>>();
+			List<ICard<TImage, TValue>> cards = new List<ICard<TImage, TValue>>();
 
 			string[] suites = { "Hearts", "Dimonds", "Clubs", "Spades" };
-			int[] values = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+			int[] values = Enumerable.Range(1, 13).ToArray();
 
-			Uri cardBackImageUri = new Uri("avares://BlackJackV2/Assets/Cards/Card_Back.png");
-			Bitmap cardBackImage = new Bitmap(AssetLoader.Open(cardBackImageUri));
-
-
+			TImage cardBackImage = _imageLoader.Load("avares://BlackJackV2/Assets/Cards/Card_Back.png");
+			
 			foreach (string suite in suites)
 			{
 				foreach (int value in values)
 				{
-					Uri cardFrontImageUri = new Uri($"avares://BlackJackV2/Assets/Cards/{suite}_{value}.png");
-					Bitmap cardFrontImage = new Bitmap(AssetLoader.Open(cardFrontImageUri));
+					TImage cardFrontImage = _imageLoader.Load($"avares://BlackJackV2/Assets/Cards/{suite}_{value}.png");
+					TValue lable = (TValue)(object)$"{suite}_{value.ToString()}";
 
-					ICard<Bitmap, string> card = _cardCreator.CreateCard(cardFrontImage, cardBackImage, $"{suite}_{value.ToString()}");
+					ICard<TImage, TValue> card = _cardCreator.CreateCard(cardFrontImage, cardBackImage, lable);
 
 					cards.Add(card);
 				}
@@ -84,7 +88,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 			//ICard<Bitmap, string> card9 = cardCreator.CreateCard(cardFrontImage, cardBackImage, "Hearts_1");
 			//_cards.Add(card9);
 
-			return new BlackJackCardDeck(cards);
+			return new BlackJackCardDeck<TImage, TValue>(cards);
 		}
 	}
 }

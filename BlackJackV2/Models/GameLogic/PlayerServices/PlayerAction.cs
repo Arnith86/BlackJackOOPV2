@@ -1,7 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/PlayerServices/PlayerAction.cs
 
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.PlayerHands;
@@ -16,7 +15,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 	/// <summary>	
 	///	Handels the blackjack related actions the players can take.  
 	///	</summary>
-	public class PlayerAction : IPlayerAction<Bitmap, string>
+	public class PlayerAction<TImage, TValue> : IPlayerAction<TImage, TValue>
 	{
 		/// <summary>
 		/// Notifies when a split was successful
@@ -36,9 +35,9 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// Performs the Hit action by adding a card to the specified hand,
 		/// provided the hand is neither busted nor folded.
 		/// <inheritdoc/>
-		public void PerformHit(	IBlackJackPlayerHands<Bitmap, string> playerHands, 
-								IBlackJackCardHand<Bitmap, string> cardHand, 
-								ICardDeck<Bitmap, string> blackJackCardDeck)
+		public void PerformHit(	IBlackJackPlayerHands<TImage, TValue> playerHands, 
+								IBlackJackCardHand<TImage, TValue> cardHand, 
+								ICardDeck<TImage, TValue> blackJackCardDeck)
 		{
 			if (!cardHand.IsBusted && !cardHand.IsFolded)
 				playerHands.AddCardToHand(cardHand, blackJackCardDeck.GetTopCard());
@@ -48,9 +47,9 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// Performs the Double Down action by adding a card to the specified hand and double the chosen bet,
 		/// provided the hand is neither busted nor folded, and that there are enough funds.
 		/// <inheritdoc/>
-		public void PerformDoubleDown(	IPlayer<Bitmap, string> player,
-										IBlackJackCardHand<Bitmap, string> cardHand,
-										ICardDeck<Bitmap, string> blackJackCardDeck)
+		public void PerformDoubleDown(	IPlayer<TImage, TValue> player,
+										IBlackJackCardHand<TImage, TValue> cardHand,
+										ICardDeck<TImage, TValue> blackJackCardDeck)
 		{
 			int bet = player.Hands.GetBetFromHand(cardHand.Id);
 
@@ -71,9 +70,9 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		// TODO: Show that the player has busted
 		/// provided the hand is neither busted nor folded.
 		/// <inheritdoc/>
-		public void PerformFold(	IBlackJackPlayerHands<Bitmap, string> playerHands, 
-									IBlackJackCardHand<Bitmap, string> cardHand, 
-									ICardDeck<Bitmap, string> blackJackCardDeck)
+		public void PerformFold(	IBlackJackPlayerHands<TImage, TValue> playerHands, 
+									IBlackJackCardHand<TImage, TValue> cardHand, 
+									ICardDeck<TImage, TValue> blackJackCardDeck)
 		{
 			if (!cardHand.IsBusted)
 				playerHands.FoldHand(cardHand);
@@ -82,8 +81,8 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// Performs the Split action by moving the second card to the split hand and adding a card to each hand,
 		/// provided the hand is neither busted nor folded, and there is enough funds.
 		/// <inheritdoc/>
-		public void PerformSplit(	IPlayer<Bitmap, string> player,
-									ICardDeck<Bitmap, string> blackJackCardDeck)
+		public void PerformSplit(	IPlayer<TImage, TValue> player,
+									ICardDeck<TImage, TValue> blackJackCardDeck)
 		{
 			int primaryBet = player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
 

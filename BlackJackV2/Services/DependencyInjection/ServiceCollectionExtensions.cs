@@ -15,6 +15,7 @@ using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
+using BlackJackV2.Shared.Utilities.ImageLoader;
 using BlackJackV2.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reactive.Subjects;
@@ -25,28 +26,28 @@ namespace BlackJackV2.Services.DependencyInjection
 	{
 		public static void AddLogicServices(this IServiceCollection collection) 
 		{
-			
-			collection.AddSingleton<CardCreator<Bitmap, string>, BlackJackCardCreator>();
-			collection.AddSingleton<CardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator>();
+			collection.AddSingleton<IImageLoader<Bitmap>, AvaloniaImageLoader>();
+			collection.AddSingleton<CardCreator<Bitmap, string>, BlackJackCardCreator<Bitmap, string>>();
+			collection.AddSingleton<CardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator<Bitmap, string>>();
 
-			collection.AddSingleton<CardHandCreator<Bitmap, string>, BlackJackCardHandCreator>();
+			collection.AddSingleton<CardHandCreator<Bitmap, string>, BlackJackCardHandCreator<Bitmap, string>>();
 
 			//collection.AddSingleton<IBlackJackPlayerHands<Bitmap, string>, BlackJackPlayerHands>();
-			collection.AddSingleton<PlayerHandsCreator<Bitmap, string>, BlackJackPlayerHandsCreator>();
+			collection.AddSingleton<PlayerHandsCreator<Bitmap, string>, BlackJackPlayerHandsCreator<Bitmap, string>>();
 	
-			collection.AddSingleton<PlayerCreator<Bitmap, string>, BlackJackPlayerCreator>();
+			collection.AddSingleton<PlayerCreator<Bitmap, string>, BlackJackPlayerCreator<Bitmap, string>>();
 
 			collection.AddSingleton<BetUpdateEvent>();
 
 			
 
-			collection.AddSingleton<IGameCoordinator<Bitmap, string>, GameCoordinator>();
+			collection.AddSingleton<IGameCoordinator<Bitmap, string>, GameCoordinator<Bitmap, string>>();
 
-			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound>();
-			collection.AddSingleton<PlayerAction>();
+			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound<Bitmap, string>>();
+			collection.AddSingleton<PlayerAction<Bitmap, string>>();
 			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
-			collection.AddSingleton<GameLogic>();
+			collection.AddSingleton<GameLogic<Bitmap, string>>();
 
 			collection.AddSingleton<MainWindowViewModel>();
 		}

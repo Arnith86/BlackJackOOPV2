@@ -1,12 +1,9 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/Dealer_Services/DealerLogic.cs
 
-
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.PlayerHands;
-using System;
 
 namespace BlackJackV2.Models.GameLogic.Dealer_Services
 {
@@ -15,19 +12,19 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 	/// Including the initial deal and the dealer's logic during their turn.
 	/// The dealer only uses the <see cref="IBlackJackPlayerHands{TImage, TValue}.PrimaryCardHand"/>.
 	/// </summary>
-	public class DealerServices : IDealerServices<Bitmap, string>
+	public class DealerServices<TImage, TValue> : IDealerServices<TImage, TValue>
 	{
 		///<inheritdoc/>
-		public void InitialDeal(IBlackJackPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
+		public void InitialDeal(IBlackJackPlayerHands<TImage, TValue> dealerHands, ICardDeck<TImage, TValue> cardDeck)
 		{
-			ICard<Bitmap, string> firstCard = cardDeck.GetTopCard();
+			ICard<TImage, TValue> firstCard = cardDeck.GetTopCard();
 			firstCard.FlipCard();
 			dealerHands.PrimaryCardHand.AddCard(firstCard);
 			dealerHands.PrimaryCardHand.AddCard(cardDeck.GetTopCard());
 		}
 
 		///<inheritdoc/>
-		public void DealerFinishTurn(IBlackJackPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
+		public void DealerFinishTurn(IBlackJackPlayerHands<TImage, TValue> dealerHands, ICardDeck<TImage, TValue> cardDeck)
 		{
 			dealerHands.PrimaryCardHand.Hand[0].FlipCard();
 			dealerHands.PrimaryCardHand.RecalculateHandAfterCardFlip();
@@ -37,10 +34,10 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 		}
 
 		// Dealer must hit until they reach a total of 17 or higher
-		private void DrawUntillSeventeen(IBlackJackPlayerHands<Bitmap, string> dealerHands, ICardDeck<Bitmap, string> cardDeck)
+		private void DrawUntillSeventeen(IBlackJackPlayerHands<TImage, TValue> dealerHands, ICardDeck<TImage, TValue> cardDeck)
 		{
 			while (dealerHands.PrimaryCardHand.HandValue < 17)
-				dealerHands.PrimaryCardHand.AddCard((BlackJackCard)cardDeck.GetTopCard());
+				dealerHands.PrimaryCardHand.AddCard(cardDeck.GetTopCard());
 		}
 	}
 }

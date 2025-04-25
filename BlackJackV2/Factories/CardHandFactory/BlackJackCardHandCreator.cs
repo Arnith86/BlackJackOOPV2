@@ -1,7 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Factories/CardHandFactory/BlackJackCardHandCreator.cs
 
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardHand;
 
 namespace BlackJackV2.Factories.CardHandFactory
@@ -11,7 +10,7 @@ namespace BlackJackV2.Factories.CardHandFactory
 	///	This class creates a fully initialized <see cref="BlackJackCardHand"/> object.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Models.CardHand"/></remarks>
-	public class BlackJackCardHandCreator : CardHandCreator<Bitmap, string>
+	public class BlackJackCardHandCreator<TImage, TValue> : CardHandCreator<TImage, TValue>
 	{
 		/// <summary>
 		///	Creates a new BlackJack hand, which represents a collection of cards that a player or dealer can hold. 
@@ -20,9 +19,9 @@ namespace BlackJackV2.Factories.CardHandFactory
 		/// <returns>
 		///	An instance of <see cref="BlackJackCardHand"/> representing a fully initialized hand of cards used in blackJack. 
 		///	</returns>
-		public override IBlackJackCardHand<Bitmap, string> CreateCardHand()
+		public override IBlackJackCardHand<TImage, TValue> CreateCardHand()
 		{
-			return new BlackJackCardHand();
+			return new BlackJackCardHand<TImage, TValue>();
 		}
 	}
 }

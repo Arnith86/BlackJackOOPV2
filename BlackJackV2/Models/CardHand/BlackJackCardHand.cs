@@ -1,9 +1,9 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/CardHand/BlackJackCardHand.cs
 
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Shared.Constants;
+using BlackJackV2.Shared.UtilityClasses;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace BlackJackV2.Models.CardHand
 	/// Automatically recalculates the hand value when cards are added or removed.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Factories.CardHandFactory"/></remarks>
-	public class BlackJackCardHand : ReactiveObject, IBlackJackCardHand<Bitmap, string> 
+	public class BlackJackCardHand<TImage, TValue> : ReactiveObject, IBlackJackCardHand<TImage, TValue>
 	{
 		/// <inheritdoc/>
 		public HandOwners.HandOwner Id { get; set; }
@@ -29,7 +29,7 @@ namespace BlackJackV2.Models.CardHand
 		}
 		
 		/// <inheritdoc/>
-		public ObservableCollection<ICard<Bitmap, string>> Hand { get; private set; }
+		public ObservableCollection<ICard<TImage, TValue>> Hand { get; private set; }
 
 		private int _handValue;
 		/// <inheritdoc/>
@@ -61,7 +61,7 @@ namespace BlackJackV2.Models.CardHand
 		public BlackJackCardHand()
 		{	
 			HandValue = 0;
-			Hand = new ObservableCollection<ICard<Bitmap, string>>();
+			Hand = new ObservableCollection<ICard<TImage, TValue>>();
 
 			// When the hand is changed (card added, removed or hand cleard), the hand value is recalculated
 			Hand.CollectionChanged += (sender, e) => 
@@ -73,7 +73,7 @@ namespace BlackJackV2.Models.CardHand
 
 
 		/// <inheritdoc/>
-		public void AddCard(ICard<Bitmap, string> card)
+		public void AddCard(ICard<TImage, TValue> card)
 		{
 			if ( card != null)
 				Hand.Add(card);
@@ -82,7 +82,7 @@ namespace BlackJackV2.Models.CardHand
 		/// <inheritdoc/>
 		public void RemoveCard(string cardValue)
 		{
-			ICard<Bitmap, string> cardsToRemove = Hand.FirstOrDefault(card => card.Value == cardValue);
+			ICard<TImage, TValue> cardsToRemove = Hand.FirstOrDefault(card => card.Value.ToString() == cardValue);
 			if (cardsToRemove != null) 
 				Hand.Remove(cardsToRemove);
 		}
@@ -109,16 +109,16 @@ namespace BlackJackV2.Models.CardHand
 			int aceCount = 0;
 
 			// Sums the values of the current except for aces which it counts.
-			foreach (ICard<Bitmap,string> card in Hand)
+			foreach (ICard<TImage, TValue> card in Hand)
 			{
 				// Face down card are not counted
 				if (card.FaceDown == true) continue;
 
-				// Seperates int value and suite
-				string[] valueString = card.Value.Split('_');
+				// Get the value of the card. 
+				string valueString = CardToValueUtility<TImage, TValue>.GetNumericCardValue(card);
 
 				// If king, Queen or Knight then value = 10, all other values (excluding ace) keep their value
-				if (int.TryParse(valueString[1], out int value))
+				if (int.TryParse(valueString, out int value))
 				{ 
 					if (value == 1) aceCount++;
 					else total += value > 10 ? 10 : value;
@@ -146,11 +146,6 @@ namespace BlackJackV2.Models.CardHand
 						total += 11;
 					else
 						total += 1;
-					//	aceCount--;
-					//	int handValueAttempt = total + 11;
-
-					//	if (handValueAttempt <= 21 && handValueAttempt + aceCount <= 21) total += 11;
-					//	else total++;
 				}
 			}
 

@@ -1,7 +1,6 @@
 ﻿// Project BlackJackV2
 // file: BlackJackV2/Factories/PlayerHandsFactory/BlackJackPlayerHandsCreator.cs
 
-using Avalonia.Media.Imaging;
 using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Shared.Constants;
@@ -13,7 +12,7 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 	/// This class instantiates a structure containing one or more card hands associated with a specific participant in the Blackjack game.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Models.PlayerHands"/></remarks>
-	public class BlackJackPlayerHandsCreator : PlayerHandsCreator<Bitmap, string>
+	public class BlackJackPlayerHandsCreator<TImage, TValue> : PlayerHandsCreator<TImage, TValue>
 	{
 		/// <summary>
 		/// Creates a new player hands object associated with a specific game participant (player or dealer),
@@ -28,9 +27,9 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 		/// <returns>
 		/// A fully initialized <see cref="BlackJackPlayerHands"/> instance representing the player or dealer's hands.
 		/// </returns>
-		public override IBlackJackPlayerHands<Bitmap, string> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<Bitmap, string> cardHandCreator) // should i use CardHandCreator(abstract) or BlackJackCardHandCreator(concrete creator)
+		public override IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<TImage, TValue> cardHandCreator)
 		{
-			return new BlackJackPlayerHands(id, cardHandCreator);
+			return new BlackJackPlayerHands<TImage, TValue>(id, cardHandCreator);
 		}
 	}
 }

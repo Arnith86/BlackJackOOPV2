@@ -1,7 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Factories/PlayerFactory/BlackJackPlayerCreator.cs
 
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Services.Events;
@@ -14,7 +13,7 @@ namespace BlackJackV2.Factories.PlayerFactory
 	/// Used to instantiate players with names, hands, and reactive bet handling in a Blackjack game.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Models.Player"/></remarks>
-	public class BlackJackPlayerCreator : PlayerCreator<Bitmap, string>
+	public class BlackJackPlayerCreator<TImage, TValue> : PlayerCreator<TImage, TValue>
 	{
 		/// <summary>
 		/// Creates a new Blackjack player, initializing it with the provided hands, name, and bet update notification mechanism.
@@ -31,9 +30,9 @@ namespace BlackJackV2.Factories.PlayerFactory
 		/// <returns>
 		/// A new instance of <see cref="Player"/> representing the created Blackjack player.
 		/// </returns>
-		public override IPlayer<Bitmap, string> CreatePlayer(IBlackJackPlayerHands<Bitmap, string> playerHands, ISubject<BetUpdateEvent> betUpdatedSubject, string name = "Player1")
+		public override IPlayer<TImage, TValue> CreatePlayer(IBlackJackPlayerHands<TImage, TValue> playerHands, ISubject<BetUpdateEvent> betUpdatedSubject, string name = "Player1")
 		{
-			return new Player(name, playerHands, betUpdatedSubject);
+			return new Player<TImage, TValue>(name, playerHands, betUpdatedSubject);
 		}
 	}
 }

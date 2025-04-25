@@ -2,9 +2,6 @@
 // file: BlackJackV2/Models/GameLogic/GameLogic.cs
 
 
-
-using Avalonia.Media.Imaging;
-
 /// <summary>
 ///		TODO: write a summery for this class
 ///		
@@ -37,11 +34,11 @@ using Avalonia.Media.Imaging;
 /// </summary>
 namespace BlackJackV2.Models.GameLogic
 {
-	public class GameLogic
+	public class GameLogic<TImage, TValue>
 	{
-		private readonly IGameCoordinator<Bitmap, string> _gameCoordinator;
+		private readonly IGameCoordinator<TImage, TValue> _gameCoordinator;
 
-		public GameLogic( IGameCoordinator<Bitmap, string> gameCoordinator )
+		public GameLogic( IGameCoordinator<TImage, TValue> gameCoordinator )
 		{
 			_gameCoordinator = gameCoordinator;
 		}
