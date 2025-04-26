@@ -50,9 +50,8 @@ namespace BlackJackV2.Models.PlayerHands
 		/// <summary>
 		/// Attempts to split the players primary hand into two hands.
 		/// </summary>
-		/// <param name="splitHands">The resulting <see cref="IBlackJackCardHand{TImage, TValue}"/> from the split.</param>
-		/// <returns>True, if the split was successful, otherwise false.</returns>
-		public bool TrySplitHand(out (IBlackJackCardHand<TImage, TValue> primary, IBlackJackCardHand<TImage, TValue> split) splitHands);
+		/// <returns>The primary and split <see cref="BlackJackCardHand{TImage, TValue}"/>.</returns>
+		public (IBlackJackCardHand<TImage, TValue> primary, IBlackJackCardHand<TImage, TValue> split) SplitHand();
 
 		/// <summary>
 		/// Adds a new <see cref="ICard{TImage, TValue}"/> to the specified hand.

@@ -24,20 +24,20 @@ namespace BlackJackV2.Models.GameLogic
 	public class GameLogicCreator<TImage, TValue>
 	{
 
-		public static RoundEvaluator<TImage, TValue> CreateRoundEvaluator() 
-		{ 
-			return new RoundEvaluator<TImage, TValue>(); 
-		}
-
-		public static PlayerAction<TImage, TValue> CreatePlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent ) 
-		{ 
-			return new PlayerAction<TImage, TValue>(splitSuccessfulEvent); 
-		}
-
-		public static PlayerRound<TImage, TValue> CreatePlayerRound(PlayerAction<TImage, TValue> playerAction, Subject<BlackJackActions.PlayerActions> playerActionSubject, Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
+		public static RoundEvaluator<TImage, TValue> CreateRoundEvaluator()
 		{
-			return new PlayerRound<TImage, TValue>(playerAction, playerActionSubject, splitSuccessfulEvent);
+			return new RoundEvaluator<TImage, TValue>();
 		}
+
+		//public static PlayerAction<TImage, TValue> CreatePlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent ) 
+		//{ 
+		//	return new PlayerAction<TImage, TValue>(splitSuccessfulEvent); 
+		//}
+
+		//public static PlayerRound<TImage, TValue> CreatePlayerRound(PlayerAction<TImage, TValue> playerAction, Subject<BlackJackActions.PlayerActions> playerActionSubject, Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
+		//{
+		//	return new PlayerRound<TImage, TValue>(playerAction, playerActionSubject, splitSuccessfulEvent);
+		//}
 
 		public static DealerServices<TImage, TValue> CreateDealerLogic()
 		{

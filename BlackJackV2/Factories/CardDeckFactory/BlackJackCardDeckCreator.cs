@@ -65,9 +65,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 
 			////// these are not important, only present to allow for continued testing 
 			//TImage cardBackImage = _imageLoader.Load("avares://BlackJackV2/Assets/Cards/Card_Back.png");
-			////Bitmap cardBackImage = new Bitmap(AssetLoader.Open(cardBackImageUri));
 			//TImage cardFrontImage = _imageLoader.Load($"avares://BlackJackV2/Assets/Cards/Hearts_1.png");
-			////Bitmap cardFrontImage = new Bitmap(AssetLoader.Open(cardFrontImageUri));
 
 			//ICard<TImage, TValue> card7 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
 			//cards.Add(card7);

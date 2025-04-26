@@ -13,6 +13,7 @@ using BlackJackV2.Factories.PlayerFactory;
 using BlackJackV2.Factories.PlayerHandsFactory;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.GameLogic.PlayerServices;
+using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
@@ -25,6 +26,7 @@ namespace BlackJackV2.Services.DependencyInjection
 {
 	public static class ServiceCollectionExtensions
 	{
+		//TODO: SEPERATE into different methods.(views, models, and so on.. )
 		public static void AddLogicServices(this IServiceCollection collection) 
 		{
 			collection.AddSingleton<IImageLoader<Bitmap>, AvaloniaImageLoader>();
@@ -32,6 +34,8 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
 			collection.AddSingleton<Subject<BetUpdateEvent>>();
+
+			collection.AddSingleton<IGameRuleServices<Bitmap, string>, GameRuleService<Bitmap, string>>();
 
 			collection.AddSingleton<CardCreator<Bitmap, string>, BlackJackCardCreator<Bitmap, string>>();
 			collection.AddSingleton<CardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator<Bitmap, string>>();

@@ -104,34 +104,21 @@ namespace BlackJackV2.Models.PlayerHands
 		}
 
 		/// <inheritdoc/>
-		public bool TrySplitHand(out (IBlackJackCardHand<TImage, TValue> primary, IBlackJackCardHand<TImage, TValue> split) splitHands)
+		public (IBlackJackCardHand<TImage, TValue> primary, IBlackJackCardHand<TImage, TValue> split) SplitHand()
 		{
-			splitHands = default;
+			// Retrieves the value of the first two cards in the primary hand
+			string value1 = CardToValueUtility<TImage, TValue>.GetNumericCardValue(_primaryCardHand.Hand[0]); 
+			string value2 = CardToValueUtility<TImage, TValue>.GetNumericCardValue(_primaryCardHand.Hand[1]); 
 
+			// Splits the hand
+			_splitCardHand.AddCard(_primaryCardHand.Hand[1]);
+			_primaryCardHand.RemoveCard(_primaryCardHand.Hand[1].Value.ToString());
+			// Copy the bet from the primary hand to the split hand
+			Bet[HandOwners.HandOwner.Split] = Bet[HandOwners.HandOwner.Primary];
 
-			//TODO: extract game rule validation to another class (GameRuleServices)
-			// Checks if the primary hand has two cards, and if the split hand is empty
-			if (_primaryCardHand.Hand.Count == 2 && _splitCardHand.Hand.Count < 1 )
-			{
-				// Retrieves the value of the first two cards in the primary hand
-				string value1 = CardToValueUtility<TImage, TValue>.GetNumericCardValue(_primaryCardHand.Hand[0]); 
-				string value2 = CardToValueUtility<TImage, TValue>.GetNumericCardValue(_primaryCardHand.Hand[1]); 
-
-				// Checks to see if the numeric value of the cards are the same 
-				if (value1 == value2)
-				{
-					// Splits the hand
-					_splitCardHand.AddCard(_primaryCardHand.Hand[1]);
-					_primaryCardHand.RemoveCard(_primaryCardHand.Hand[1].Value.ToString());
-					// Copy the bet from the primary hand to the split hand
-					Bet[HandOwners.HandOwner.Split] = Bet[HandOwners.HandOwner.Primary];
-
-					splitHands = (_primaryCardHand, _splitCardHand);
-					return true;
-				}
-			}
+			//splitHands = (_primaryCardHand, _splitCardHand);
 			
-			return false;
+			return (_primaryCardHand, _splitCardHand);
 		}
 
 		/// <summary>

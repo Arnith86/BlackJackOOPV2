@@ -9,6 +9,8 @@ using BlackJackV2.Services.Events;
 using System.Diagnostics;
 using System.Reactive.Subjects;
 using BlackJackV2.Shared.Constants;
+using BlackJackV2.Models.GameLogic.GameRuleServices;
+using System;
 
 namespace BlackJackV2.Models.GameLogic.PlayerServices
 {
@@ -22,13 +24,17 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// </summary>
 		private readonly Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
 
+		private readonly IGameRuleServices<TImage, TValue> _ruleServices;
+
+
 		/// <summary>
 		/// Initializes a new instance of <see cref="PlayerAction"/> with a subject notyfaing when a split is performed.
 		/// </summary>
 		/// <param name="splitSuccessfulEvent"></param>
-		public PlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent)
+		public PlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent, IGameRuleServices<TImage, TValue> ruleServices)
 		{
 			_splitSuccessfulEvent = splitSuccessfulEvent;
+			_ruleServices = ruleServices;
 		}
 
 		// TODO: show that the player has busted
@@ -84,20 +90,21 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		public void PerformSplit(	IPlayer<TImage, TValue> player,
 									ICardDeck<TImage, TValue> blackJackCardDeck)
 		{
-			int primaryBet = player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
+			var result = _ruleServices.CanSplit(player);
 
-			if (player.EnoughFundsForBet(primaryBet) && 
-				player.Hands.TrySplitHand(out var splitHands) )
+			if(!result.IsAllowed)
 			{
-				player.Hands.AddCardToHand(splitHands.primary, blackJackCardDeck.GetTopCard());
-				player.Hands.AddCardToHand(splitHands.split, blackJackCardDeck.GetTopCard());
-
-				// Notify that the split was successful
-				_splitSuccessfulEvent.OnNext(new SplitSuccessfulEvent(player.Name));
+				Debug.WriteLine(result.Message);
+				// TODO : Send message to the user that the split was not successfull
 			}
 			else
 			{
-				// TODO : Add a message to the user that the split was not successfull
+				var (primary, split) = player.Hands.SplitHand();
+				player.Hands.AddCardToHand(primary, blackJackCardDeck.GetTopCard());
+				player.Hands.AddCardToHand(split, blackJackCardDeck.GetTopCard());
+
+				// Notify that the split was successful
+				_splitSuccessfulEvent.OnNext(new SplitSuccessfulEvent(player.Name));
 			}
 		}
 	}

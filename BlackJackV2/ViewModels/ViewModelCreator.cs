@@ -31,10 +31,10 @@ namespace BlackJackV2.ViewModels
 			return new ButtonViewModel(playerRound);
 		}
 
-		public static TableViewModel CreateTableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
-		{
-			return new TableViewModel(gameCoordinator, splitEvent, betUpdateEvent);
-		}
+		//public static TableViewModel CreateTableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
+		//{
+		//	return new TableViewModel(gameCoordinator, splitEvent, betUpdateEvent);
+		//}
 
 		public static PlayerViewModel CreatePlayerViewModel(IPlayer<Bitmap, string> player, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
 		{
