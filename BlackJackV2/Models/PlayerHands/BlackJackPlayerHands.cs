@@ -69,6 +69,11 @@ namespace BlackJackV2.Models.PlayerHands
 		}
 
 		/// <inheritdoc/>
+		public IBlackJackCardHand<TImage, TValue> GetCardHand(HandOwners.HandOwner owner) =>
+			owner == HandOwners.HandOwner.Primary ? _primaryCardHand : _splitCardHand;
+		
+
+		/// <inheritdoc/>
 		public int GetBetFromHand(HandOwners.HandOwner owner)
 		{
 			if (Bet.ContainsKey(owner))
@@ -81,27 +86,14 @@ namespace BlackJackV2.Models.PlayerHands
 		public void SetBetToHand(HandOwners.HandOwner owner, int bet)
 		{
 			if (Bet.ContainsKey(owner))
-			{
 				Bet[owner] = bet;
-			}
 			else
-			{
 				throw new ArgumentException("Invalid hand owner");
-			}
 		}
 
 		/// <inheritdoc/>
-		public bool TryDoubleDownBet( IBlackJackCardHand<TImage, TValue> cardHand)
-		{
-			// Checks if the hand has two cards
-			if (cardHand.Hand.Count == 2)
-			{
-				// Doubles the bet for the hand
-				SetBetToHand(cardHand.Id, GetBetFromHand(cardHand.Id) * 2);
-				return true;
-			}
-			return false;
-		}
+		public void DoubleDownBet( IBlackJackCardHand<TImage, TValue> cardHand) =>
+			SetBetToHand(cardHand.Id, GetBetFromHand(cardHand.Id) * 2);
 
 		/// <inheritdoc/>
 		public (IBlackJackCardHand<TImage, TValue> primary, IBlackJackCardHand<TImage, TValue> split) SplitHand()
@@ -116,19 +108,7 @@ namespace BlackJackV2.Models.PlayerHands
 			// Copy the bet from the primary hand to the split hand
 			Bet[HandOwners.HandOwner.Split] = Bet[HandOwners.HandOwner.Primary];
 
-			//splitHands = (_primaryCardHand, _splitCardHand);
-			
 			return (_primaryCardHand, _splitCardHand);
-		}
-
-		/// <summary>
-		/// Returns a <see cref="IBlackJackCardHand{Bitmap, string}"/> based on the specified owner.
-		/// </summary>
-		/// <param name="owner">The owner of the requested hand.</param>
-		/// <returns>The <see cref="IBlackJackCardHand{Bitmap, string}"/> requested.</returns>
-		private IBlackJackCardHand<TImage, TValue> GetCardHand(HandOwners.HandOwner owner)
-		{
-			return owner == HandOwners.HandOwner.Primary ? _primaryCardHand : _splitCardHand;
 		}
 
 		/// <inheritdoc/>

@@ -27,6 +27,13 @@ namespace BlackJackV2.Models.PlayerHands
 		public IBlackJackCardHand<TImage, TValue> SplitCardHand { get; }
 
 		/// <summary>
+		/// Returns a <see cref="IBlackJackCardHand{Bitmap, string}"/> based on the specified owner.
+		/// </summary>
+		/// <param name="owner">The owner of the requested hand.</param>
+		/// <returns>The <see cref="IBlackJackCardHand{Bitmap, string}"/> requested.</returns>
+		public IBlackJackCardHand<TImage, TValue> GetCardHand(HandOwners.HandOwner owner);
+
+		/// <summary>
 		/// Gets the current bet associated with hand owner.
 		/// </summary>
 		/// <param name="owner">The owner of the hand (primary or split).</param>
@@ -45,7 +52,7 @@ namespace BlackJackV2.Models.PlayerHands
 		/// </summary>
 		/// <param name="cardHand">The hand associated with the double down attempt.</param>
 		/// <returns>True, if the attempt was successfull, false, if not.</returns>
-		public bool TryDoubleDownBet(IBlackJackCardHand<TImage, TValue> cardHand);
+		public void DoubleDownBet(IBlackJackCardHand<TImage, TValue> cardHand);
 
 		/// <summary>
 		/// Attempts to split the players primary hand into two hands.

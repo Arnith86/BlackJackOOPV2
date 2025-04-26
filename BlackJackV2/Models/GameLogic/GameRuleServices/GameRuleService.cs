@@ -1,9 +1,11 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/GameRuleServices/GameRuleServices.cs
 
+using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Shared.UtilityClasses;
+using System.Diagnostics;
 
 namespace BlackJackV2.Models.GameLogic.GameRuleServices
 {
@@ -22,7 +24,16 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 		/// <returns>A result indicating whether the action is allowed.</returns>
 		public RuleCheckResult CanDoubleDown(IPlayer<TImage, TValue> player, HandOwners.HandOwner whichHand)
 		{
-			throw new System.NotImplementedException();
+			var hand = player.Hands.GetCardHand(whichHand);
+			int bet = player.Hands.GetBetFromHand(whichHand);
+
+			if (!player.EnoughFundsForBet(bet))
+				return RuleCheckResult.Denied("You do not have enough funds to double down.");
+
+			if (hand.Hand.Count != 2)
+				return RuleCheckResult.Denied("You can only double down if you have exactly two cards.");
+			
+			return RuleCheckResult.Allowed();
 		}
 
 		/// <summary>
@@ -31,7 +42,6 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 		/// </summary>
 		/// <param name="player">The player attempting to split.</param>
 		/// <returns>A result indicating whether the action is allowed and a message if it is denied.</returns>
-
 		public RuleCheckResult CanSplit(IPlayer<TImage, TValue> player)
 		{
 			var hand = player.Hands.PrimaryCardHand.Hand;

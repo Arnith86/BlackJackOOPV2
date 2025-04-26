@@ -51,25 +51,27 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 
 		// TODO: show that the player has busted
 		/// Performs the Double Down action by adding a card to the specified hand and double the chosen bet,
-		/// provided the hand is neither busted nor folded, and that there are enough funds.
+		/// provided the hand is neither busted nor folded, has exactly two cards, and that there are enough funds.
 		/// <inheritdoc/>
 		public void PerformDoubleDown(	IPlayer<TImage, TValue> player,
 										IBlackJackCardHand<TImage, TValue> cardHand,
 										ICardDeck<TImage, TValue> blackJackCardDeck)
 		{
-			int bet = player.Hands.GetBetFromHand(cardHand.Id);
-
-			// If the player has enough funds, double the bet and add a card to the hand
-			if (player.EnoughFundsForBet(bet) && player.Hands.TryDoubleDownBet(cardHand))
+			var result = _ruleServices.CanDoubleDown(player, cardHand.Id);
+			
+			if (!result.IsAllowed)
 			{
-				player.PlaceBet(cardHand.Id, bet, true);
-				player.Hands.AddCardToHand(cardHand, blackJackCardDeck.GetTopCard());
-				player.Hands.FoldHand(cardHand);
+				//TODO: Send message to the user that the double down was not successful. 
+				Debug.WriteLine(result.Message);
 			}
 			else
 			{
-				Debug.WriteLine("Double down failed");
-				// TODO: Add a message to the user that the double down was not successfull
+				int bet = player.Hands.GetBetFromHand(cardHand.Id);
+
+				player.PlaceBet(cardHand.Id, bet, true);
+				
+				player.Hands.AddCardToHand(cardHand, blackJackCardDeck.GetTopCard());
+				player.Hands.FoldHand(cardHand);
 			}
 		}
 
