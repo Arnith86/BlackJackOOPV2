@@ -1,11 +1,9 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/GameRuleServices/GameRuleServices.cs
 
-using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Shared.UtilityClasses;
-using System.Diagnostics;
 
 namespace BlackJackV2.Models.GameLogic.GameRuleServices
 {
@@ -17,7 +15,6 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 	{
 		/// <summary>
 		/// Validates whether the player is allowed to double down on the specified hand.
-		/// Not yet implemented.
 		/// </summary>
 		/// <param name="player">The player attempting to double down.</param>
 		/// <param name="whichHand">Specifies which hand is being evaluated.</param>
@@ -66,6 +63,23 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 
 			return RuleCheckResult.Allowed();
 
+		}
+
+		/// <summary>
+		/// Validates if a player has enough funds to place the initial bet.
+		/// </summary>
+		/// <param name="player">The player making the bet.</param>
+		/// <param name="betAmount">The amount the player wants to bet.</param>
+		/// <returns>A RuleCheckResult indicating if the bet is allowed.</returns>
+		public RuleCheckResult CanPlaceInitialBet(IPlayer<TImage, TValue> player, int betAmount)
+		{
+			if (betAmount < 0 || betAmount > 10)
+				return RuleCheckResult.Denied("The bet amount must be between 0 and 10");
+
+			if (!player.EnoughFundsForBet(betAmount))
+				return RuleCheckResult.Denied("You do not have enough funds to place this bet.");
+
+			return RuleCheckResult.Allowed();
 		}
 	}
 }

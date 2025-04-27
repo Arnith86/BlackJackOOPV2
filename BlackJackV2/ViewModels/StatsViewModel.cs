@@ -3,6 +3,7 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
@@ -44,7 +45,7 @@ namespace BlackJackV2.ViewModels
 
 		private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-		public StatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
+		public StatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, IGameRuleServices<Bitmap, string> gameRule)
 		{
 			IsBetEnabled = true;
 
@@ -56,15 +57,23 @@ namespace BlackJackV2.ViewModels
 				// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Points 
 				if ( !string.IsNullOrWhiteSpace(betString) && 
 					InputBetRegex.IsMatch(betString) &&
-					int.TryParse(betString, out int parsedBet) && 
+					int.TryParse(betString, out int parsedBet) /*&& 
 					(parsedBet < 11 && parsedBet > 0) && 
-					parsedBet <= CurrentPlayer.Funds)
+					parsedBet <= CurrentPlayer.Funds*/)
 				{
-					gameCoordinator.OnBetInputReceived(CurrentPlayer.Name, parsedBet);
+					var result = gameRule.CanPlaceInitialBet(CurrentPlayer, parsedBet);
+					if (!result.IsAllowed)
+					{
+						//TODO: Show the user that the bet is not allowed
+						Debug.WriteLine(result.Message);
+					}
+					else
+					{
+						gameCoordinator.OnBetInputReceived(CurrentPlayer.Name, parsedBet);
+					}
 				}
 				else
 				{
-
 					// TODO: IMPLEMENT proper error handling
 					Debug.WriteLine("Invalid input: not a number.");
 				}

@@ -21,10 +21,10 @@ namespace BlackJackV2.ViewModels
 			return new CardHandViewModel(cardHand);
 		}
 
-		public static StatsViewModel CreateStatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
-		{
-			return new StatsViewModel(gameCoordinator);
-		}
+		//public static StatsViewModel CreateStatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
+		//{
+		//	return new StatsViewModel(gameCoordinator);
+		//}
 
 		public static ButtonViewModel CreateButtonViewModel(IPlayerRound<Bitmap, string> playerRound)
 		{

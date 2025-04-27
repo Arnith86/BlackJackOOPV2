@@ -8,9 +8,7 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using System.Diagnostics;
 using System.Reactive.Subjects;
-using BlackJackV2.Shared.Constants;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
-using System;
 
 namespace BlackJackV2.Models.GameLogic.PlayerServices
 {

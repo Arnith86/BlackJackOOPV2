@@ -57,7 +57,7 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<GameLogic<Bitmap, string>>();
 			
 		
-
+			collection.AddSingleton<StatsViewModel>();
 			collection.AddSingleton<TableViewModel>();
 			collection.AddSingleton<MainWindowViewModel>();
 		}

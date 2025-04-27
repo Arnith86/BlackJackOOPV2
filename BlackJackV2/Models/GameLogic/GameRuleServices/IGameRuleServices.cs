@@ -26,5 +26,14 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 		/// <param name="player">The player attempting to split.</param>
 		/// <returns>A result indicating whether the action is allowed, along with an optional message.</returns>
 		public RuleCheckResult CanSplit(IPlayer<TImage, TValue> player);
+
+
+		/// <summary>
+		/// Validates if a player has enough funds to place the initial bet.
+		/// </summary>
+		/// <param name="player">The player making the bet.</param>
+		/// <param name="betAmount">The amount the player wants to bet.</param>
+		/// <returns>A RuleCheckResult indicating if the bet is allowed.</returns>
+		public RuleCheckResult CanPlaceInitialBet(IPlayer<TImage, TValue> player, int betAmount);
 	}
 }
