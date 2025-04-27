@@ -1,21 +1,13 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/RoundEvaluator.cs
 
-/// <summary>
-///			
-///		This class evaluates a single player hand against the dealer hand, and determines the winner.
-///		
-///		enum				RoundResult	: Possible results of the round. 
-///		BlackJackCardHand	_playerHand	: Player hand to evaluate.
-///		BlackJackCardHand	_dealerHand	: Dealer hand to evaluate.
-///		
-///		EvaluateRound()		: Evaluates the round and determines the winner.
-/// </summary>
-
 using BlackJackV2.Models.CardHand;
 
 namespace BlackJackV2.Models.GameLogic
 {
+	/// <summary>
+	///	Provides functionality to evaluate the outcome of a Blackjack round between a player and the dealer.
+	/// </summary>
 	public class RoundEvaluator<TImage, TValue>
 	{
 		public enum RoundResult
@@ -28,9 +20,15 @@ namespace BlackJackV2.Models.GameLogic
 
 		}
 		
-		IBlackJackCardHand<TImage, TValue> _playerHand;
-		IBlackJackCardHand<TImage, TValue> _dealerHand;
+		private IBlackJackCardHand<TImage, TValue> _playerHand;
+		private IBlackJackCardHand<TImage, TValue> _dealerHand;
 
+		/// <summary>
+		/// Evaluates the outcome of a Blackjack round between a player and the dealer based on their hands.
+		/// </summary>
+		/// <param name="playerHand">The player's <see cref="IBlackJackCardHand{TImage, TValue}"/> to evaluate.</param>
+		/// <param name="dealerHand">The dealer's <see cref="IBlackJackCardHand{TImage, TValue}"/> to evaluate.</param>
+		/// <returns>The result of the round as a <see cref="RoundResult"/>.</returns>
 		public RoundResult EvaluateRound(IBlackJackCardHand<TImage, TValue> playerHand, IBlackJackCardHand<TImage, TValue> dealerHand) 
 		{
 			_playerHand = playerHand; 
@@ -60,6 +58,5 @@ namespace BlackJackV2.Models.GameLogic
 			// If both have the same value, its a tie
 			return RoundResult.Push;
 		}
-
 	}
 }

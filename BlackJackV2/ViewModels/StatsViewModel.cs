@@ -54,7 +54,7 @@ namespace BlackJackV2.ViewModels
 				// Ignore Enter key press if the bet is not enabled
 				if (!IsBetEnabled) return;
 
-				// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Points 
+				// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Funds 
 				if ( !string.IsNullOrWhiteSpace(betString) && 
 						InputBetRegex.IsMatch(betString) &&
 						int.TryParse(betString, out int parsedBet))

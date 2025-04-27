@@ -1,10 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/DependencyInjection/ServiceRegistration.cs
 
-/// <summary>
-///		This class manages the creation and lifetime of objects, and makes sure each class gets its required dependencies (without you manually wiring them up).
-/// </summary>
-
 using Avalonia.Media.Imaging;
 using BlackJackV2.Factories.CardDeckFactory;
 using BlackJackV2.Factories.CardFactory;
@@ -24,9 +20,16 @@ using System.Reactive.Subjects;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
+	/// <summary>
+	/// This class contains extension methods for the <see cref="IServiceCollection"/> interface.
+	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
 		//TODO: SEPERATE into different methods.(views, models, and so on.. )
+		/// <summary>
+		/// This method is used to register the services for the game logic.
+		/// </summary>
+		/// <param name="collection">The service collection to add the services to.</param>
 		public static void AddLogicServices(this IServiceCollection collection) 
 		{
 			collection.AddSingleton<IImageLoader<Bitmap>, AvaloniaImageLoader>();
