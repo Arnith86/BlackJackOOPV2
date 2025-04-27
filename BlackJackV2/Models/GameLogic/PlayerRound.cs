@@ -1,23 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/PlayerRound.cs
 
-/// <summary>	
-/// 	This class handles an instance of a players turn in black jack 
-/// 	
-///		ICardDeck<Bitmap, string>				_cardDeck				: The card deck used in this round.
-///		IPlayer									_player					: The player currently taking their turn.
-///		PlayerAction							_playerAction			: The player action class handles the blackjack related actions the players can take.
-///		IBlackJackCardHand<Bitmap, string>		currentHand				: The current active hand in the game.
-///		Queue<BlackJackCardHand>				blackJackCardHands		: Queue of card hands to handle.
-///		Subject<BlackJackActions.PlayerActions> _playerActionSubject	: Regesters player actions events. 
-///		Subject<SplitSuccessfulEvent>			_splitSuccessfulEvent	: Notifies when a split of the hand has happend.
-///		
-///		async Task		PlayerTurn(ICardDeck cardDeck, IPlayer player)				: This method is called when the player is taking their turn and register their actions. 
-///																						It handles both the primary and split hand.
-///		void			ProcessPlayerAction(BlackJackActions.PlayerActions action)	: This method is called when player has takes an action
-///		
-///	</summary>
-
 using System;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
@@ -31,13 +14,16 @@ using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Shared.Constants;
 using System.Reactive.Disposables;
 
-
 namespace BlackJackV2.Models.GameLogic
 {
+	/// <summary>
+	/// Handles an instance of a player's turn in a Blackjack round,
+	/// managing their primary and split hands, reacting to player actions, 
+	/// and coordinating card draws and game state updates.
+	/// </summary>
 	public class PlayerRound<TImage, TValue> : IPlayerRound<TImage, TValue>
 	{
 		private ICardDeck<TImage, TValue> _cardDeck;
-
 		private IPlayer<TImage, TValue> _player;
 		
 		// The player action class handles the blackjack related actions the players can take
@@ -49,15 +35,26 @@ namespace BlackJackV2.Models.GameLogic
 		// Queue of card hands to handle
 		private Queue<IBlackJackCardHand<TImage, TValue>> blackJackCardHands = new Queue<IBlackJackCardHand<TImage, TValue>>();
 
-		// Regesters player actions events
+		/// <summary>
+		/// Subject used to listen for player actions during their turn.
+		/// </summary>
 		public Subject<BlackJackActions.PlayerActions> PlayerActionSubject { get; }
-		
+
 		//// Notifies when a hand has changed
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
 		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
 
+		/// <summary>
+		/// Manages subscriptions that need to be disposed when the round ends.
+		/// </summary>
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PlayerRound{TImage, TValue}"/> class.
+		/// </summary>
+		/// <param name="playerAction">Service for performing player actions during the round.</param>
+		/// <param name="playerActionSubject">Subject to listen for player actions from the UI or input system.</param>
+		/// <param name="splitSuccessfulEvent">Event that notifies when a player's hand has been successfully split.</param>
 		public PlayerRound(	PlayerAction<TImage, TValue> playerAction, 
 							Subject<BlackJackActions.PlayerActions> playerActionSubject,
 							Subject<SplitSuccessfulEvent> splitSuccessfulEvent )
@@ -77,10 +74,17 @@ namespace BlackJackV2.Models.GameLogic
 			}).DisposeWith(_disposables);
 		}
 
-		// Dispose of the resources
+		/// <summary>
+		/// Disposes of any active subscriptions related to the player's round.
+		/// </summary>
 		public void Dispose() => _disposables.Dispose();
 
-		// This method is called when the player is taking their turn and register their actions. It handles both the primary and split hand.
+		/// <summary>
+		/// Handles the logic for a player's full turn, including their primary and any split hands.
+		/// Waits for player actions and updates the game state accordingly.
+		/// </summary>
+		/// <param name="cardDeck">The deck used for drawing cards.</param>
+		/// <param name="player">The player taking their turn.</param>
 		public async Task PlayerTurn(ICardDeck<TImage, TValue> cardDeck, IPlayer<TImage, TValue> player) 
 		{
 			_cardDeck = cardDeck;
@@ -115,7 +119,10 @@ namespace BlackJackV2.Models.GameLogic
 		//	return await _playerActionSubject.FirstAsync();
 		//}
 
-		// This method is called when player has takes an action
+		/// <summary>
+		/// Processes the player action received during the turn and applies the corresponding game logic.
+		/// </summary>
+		/// <param name="action">The player action to process (e.g., Hit, Fold, DoubleDown, Split).</param>
 		private void ProcessPlayerAction(BlackJackActions.PlayerActions action)
 		{
 			switch (action)
