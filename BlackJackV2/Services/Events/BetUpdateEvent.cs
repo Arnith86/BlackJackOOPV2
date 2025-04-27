@@ -1,28 +1,15 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Services/Events/BetUpdateEvent.cs
 
-/// <summary>
-///		This class is responsible for handling the bet update events in the game.
-///		It contains the player hands and is used to notify when a bet has been updated.
-///		
-///		string					PlayerName	: The name of the player whose bet has been updated.
-///		HandOwners.HandOwner	HandOwner	: The specific hand of the player whose bet has been updated.
-///
-/// </summary>
-
 using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Services.Events
 {
-	public class BetUpdateEvent
-	{
-		public string PlayerName { get; }
-		public HandOwners.HandOwner HandOwner { get; }
-
-		public BetUpdateEvent(string playerName, HandOwners.HandOwner handOwner)
-		{
-			PlayerName = playerName;
-			HandOwner = handOwner;
-		}
-	}
+	/// <summary>
+	/// Represents an event that notifies when a player's bet has been updated.
+	/// Contains the player's name and the specific hand affected.
+	/// </summary>
+	/// <param name="PlayerName">The name of the player whose bet has been updated.</param>
+	/// <param name="HandOwner">The owner of the hand (primary or split) that has been updated.</param>
+	public record BetUpdateEvent(string PlayerName, HandOwners.HandOwner HandOwner);
 }

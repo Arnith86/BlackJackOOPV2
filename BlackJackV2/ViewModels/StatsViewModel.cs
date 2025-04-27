@@ -56,10 +56,8 @@ namespace BlackJackV2.ViewModels
 
 				// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Points 
 				if ( !string.IsNullOrWhiteSpace(betString) && 
-					InputBetRegex.IsMatch(betString) &&
-					int.TryParse(betString, out int parsedBet) /*&& 
-					(parsedBet < 11 && parsedBet > 0) && 
-					parsedBet <= CurrentPlayer.Funds*/)
+						InputBetRegex.IsMatch(betString) &&
+						int.TryParse(betString, out int parsedBet))
 				{
 					var result = gameRule.CanPlaceInitialBet(CurrentPlayer, parsedBet);
 					if (!result.IsAllowed)
@@ -94,7 +92,6 @@ namespace BlackJackV2.ViewModels
 				.Subscribe(gameState =>	{
 					IsBetEnabled = !gameState.IsBetRecieved;
 			}).DisposeWith(_disposable);
-
 		}
 
 		public void Dispose() => _disposable.Dispose();
