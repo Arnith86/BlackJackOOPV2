@@ -18,25 +18,14 @@
 ///		void		OnBetInputReceived(string playerName, int betInput)	: Called when the player inputs their bet
 ///		void		OnPlayerChangedReceived(List<string> playerNames)   : Called when the current players are changed
 /// </summary>
-using BlackJackV2.Models.Player;
-using BlackJackV2.Services.Events;
-using System;
-using System.Collections.Generic;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
 namespace BlackJackV2.Models.GameLogic
 {
 	public interface IGameCoordinator<TImage, TValue>
 	{
-		public Subject<Dictionary<string, IPlayer<TImage, TValue>>> PlayerChangedEvent { get; }
-		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
-		public Subject<IPlayer<TImage, TValue>> BetRequestedEvent { get; }
-		public IObservable<GameState> GameStateObservable { get; }
 		public Task RegisterBetForNewRound();
 		public Task StartNewRound();
 		public void EvaluateRound();
-		public void OnBetInputReceived(string playerName, int betInput);
-		public void OnPlayerChangedReceived(List<string> playerNames);
 	}
 }

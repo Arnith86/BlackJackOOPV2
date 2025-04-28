@@ -4,6 +4,7 @@
 using BlackJackV2.Factories.CardHandFactory;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.GameLogic.CardServices;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Shared.UtilityClasses;
 using System;
@@ -39,16 +40,16 @@ namespace BlackJackV2.Models.PlayerHands
 		/// </summary>
 		private Dictionary<HandOwners.HandOwner, int> Bet;
 
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BlackJackPlayerHands"/> class.
 		/// </summary>
-		/// <param name="id">The identifier of the player owning the hands.</param>
-		/// <param name="cardHandCreator"> Creates new <see cref="BlackJackCardHand"/>
+		/// <param name="playerId">The identifier of the player owning the hands.</param>
+		/// <param name="cardServices"> Provides a centralized service for creating and managing card-related components in the Blackjack game
 		/// </param>
-		public BlackJackPlayerHands(HandOwners.HandOwner id, CardHandCreator<TImage, TValue> cardHandCreator) 
+		public BlackJackPlayerHands(HandOwners.HandOwner playerId, ICardServices<TImage, TValue> cardServices) 
 		{
-			Id = id;
+			Id = playerId;
 			
 			Bet = new Dictionary<HandOwners.HandOwner, int> 
 			{ 
@@ -57,8 +58,8 @@ namespace BlackJackV2.Models.PlayerHands
 			};
 
 
-			_primaryCardHand = cardHandCreator.CreateCardHand();
-			_splitCardHand = cardHandCreator.CreateCardHand();
+			_primaryCardHand = cardServices.GetACardHand(HandOwners.HandOwner.Primary); 
+			_splitCardHand = cardServices.GetACardHand(HandOwners.HandOwner.Split);
 
 			// Set the id of the primary and split hands if the player is the "Player"
 			if (Id == HandOwners.HandOwner.Player)

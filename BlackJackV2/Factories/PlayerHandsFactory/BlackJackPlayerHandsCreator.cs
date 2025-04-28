@@ -2,6 +2,7 @@
 // file: BlackJackV2/Factories/PlayerHandsFactory/BlackJackPlayerHandsCreator.cs
 
 using BlackJackV2.Factories.CardHandFactory;
+using BlackJackV2.Models.GameLogic.CardServices;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Shared.Constants;
 
@@ -21,15 +22,15 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 		/// <param name="id">
 		/// Identifies the owner of the hands being created using the <see cref="HandOwners.HandOwner"/> enum.
 		/// </param>
-		/// <param name="cardHandCreator">
-		/// Factory used to generate the underlying card hand(s) that make up the player's hand structure.
+		/// <param name="cardServices">
+		/// Provides a centralized service for creating and managing card-related components in the Blackjack game.
 		/// </param>
 		/// <returns>
 		/// A fully initialized <see cref="BlackJackPlayerHands"/> instance representing the player or dealer's hands.
 		/// </returns>
-		public override IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, BlackJackCardHandCreator<TImage, TValue> cardHandCreator)
+		public override IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, ICardServices<TImage, TValue> cardServices)
 		{
-			return new BlackJackPlayerHands<TImage, TValue>(id, cardHandCreator);
+			return new BlackJackPlayerHands<TImage, TValue>(id, cardServices);
 		}
 	}
 }

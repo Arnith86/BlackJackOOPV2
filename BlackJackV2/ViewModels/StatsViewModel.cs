@@ -2,8 +2,8 @@
 // file: BlackJackV2/ViewModels/StatsViewModel.cs
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
@@ -45,7 +45,8 @@ namespace BlackJackV2.ViewModels
 
 		private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-		public StatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, IGameRules<Bitmap, string> gameRule)
+		public StatsViewModel(	IPlayerServices<Bitmap, string> playerServices, 
+								IGameRules<Bitmap, string> gameRule)
 		{
 			IsBetEnabled = true;
 
@@ -67,7 +68,7 @@ namespace BlackJackV2.ViewModels
 					}
 					else
 					{
-						gameCoordinator.OnBetInputReceived(CurrentPlayer.Name, parsedBet);
+						playerServices.OnBetInputReceived(CurrentPlayer.Name, parsedBet);
 					}
 				}
 				else
@@ -78,7 +79,7 @@ namespace BlackJackV2.ViewModels
 			});
 
 			// Set the current player to the one that is requesting a bet
-			gameCoordinator.BetRequestedEvent
+			playerServices.BetRequestedEvent
 				.Subscribe(currentPlayer =>{
 
 					CurrentPlayer = currentPlayer;
@@ -88,7 +89,7 @@ namespace BlackJackV2.ViewModels
 				}).DisposeWith(_disposable);
 
 			// This will automatically update bet in the UI due to data binding
-			gameCoordinator.GameStateObservable
+			playerServices.GameStateObservable
 				.Subscribe(gameState =>	{
 					IsBetEnabled = !gameState.IsBetRecieved;
 			}).DisposeWith(_disposable);

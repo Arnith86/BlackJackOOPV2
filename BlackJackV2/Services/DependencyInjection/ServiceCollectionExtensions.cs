@@ -19,6 +19,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
+using BlackJackV2.Models.GameLogic.CoreServices;
+using System.Collections.Generic;
+using BlackJackV2.Models.GameLogic.CardServices;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -36,7 +39,10 @@ namespace BlackJackV2.Services.DependencyInjection
 		{
 			collection.AddSingleton<IImageLoader<Bitmap>, AvaloniaImageLoader>();
 
-			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>(); 
+			collection.AddScoped<Dictionary<string, IPlayer<Bitmap, string>>>();
+
+			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
+			collection.AddSingleton<Subject<Dictionary<string, IPlayer<Bitmap, string>>>>();
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
 			collection.AddSingleton<Subject<BetUpdateEvent>>();
 
@@ -55,10 +61,10 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<IRoundEvaluator<Bitmap, string>, RoundEvaluator<Bitmap, string>>();
 			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound<Bitmap, string>>();
 			collection.AddSingleton<IPlayerAction<Bitmap, string>, PlayerAction<Bitmap, string>>();
-			
 
+			collection.AddSingleton<ICardServices<Bitmap, string>, CardServices<Bitmap, string>>();
 			collection.AddSingleton<IDealerServices<Bitmap, string>, DealerServices<Bitmap, string>>();
-			collection.AddSingleton<PlayerServices<Bitmap, string>>();
+			collection.AddSingleton<IPlayerServices<Bitmap, string>, PlayerServices<Bitmap, string>>();
 			collection.AddSingleton<GameRuleServices<Bitmap, string>>();
 
 			collection.AddSingleton<IGameCoordinator<Bitmap, string>, GameCoordinator<Bitmap, string>>();

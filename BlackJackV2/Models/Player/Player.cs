@@ -34,7 +34,7 @@ namespace BlackJackV2.Models.Player
 		/// <summary>
 		///	The subject used to notify when the bet is updated 
 		/// </summary>
-		private readonly ISubject<BetUpdateEvent> _betUpdateSubject;
+		private readonly Subject<BetUpdateEvent> _betUpdateSubject;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Player"/> class.
@@ -43,7 +43,7 @@ namespace BlackJackV2.Models.Player
 		/// <param name="hands">The wrapper for the primary and split hands.</param>
 		/// <param name="betUpdateSubject">Subject used to notify when a bet has been placed.</param>
 		/// <remarks> Related files <see cref="BlackJackV2.Factories.PlayerFactory"/></remarks>
-		public Player(string name, IBlackJackPlayerHands<TImage, TValue> hands, ISubject<BetUpdateEvent> betUpdateSubject)
+		public Player(string name, IBlackJackPlayerHands<TImage, TValue> hands, Subject<BetUpdateEvent> betUpdateSubject)
 		{
 			Name = name;
 			this.Hands = hands;

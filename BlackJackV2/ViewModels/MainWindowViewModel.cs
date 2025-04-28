@@ -29,20 +29,23 @@ namespace BlackJackV2.ViewModels
 		public TableViewModel TableViewModel { get; }
 		public ButtonViewModel ButtonViewModel { get; }
 		
-		public MainWindowViewModel(GameLogic<Bitmap, string> gameLogic, IGameCoordinator<Bitmap, string> gameCoordinator, IPlayerRound<Bitmap, string> playerRound, TableViewModel tableViewModel, StatsViewModel statsViewModel)
+		public MainWindowViewModel(	GameLogic<Bitmap, string> gameLogic, 
+									IPlayerServices<Bitmap, string> playerServices,
+									TableViewModel tableViewModel, 
+									StatsViewModel statsViewModel)
 		{
 			_gameLogic = gameLogic;
 			StatsViewModel = statsViewModel;
 			TableViewModel = tableViewModel;
 
 			//StatsViewModel = ViewModelCreator.CreateStatsViewModel(gameCoordinator);
-			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(playerRound);
+			ButtonViewModel = ViewModelCreator.CreateButtonViewModel(playerServices.PlayerRound);
 
 			// Schedule game start AFTER UI loads
 			Task.Run(async () =>
 			{
 				await Task.Delay(100); // short delay to ensure window shows
-				gameCoordinator.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
+				playerServices.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
 				gameLogic.RunGameLoop();
 			});
 		}

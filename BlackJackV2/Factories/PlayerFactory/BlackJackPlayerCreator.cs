@@ -30,7 +30,7 @@ namespace BlackJackV2.Factories.PlayerFactory
 		/// <returns>
 		/// A new instance of <see cref="Player"/> representing the created Blackjack player.
 		/// </returns>
-		public override IPlayer<TImage, TValue> CreatePlayer(IBlackJackPlayerHands<TImage, TValue> playerHands, ISubject<BetUpdateEvent> betUpdatedSubject, string name = "Player1")
+		public override IPlayer<TImage, TValue> CreatePlayer(IBlackJackPlayerHands<TImage, TValue> playerHands, Subject<BetUpdateEvent> betUpdatedSubject, string name = "Player1")
 		{
 			return new Player<TImage, TValue>(name, playerHands, betUpdatedSubject);
 		}

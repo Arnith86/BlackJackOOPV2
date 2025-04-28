@@ -16,7 +16,6 @@
 ///		
 /// </summary>
 
-using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
@@ -28,12 +27,13 @@ using Avalonia.Media.Imaging;
 using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 
 namespace BlackJackV2.ViewModels
 {
 	public class TableViewModel : ReactiveObject
 	{
-		private IGameCoordinator<Bitmap, string> _gameCoordinator;
+		private readonly IPlayerServices<Bitmap, string> _playerServices;
 		private readonly Subject<SplitSuccessfulEvent> _splitEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
 
@@ -44,9 +44,13 @@ namespace BlackJackV2.ViewModels
 		public ObservableCollection<PlayerViewModel> playerViewModels { get; private set; }
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
-		public TableViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, IDealerServices<Bitmap, string> dealerServices, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
+		public TableViewModel(	IPlayerServices<Bitmap, string> playerServices, 
+								IDealerServices<Bitmap, string> dealerServices, 
+								Subject<SplitSuccessfulEvent> splitEvent, 
+								Subject<BetUpdateEvent> betUpdateEvent)
+
 		{
-			_gameCoordinator = gameCoordinator;
+			_playerServices = playerServices;
 			_splitEvent = splitEvent;
 			_betUpdateEvent = betUpdateEvent;
 
@@ -54,7 +58,7 @@ namespace BlackJackV2.ViewModels
 
 			playerViewModels = new ObservableCollection<PlayerViewModel>();
 
-			gameCoordinator.PlayerChangedEvent
+			playerServices.PlayerChangedEvent
 				.Subscribe(playerEvent =>{
 					// Update the player view models when the player event is received
 					UpdatePlayerViewModels(playerEvent);

@@ -5,9 +5,8 @@ using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.PlayerHands;
-using BlackJackV2.Factories.PlayerHandsFactory;
 using BlackJackV2.Shared.Constants;
-using BlackJackV2.Factories.CardHandFactory;
+using BlackJackV2.Models.GameLogic.CardServices;
 
 namespace BlackJackV2.Models.GameLogic.Dealer_Services
 {
@@ -28,9 +27,9 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 		/// </summary>
 		/// <param name="playerHandsCreator">Creates the playerHands container.</param>
 		/// <param name="cardHandCreator">Creates the instances of <see cref="IBlackJackCardHand{TImage, TValue}"/> used in the <see cref="PlayerHands"/> container.</param>
-		public DealerServices(BlackJackPlayerHandsCreator<TImage, TValue> playerHandsCreator, BlackJackCardHandCreator<TImage, TValue> cardHandCreator)
+		public DealerServices(ICardServices<TImage, TValue> cardServices)
 		{
-			_dealerCardHand = playerHandsCreator.CreatePlayerHands(HandOwners.HandOwner.Dealer, cardHandCreator);
+			_dealerCardHand = cardServices.GetNewPlayerHands(HandOwners.HandOwner.Dealer);
 		}
 
 		///<inheritdoc/>
