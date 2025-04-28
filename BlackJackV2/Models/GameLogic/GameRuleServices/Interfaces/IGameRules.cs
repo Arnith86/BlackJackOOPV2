@@ -1,16 +1,16 @@
 ﻿// Project: BlackJackV2
-// file: BlackJackV2/Models/GameLogic/GameRuleServices/IGameRuleServices.cs
+// file: BlackJackV2/Models/GameLogic/GameRuleServices/Interfaces/IGameRules.cs
 
 using BlackJackV2.Models.Player;
 using BlackJackV2.Shared.Constants;
 
-namespace BlackJackV2.Models.GameLogic.GameRuleServices
+namespace BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces
 {
 	/// <summary>
 	/// Defines rule-checking services used to validate whether specific player actions 
 	/// in the game of Blackjack (e.g., splitting or doubling down) are allowed based on current game state.
 	/// </summary>
-	public interface IGameRuleServices<TImage, TValue>
+	public interface IGameRules<TImage, TValue>
 	{
 		/// <summary>
 		/// Checks if the player is allowed to double down based on their current hand and game state.

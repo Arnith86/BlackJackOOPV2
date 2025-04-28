@@ -9,6 +9,7 @@ using BlackJackV2.Factories.PlayerHandsFactory;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
+using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Models.PlayerHands;
@@ -55,9 +56,7 @@ namespace BlackJackV2.Models.GameLogic
 		// Subject to notify when the bet is requested
 		public Subject<IPlayer<TImage, TValue>> BetRequestedEvent { get; }
 
-		// Subject to notify when the player split is successful
-		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
-
+	
 		// Subject and IObservable to notify when the game state changes
 		private BehaviorSubject<GameState> _gameStateSubject = new BehaviorSubject<GameState>(new GameState());
 		public IObservable<GameState> GameStateObservable => _gameStateSubject.AsObservable();
@@ -68,37 +67,31 @@ namespace BlackJackV2.Models.GameLogic
 
 		// Used to create a deck of cards
 		private ICardDeck<TImage, TValue> _cardDeck;
-		// Handles the blackjack related actions the players can take
-		private PlayerAction<TImage, TValue> playerAction;
-		// Handles the dealer's turn in a blackjack game
-		private DealerServices<TImage, TValue> dealerLogic;
-		// Handles the evaluation of the round
-		private RoundEvaluator<TImage, TValue> roundEvaluator;
-		// Handles all rounds related to a players hands
-		public IPlayerRound<TImage, TValue> _playerRound;
-
+	
+		private IDealerServices<TImage,TValue> _dealerServices;
+		private PlayerServices<TImage, TValue> _playerServices;
+		private GameRuleServices<TImage, TValue> _gameRuleServices;
 
 		// A collection of players in the game
 		public Dictionary<string, IPlayer<TImage, TValue>> Players { get; }
 
-		// Represents the dealers hands
-		private IBlackJackPlayerHands<TImage, TValue> _dealerCardHand;
-		public IBlackJackPlayerHands<TImage, TValue> DealerCardHand { get => _dealerCardHand; }
-
+		
 		// These objects will be removed when the coordinator is implemented
-		CardHandCreator<TImage, TValue> _cardHandCreator;
-		PlayerHandsCreator<TImage, TValue> _playerCardHandsCreator;
-		PlayerCreator<TImage, TValue> _playerCreator;
+		BlackJackCardHandCreator<TImage, TValue> _cardHandCreator;
+		BlackJackPlayerHandsCreator<TImage, TValue> _playerCardHandsCreator;
+		BlackJackPlayerCreator<TImage, TValue> _playerCreator;
 
 
 		public GameCoordinator(
-				CardDeckCreator<TImage, TValue> cardDeckCreator,
-				CardHandCreator<TImage, TValue> cardHandCreator,
-				PlayerHandsCreator<TImage, TValue> playerCardHandsCreator,
-				PlayerCreator<TImage, TValue> playerCreator,
-				IPlayerRound<TImage, TValue> playerRound,
-				PlayerAction<TImage, TValue> playerAction,
-				Subject<BetUpdateEvent> betUpdateEvent
+				BlackJackCardDeckCreator<TImage, TValue> cardDeckCreator,
+				BlackJackCardHandCreator<TImage, TValue> cardHandCreator,
+				BlackJackPlayerHandsCreator<TImage, TValue> playerCardHandsCreator,
+				BlackJackPlayerCreator<TImage, TValue> playerCreator,
+				Subject<BetUpdateEvent> betUpdateEvent,
+
+				IDealerServices<TImage, TValue> dealerServices,
+				PlayerServices<TImage, TValue> playerServices,
+				GameRuleServices<TImage, TValue> gameRuleServices
 			) 
 		{
 			//TODO:: Seperate into different services, player, dealer, evaluation?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -110,18 +103,18 @@ namespace BlackJackV2.Models.GameLogic
 
 			Players = new Dictionary<string, IPlayer<TImage, TValue>>();
 
-			_playerRound = playerRound;
-
+			
 			_cardHandCreator = cardHandCreator;
 			_playerCardHandsCreator = playerCardHandsCreator;
 			_playerCreator = playerCreator;
 			
 
 			_cardDeck = cardDeckCreator.CreateDeck();
-			_dealerCardHand = _playerCardHandsCreator.CreatePlayerHands(HandOwners.HandOwner.Dealer, _cardHandCreator);
-
-			dealerLogic = GameLogicCreator<TImage, TValue>.CreateDealerLogic();
-			roundEvaluator = GameLogicCreator<TImage, TValue>.CreateRoundEvaluator();
+			
+			//roundEvaluator = GameLogicCreator<TImage, TValue>.CreateRoundEvaluator();
+			_dealerServices = dealerServices;
+			_playerServices = playerServices;
+			_gameRuleServices = gameRuleServices;
 			
 		}
 
@@ -192,16 +185,16 @@ namespace BlackJackV2.Models.GameLogic
 			_cardDeck.ShuffleDeck();
 
 			// Gives dealer his initial cards
-			dealerLogic.InitialDeal(DealerCardHand, _cardDeck);
+			_dealerServices.InitialDeal(_dealerServices.DealerCardHand, _cardDeck);
 
 			foreach (KeyValuePair<string, IPlayer<TImage, TValue>> player in Players)
 			{
 				// Player conducts their turn
-				await _playerRound.PlayerTurn(_cardDeck, player.Value);
+				await _playerServices.PlayerRound.PlayerTurn(_cardDeck, player.Value);
 			}
 
 			// Dealer finishes his turn
-			dealerLogic.DealerFinishTurn(DealerCardHand, _cardDeck);
+			_dealerServices.DealerFinishTurn(_dealerServices.DealerCardHand, _cardDeck);
 
 			EvaluateRound();
 

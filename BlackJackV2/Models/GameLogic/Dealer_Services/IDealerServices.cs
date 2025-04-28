@@ -13,6 +13,11 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 	public interface IDealerServices<TImage, TValue>
 	{
 		/// <summary>
+		/// Gets the dealer's hands container (primary and split hands).
+		/// </summary>
+		public IBlackJackPlayerHands<TImage, TValue> DealerCardHand { get; }
+
+		/// <summary>
 		/// Performs the initial deal for the dealer, drawing two cards.
 		/// The first card is face down (back of card), and the second is face up.
 		/// </summary>

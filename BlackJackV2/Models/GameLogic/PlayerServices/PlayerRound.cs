@@ -1,5 +1,5 @@
 ﻿// Project: BlackJackV2
-// file: BlackJackV2/Models/GameLogic/PlayerRound.cs
+// file: BlackJackV2/Models/GameLogic/PlayerServices/PlayerRound.cs
 
 using System;
 using BlackJackV2.Models.CardDeck;
@@ -10,11 +10,10 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using BlackJackV2.Services.Events;
-using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Shared.Constants;
 using System.Reactive.Disposables;
 
-namespace BlackJackV2.Models.GameLogic
+namespace BlackJackV2.Models.GameLogic.PlayerServices
 {
 	/// <summary>
 	/// Handles an instance of a player's turn in a Blackjack round,
@@ -27,7 +26,7 @@ namespace BlackJackV2.Models.GameLogic
 		private IPlayer<TImage, TValue> _player;
 		
 		// The player action class handles the blackjack related actions the players can take
-		private PlayerAction<TImage, TValue> _playerAction;
+		private IPlayerAction<TImage, TValue> _playerAction;
 
 		// The current active hand in the game
 		private IBlackJackCardHand<TImage, TValue> currentHand;
@@ -55,7 +54,7 @@ namespace BlackJackV2.Models.GameLogic
 		/// <param name="playerAction">Service for performing player actions during the round.</param>
 		/// <param name="playerActionSubject">Subject to listen for player actions from the UI or input system.</param>
 		/// <param name="splitSuccessfulEvent">Event that notifies when a player's hand has been successfully split.</param>
-		public PlayerRound(	PlayerAction<TImage, TValue> playerAction, 
+		public PlayerRound(	IPlayerAction<TImage, TValue> playerAction, 
 							Subject<BlackJackActions.PlayerActions> playerActionSubject,
 							Subject<SplitSuccessfulEvent> splitSuccessfulEvent )
 		{

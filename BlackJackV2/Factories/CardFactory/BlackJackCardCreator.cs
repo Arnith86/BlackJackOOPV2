@@ -10,7 +10,7 @@ namespace BlackJackV2.Factories.CardFactory
 	///	Responsible for creating a fully initialized <see cref="BlackJackCard"/> object for use in the game.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Models.Card"/></remarks>
-	internal class BlackJackCardCreator<TImage, TValue> : CardCreator<TImage, TValue>
+	public class BlackJackCardCreator<TImage, TValue> : CardCreator<TImage, TValue>
 	{
 		/// <summary>
 		///	Creates a card used in BlackJack, using the provided front and back images, and value, and returns an initialized card.

@@ -17,6 +17,8 @@ using BlackJackV2.Shared.Utilities.ImageLoader;
 using BlackJackV2.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reactive.Subjects;
+using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
+using BlackJackV2.Models.GameLogic.Dealer_Services;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -34,29 +36,36 @@ namespace BlackJackV2.Services.DependencyInjection
 		{
 			collection.AddSingleton<IImageLoader<Bitmap>, AvaloniaImageLoader>();
 
-			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
+			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>(); 
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
 			collection.AddSingleton<Subject<BetUpdateEvent>>();
 
-			collection.AddSingleton<IGameRuleServices<Bitmap, string>, GameRuleService<Bitmap, string>>();
-
-			collection.AddSingleton<CardCreator<Bitmap, string>, BlackJackCardCreator<Bitmap, string>>();
-			collection.AddSingleton<CardDeckCreator<Bitmap, string>, BlackJackCardDeckCreator<Bitmap, string>>();
-
-			collection.AddSingleton<CardHandCreator<Bitmap, string>, BlackJackCardHandCreator<Bitmap, string>>();
-			collection.AddSingleton<PlayerHandsCreator<Bitmap, string>, BlackJackPlayerHandsCreator<Bitmap, string>>();
-	
-			collection.AddSingleton<PlayerCreator<Bitmap, string>, BlackJackPlayerCreator<Bitmap, string>>();
 			
 
+			collection.AddSingleton<BlackJackCardCreator<Bitmap, string>>();
+			collection.AddSingleton<BlackJackCardDeckCreator<Bitmap, string>>();
+
+			collection.AddSingleton<BlackJackCardHandCreator<Bitmap, string>>();
+			collection.AddSingleton<BlackJackPlayerHandsCreator<Bitmap, string>>();
+	
+			collection.AddSingleton<BlackJackPlayerCreator<Bitmap, string>>();
+
+
+			collection.AddSingleton<IGameRules<Bitmap, string>, GameRules<Bitmap, string>>();
+			collection.AddSingleton<IRoundEvaluator<Bitmap, string>, RoundEvaluator<Bitmap, string>>();
+			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound<Bitmap, string>>();
+			collection.AddSingleton<IPlayerAction<Bitmap, string>, PlayerAction<Bitmap, string>>();
+			
+
+			collection.AddSingleton<IDealerServices<Bitmap, string>, DealerServices<Bitmap, string>>();
+			collection.AddSingleton<PlayerServices<Bitmap, string>>();
+			collection.AddSingleton<GameRuleServices<Bitmap, string>>();
 
 			collection.AddSingleton<IGameCoordinator<Bitmap, string>, GameCoordinator<Bitmap, string>>();
 
 
 			collection.AddSingleton<IPlayer<Bitmap, string>, Player<Bitmap, string>>();
 
-			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound<Bitmap, string>>();
-			collection.AddSingleton<PlayerAction<Bitmap, string>>();
 			collection.AddSingleton<GameLogic<Bitmap, string>>();
 			
 		

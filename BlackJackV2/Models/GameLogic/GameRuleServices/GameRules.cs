@@ -1,6 +1,7 @@
 ﻿// Project: BlackJackV2
-// file: BlackJackV2/Models/GameLogic/GameRuleServices/GameRuleServices.cs
+// file: BlackJackV2/Models/GameLogic/GameRuleServices/GameRules.cs
 
+using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Shared.UtilityClasses;
@@ -11,7 +12,7 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 	/// Provides implementations for validating Blackjack gameplay rules, such as whether 
 	/// a player can split their hand or double down based on their cards and available funds.
 	/// </summary>
-	public class GameRuleService<TImage, TValue> : IGameRuleServices<TImage, TValue>
+	public class GameRules<TImage, TValue> : IGameRules<TImage, TValue>
 	{
 		/// <summary>
 		/// Validates whether the player is allowed to double down on the specified hand.

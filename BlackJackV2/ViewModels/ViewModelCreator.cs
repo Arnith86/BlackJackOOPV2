@@ -7,7 +7,7 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;

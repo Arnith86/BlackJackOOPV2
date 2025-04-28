@@ -27,7 +27,7 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 		/// <returns>
 		/// A fully initialized <see cref="BlackJackPlayerHands"/> instance representing the player or dealer's hands.
 		/// </returns>
-		public override IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<TImage, TValue> cardHandCreator)
+		public override IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, BlackJackCardHandCreator<TImage, TValue> cardHandCreator)
 		{
 			return new BlackJackPlayerHands<TImage, TValue>(id, cardHandCreator);
 		}

@@ -27,6 +27,6 @@ namespace BlackJackV2.Factories.PlayerHandsFactory
 		/// <returns>
 		/// An instance of <see cref="IBlackJackPlayerHands{TImage, TValue}"/> representing the initialized player hands.
 		/// </returns>
-		public abstract IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, CardHandCreator<TImage, TValue> cardHandCreator);
+		public abstract IBlackJackPlayerHands<TImage, TValue> CreatePlayerHands(HandOwners.HandOwner id, BlackJackCardHandCreator<TImage, TValue> cardHandCreator);
 	}
 }

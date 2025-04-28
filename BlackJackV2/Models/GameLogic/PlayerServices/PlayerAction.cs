@@ -8,7 +8,7 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using System.Diagnostics;
 using System.Reactive.Subjects;
-using BlackJackV2.Models.GameLogic.GameRuleServices;
+using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 
 namespace BlackJackV2.Models.GameLogic.PlayerServices
 {
@@ -22,17 +22,17 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// </summary>
 		private readonly Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
 
-		private readonly IGameRuleServices<TImage, TValue> _ruleServices;
+		private readonly IGameRules<TImage, TValue> _ruleServices;
 
 
 		/// <summary>
 		/// Initializes a new instance of <see cref="PlayerAction"/> with a subject notyfaing when a split is performed.
 		/// </summary>
 		/// <param name="splitSuccessfulEvent"></param>
-		public PlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent, IGameRuleServices<TImage, TValue> ruleServices)
+		public PlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent, IGameRules<TImage, TValue> gameRules)
 		{
 			_splitSuccessfulEvent = splitSuccessfulEvent;
-			_ruleServices = ruleServices;
+			_ruleServices = gameRules;
 		}
 
 		// TODO: show that the player has busted

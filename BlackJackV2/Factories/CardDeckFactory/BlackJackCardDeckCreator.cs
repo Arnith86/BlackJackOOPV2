@@ -18,9 +18,9 @@ namespace BlackJackV2.Factories.CardDeckFactory
 	/// (13 cards across 4 suites), each with a front and back image.
 	/// </summary>
 	/// <remarks> Related files <see cref="BlackJackV2.Models.CardDeck"/></remarks>
-	internal class BlackJackCardDeckCreator<TImage, TValue> : CardDeckCreator<TImage, TValue>
+	public class BlackJackCardDeckCreator<TImage, TValue> : CardDeckCreator<TImage, TValue>
 	{
-		private readonly CardCreator<TImage, TValue> _cardCreator;
+		private readonly BlackJackCardCreator<TImage, TValue> _cardCreator;
 		private readonly IImageLoader<TImage> _imageLoader;
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 		/// </summary>
 		/// <param name="cardCreator">Creator for individual cards, used to generate the deck.</param>
 		/// <param name="imageLoader">Loader for card images, used to load front and back images.</param>
-		public BlackJackCardDeckCreator(CardCreator<TImage, TValue> cardCreator, IImageLoader<TImage> imageLoader) 
+		public BlackJackCardDeckCreator(BlackJackCardCreator<TImage, TValue> cardCreator, IImageLoader<TImage> imageLoader) 
 		{
 			_cardCreator = cardCreator;
 			_imageLoader = imageLoader;

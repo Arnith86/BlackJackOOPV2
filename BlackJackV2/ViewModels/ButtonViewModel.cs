@@ -14,7 +14,7 @@
 /// </summary>
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Shared.Constants;
 using ReactiveUI;
 using System.Reactive;

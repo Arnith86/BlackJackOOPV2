@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 
 namespace BlackJackV2.ViewModels
 {

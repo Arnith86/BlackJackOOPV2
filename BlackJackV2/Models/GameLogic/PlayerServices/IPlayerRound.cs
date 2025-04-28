@@ -1,5 +1,5 @@
 ﻿// Project: BlackJackV2
-// file: BlackJackV2/Models/GameLogic/IPlayerRound.cs
+// file: BlackJackV2/Models/GameLogic/PlayerServices/IPlayerRound.cs
 
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Player;
@@ -7,7 +7,7 @@ using BlackJackV2.Shared.Constants;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
-namespace BlackJackV2.Models.GameLogic
+namespace BlackJackV2.Models.GameLogic.PlayerServices
 {
 	/// <summary>
 	/// Represents the actions and behavior of a player's round in the Blackjack game.

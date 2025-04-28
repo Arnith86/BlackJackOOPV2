@@ -1,25 +1,16 @@
 ﻿// Project: BlackJackV2
-// file: BlackJackV2/Models/GameLogic/RoundEvaluator.cs
+// file: BlackJackV2/Models/GameLogic/GameRuleServices/RoundEvaluator.cs
 
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 
-namespace BlackJackV2.Models.GameLogic
+namespace BlackJackV2.Models.GameLogic.GameRuleServices
 {
 	/// <summary>
 	///	Provides functionality to evaluate the outcome of a Blackjack round between a player and the dealer.
 	/// </summary>
-	public class RoundEvaluator<TImage, TValue>
+	public class RoundEvaluator<TImage, TValue> : IRoundEvaluator<TImage, TValue>
 	{
-		public enum RoundResult
-		{
-			PlayerWinsBlackJack,
-			DealerWinsBlackJack,
-			PlayerWins,
-			DealerWins,
-			Push
-
-		}
-		
 		private IBlackJackCardHand<TImage, TValue> _playerHand;
 		private IBlackJackCardHand<TImage, TValue> _dealerHand;
 

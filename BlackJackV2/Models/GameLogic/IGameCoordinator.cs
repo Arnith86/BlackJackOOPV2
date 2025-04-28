@@ -19,7 +19,6 @@
 ///		void		OnPlayerChangedReceived(List<string> playerNames)   : Called when the current players are changed
 /// </summary>
 using BlackJackV2.Models.Player;
-using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Services.Events;
 using System;
 using System.Collections.Generic;
@@ -33,11 +32,7 @@ namespace BlackJackV2.Models.GameLogic
 		public Subject<Dictionary<string, IPlayer<TImage, TValue>>> PlayerChangedEvent { get; }
 		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
 		public Subject<IPlayer<TImage, TValue>> BetRequestedEvent { get; }
-		public Subject<SplitSuccessfulEvent> SplitSuccessfulEvent { get; }
 		public IObservable<GameState> GameStateObservable { get; }
-
-		public IBlackJackPlayerHands<TImage, TValue> DealerCardHand {  get; }
-
 		public Task RegisterBetForNewRound();
 		public Task StartNewRound();
 		public void EvaluateRound();

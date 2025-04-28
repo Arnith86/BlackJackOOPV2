@@ -3,7 +3,7 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic;
-using BlackJackV2.Models.GameLogic.GameRuleServices;
+using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
@@ -45,7 +45,7 @@ namespace BlackJackV2.ViewModels
 
 		private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-		public StatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, IGameRuleServices<Bitmap, string> gameRule)
+		public StatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator, IGameRules<Bitmap, string> gameRule)
 		{
 			IsBetEnabled = true;
 
