@@ -1,46 +1,58 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/ViewModels/PlayerViewModel.cs
 
-/// <summary>
-///		This class is the view model that represents a player in the UI.
-///		
-///		IPlayer					Player						: The player represented by this view model
-///		CardHandViewModel		PlayerCardHandViewModel		: The player's primary hand view model
-///		CardHandViewModel		PlayerSplitCardHandViewModel: The player's split hand view model
-///		ObservableCollection<>	PlayerCardViewModels		: The collection of card hand view models for the player	
-///		
-///		readonly CompositeDisposable	_disposables				: Used to clean up resources	
-///		
-///		void	SyncPlayerBet(string playeName)	: Sync the bet in this viewModel with the player hands
-///		void	OnPlayerSplit()					: Add the player split hand to the to PlayerCardViewModels (adds another view in the UI)
-///		void	OnPlayerSplitEnd()				: Remove the player split hand from the PlayerCardViewModels (removes the view from the UI)
-///		void	Dispose()						: Cleans up resources
-///		
-/// </summary>
-
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
+using BlackJackV2.ViewModels.Interfaces;
+using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
 namespace BlackJackV2.ViewModels
 {
-	public class PlayerViewModel
+	public class PlayerViewModel : ReactiveObject, IPlayerViewModel
 	{
-		public IPlayer<Bitmap,string> Player { get; private set; }
-		public CardHandViewModel PlayerCardHandViewModel { get; }
-		public CardHandViewModel PlayerSplitCardHandViewModel { get; }
-		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; private set; }
+		private int _funds;
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+		/// <summary>
+		/// Backing model for this view model. Used to observe changes like funds or hand state.
+		/// </summary>
+		public IPlayer<Bitmap,string> Player { get; private set; }
+
+		/// <summary>
+		/// Gets the view model representing the player's primary card hand. Initialized during construction.
+		/// </summary>
+		public CardHandViewModel PlayerCardHandViewModel { get; }
+
+		/// <summary>
+		/// View model for the player's split hand. Created during construction but
+		/// only shown when a split occurs.
+		/// </summary>
+		public CardHandViewModel PlayerSplitCardHandViewModel { get; }
+
+		/// <summary>
+		/// Holds the set of hand view models displayed in the UI. Always includes
+		/// the primary hand; the split hand is added/removed dynamically.
+		/// </summary>
+		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; private set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PlayerViewModel"/> class,
+		/// wiring up player data, reactive UI updates, and event handlers related to splits and bets.
+		/// </summary>
+		/// <param name="player">The <see cref="IPlayer"/> associated with this view model.</param>
+		/// <param name="splitSuccessfulEvent">The event that is triggered when a player successfully split their hand.</param>
+		/// <param name="betUpdateEvent">The event that is triggered when a player updates their bet.</param>
 		public PlayerViewModel(IPlayer<Bitmap, string> player, Subject<SplitSuccessfulEvent> splitSuccessfulEvent, Subject<BetUpdateEvent> betUpdateEvent) 
 		{
 			Player = player;
-
+			
 			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.Hands.PrimaryCardHand);
 			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.Hands.SplitCardHand);
 
@@ -49,6 +61,13 @@ namespace BlackJackV2.ViewModels
 			{
 				PlayerCardHandViewModel
 			};
+
+			// Listen for the player funds event 
+			this.WhenAnyValue(x => x.Player)
+				.Where(player => player != null)
+				.SelectMany(player => player.WhenAnyValue(p => p.Funds))
+				.Subscribe(funds => Funds = funds)
+				.DisposeWith(_disposables);
 
 			betUpdateEvent
 			.Subscribe(betEvent => 
@@ -72,29 +91,50 @@ namespace BlackJackV2.ViewModels
 			}).DisposeWith(_disposables);
 		}
 
-		// Sync the player bet with the player hands
-		public void SyncPlayerBet(string playeName)
+		/// <summary>
+		/// Represents the player's current funds in the UI. 
+		/// Automatically updated in response to model changes via reactive bindings.
+		/// </summary>
+		public int Funds 
 		{
-			if (playeName == Player.Name) 
-			{
-				PlayerCardHandViewModel.Bet =  Player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
-				PlayerSplitCardHandViewModel.Bet = Player.Hands.GetBetFromHand(HandOwners.HandOwner.Split);
-			}
+			get => _funds;
+			set => this.RaiseAndSetIfChanged(ref _funds, value);
 		}
 
-		// Add the player split hand to the to PlayerCardViewModels (adds another view in the UI)
+		/// <summary>
+		/// Synchronizes the view model's bet values with the player's model,
+		/// only if the specified player name matches this instance.
+		/// </summary>
+		public void SyncPlayerBet(string playerName)
+		{
+			//if (playerName == Player.Name) 
+			//{
+				PlayerCardHandViewModel.Bet =  Player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
+				PlayerSplitCardHandViewModel.Bet = Player.Hands.GetBetFromHand(HandOwners.HandOwner.Split);
+			//}
+		}
+
+		/// <summary>
+		/// Adds the split hand to the observable collection of hand view models, 
+		/// triggering an additional hand display in the UI.
+		/// </summary>
 		public void OnPlayerSplit()
 		{
 			PlayerCardViewModels.Add(PlayerSplitCardHandViewModel);
 		}
 
-		// Remove the player split hand from the PlayerCardViewModels (removes the view from the UI)
+		/// <summary>
+		/// Removes the split hand from the observable collection,
+		/// collapsing the additional hand view in the UI.
+		/// </summary>
 		public void OnPlayerSplitEnd()
 		{
 			PlayerCardViewModels.Remove(PlayerSplitCardHandViewModel);
 		}
 
-		// Dispose of the resources
+		/// <summary>
+		/// Cleans up reactive subscriptions and disposables tied to this view model.
+		/// </summary>
 		public void Dispose() => _disposables.Dispose();
 	}
 }

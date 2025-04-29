@@ -28,6 +28,8 @@ using BlackJackV2.Services.Events;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.PlayerServices;
+using BlackJackV2.ViewModels.Interfaces;
+using BlackJackV2.Factories.PlayerViewModelFactory;
 
 namespace BlackJackV2.ViewModels
 {
@@ -36,27 +38,31 @@ namespace BlackJackV2.ViewModels
 		private readonly IPlayerServices<Bitmap, string> _playerServices;
 		private readonly Subject<SplitSuccessfulEvent> _splitEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
+		private readonly BlackJackPlayerViewModelCreator _blackJackPlayerViewModelCreator;
+
+		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		// View models for the dealers
 		public CardHandViewModel DealerCardHandViewModel { get; }
 	
 		// A collection of player view models
-		public ObservableCollection<PlayerViewModel> playerViewModels { get; private set; }
-
-		private readonly CompositeDisposable _disposables = new CompositeDisposable();
+		public ObservableCollection<IPlayerViewModel> playerViewModels { get; private set; }
+				
 		public TableViewModel(	IPlayerServices<Bitmap, string> playerServices, 
 								IDealerServices<Bitmap, string> dealerServices, 
 								Subject<SplitSuccessfulEvent> splitEvent, 
-								Subject<BetUpdateEvent> betUpdateEvent)
+								Subject<BetUpdateEvent> betUpdateEvent, 
+								BlackJackPlayerViewModelCreator blackJackPlayerViewModelCreator	)
 
 		{
 			_playerServices = playerServices;
 			_splitEvent = splitEvent;
 			_betUpdateEvent = betUpdateEvent;
+			_blackJackPlayerViewModelCreator = blackJackPlayerViewModelCreator;
 
 			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(dealerServices.DealerCardHand.PrimaryCardHand);
 
-			playerViewModels = new ObservableCollection<PlayerViewModel>();
+			playerViewModels = new ObservableCollection<IPlayerViewModel>();
 
 			playerServices.PlayerChangedEvent
 				.Subscribe(playerEvent =>{
@@ -70,11 +76,11 @@ namespace BlackJackV2.ViewModels
 		public void UpdatePlayerViewModels(Dictionary<string, IPlayer<Bitmap, string>> playerEvent)
 		{
 			// Replace the old player view models with the new ones
-			playerViewModels = new ObservableCollection<PlayerViewModel>();
+			playerViewModels = new ObservableCollection<IPlayerViewModel>();
 
 			foreach (var player in playerEvent)
 			{
-				PlayerViewModel playerViewModel = ViewModelCreator.CreatePlayerViewModel(player.Value, _splitEvent, _betUpdateEvent);
+				IPlayerViewModel playerViewModel = _blackJackPlayerViewModelCreator.CreatePlayerViewModel(player.Value, _splitEvent, _betUpdateEvent);
 				playerViewModels.Add(playerViewModel);
 			}
 		}

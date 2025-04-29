@@ -22,6 +22,7 @@ using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.CoreServices;
 using System.Collections.Generic;
 using BlackJackV2.Models.GameLogic.CardServices;
+using BlackJackV2.Factories.PlayerViewModelFactory;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -46,14 +47,11 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
 			collection.AddSingleton<Subject<BetUpdateEvent>>();
 
-			
-
+			// Models factories
 			collection.AddSingleton<BlackJackCardCreator<Bitmap, string>>();
 			collection.AddSingleton<BlackJackCardDeckCreator<Bitmap, string>>();
-
 			collection.AddSingleton<BlackJackCardHandCreator<Bitmap, string>>();
 			collection.AddSingleton<BlackJackPlayerHandsCreator<Bitmap, string>>();
-	
 			collection.AddSingleton<BlackJackPlayerCreator<Bitmap, string>>();
 
 
@@ -62,19 +60,22 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound<Bitmap, string>>();
 			collection.AddSingleton<IPlayerAction<Bitmap, string>, PlayerAction<Bitmap, string>>();
 
+			// Game logic services
 			collection.AddSingleton<ICardServices<Bitmap, string>, CardServices<Bitmap, string>>();
 			collection.AddSingleton<IDealerServices<Bitmap, string>, DealerServices<Bitmap, string>>();
 			collection.AddSingleton<IPlayerServices<Bitmap, string>, PlayerServices<Bitmap, string>>();
 			collection.AddSingleton<GameRuleServices<Bitmap, string>>();
-
 			collection.AddSingleton<IGameCoordinator<Bitmap, string>, GameCoordinator<Bitmap, string>>();
 
 
+			// Model 
 			collection.AddSingleton<IPlayer<Bitmap, string>, Player<Bitmap, string>>();
-
 			collection.AddSingleton<GameLogic<Bitmap, string>>();
-			
-		
+
+			// View models factories
+			collection.AddScoped<BlackJackPlayerViewModelCreator>();
+
+			// View models
 			collection.AddSingleton<StatsViewModel>();
 			collection.AddSingleton<TableViewModel>();
 			collection.AddSingleton<MainWindowViewModel>();

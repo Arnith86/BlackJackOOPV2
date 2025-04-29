@@ -14,28 +14,36 @@
 	<!-- Accesses each instance of PlayerCardViewModel in the ObservableCollection -->
 
 	<Panel>
-		<ItemsControl ItemsSource="{Binding PlayerCardViewModels}" MinHeight="200">
+		<StackPanel>
+			
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Label Content="Funds:" VerticalAlignment="Center" Margin="0,0,0,0"/>
+				<TextBlock Text="{Binding Funds}" VerticalAlignment="Center"/>
+			</StackPanel>
+			
+			<ItemsControl ItemsSource="{Binding PlayerCardViewModels}" MinHeight="200">
 
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal"
-								HorizontalAlignment="Center"
-								Spacing="50"/>
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal"
+									HorizontalAlignment="Center"
+									Spacing="50"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
 
-			<ItemsControl.ItemTemplate>
-				<DataTemplate x:DataType="vm:CardHandViewModel">
-					<StackPanel>
-						<TextBlock Text="{Binding Id}" HorizontalAlignment="Center"/>
-						<Views:CardHandView HorizontalContentAlignment="Center"/>
-						<TextBlock Text="{Binding Bet, StringFormat='Bet: {0}'}" HorizontalAlignment="Center"/>
-						
-					</StackPanel>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate x:DataType="vm:CardHandViewModel">
+						<StackPanel>
+							<!--<TextBlock Text="{Binding Id}" HorizontalAlignment="Center"/>-->
+							<Views:CardHandView HorizontalContentAlignment="Center"/>
+							<TextBlock Text="{Binding Bet, StringFormat='Bet: {0}'}" HorizontalAlignment="Center"/>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
 
-		</ItemsControl>
+			</ItemsControl>
+		
+		</StackPanel>
 	</Panel>
-  
+	
 </UserControl>
