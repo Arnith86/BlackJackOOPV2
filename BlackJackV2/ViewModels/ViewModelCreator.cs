@@ -16,10 +16,10 @@ namespace BlackJackV2.ViewModels
 {
 	public class ViewModelCreator
 	{
-		public static CardHandViewModel CreateHandCardViewModel(IBlackJackCardHand<Bitmap, string> cardHand)
-		{
-			return new CardHandViewModel(cardHand);
-		}
+		//public static CardHandViewModel CreateHandCardViewModel(IBlackJackCardHand<Bitmap, string> cardHand)
+		//{
+		//	return new CardHandViewModel(cardHand);
+		//}
 
 		//public static StatsViewModel CreateStatsViewModel(IGameCoordinator<Bitmap, string> gameCoordinator)
 		//{
@@ -36,9 +36,9 @@ namespace BlackJackV2.ViewModels
 		//	return new TableViewModel(gameCoordinator, splitEvent, betUpdateEvent);
 		//}
 
-		public static PlayerViewModel CreatePlayerViewModel(IPlayer<Bitmap, string> player, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
-		{
-			return new PlayerViewModel(player, splitEvent, betUpdateEvent);
-		}
+		//public static PlayerViewModel CreatePlayerViewModel(IPlayer<Bitmap, string> player, Subject<SplitSuccessfulEvent> splitEvent, Subject<BetUpdateEvent> betUpdateEvent)
+		//{
+		//	return new PlayerViewModel(player, splitEvent, betUpdateEvent);
+		//}
 	}
 }

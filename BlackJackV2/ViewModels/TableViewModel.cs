@@ -30,6 +30,7 @@ using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.ViewModels.Interfaces;
 using BlackJackV2.Factories.PlayerViewModelFactory;
+using BlackJackV2.Factories.CardHandViewModelFactory;
 
 namespace BlackJackV2.ViewModels
 {
@@ -39,11 +40,12 @@ namespace BlackJackV2.ViewModels
 		private readonly Subject<SplitSuccessfulEvent> _splitEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
 		private readonly BlackJackPlayerViewModelCreator _blackJackPlayerViewModelCreator;
+		private readonly BlackJackCardHandViewModelCreator _blackJackCardHandViewModelCreator;
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		// View models for the dealers
-		public CardHandViewModel DealerCardHandViewModel { get; }
+		public ICardHandViewModel DealerCardHandViewModel { get; }
 	
 		// A collection of player view models
 		public ObservableCollection<IPlayerViewModel> playerViewModels { get; private set; }
@@ -52,15 +54,17 @@ namespace BlackJackV2.ViewModels
 								IDealerServices<Bitmap, string> dealerServices, 
 								Subject<SplitSuccessfulEvent> splitEvent, 
 								Subject<BetUpdateEvent> betUpdateEvent, 
-								BlackJackPlayerViewModelCreator blackJackPlayerViewModelCreator	)
+								BlackJackPlayerViewModelCreator blackJackPlayerViewModelCreator,
+								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator	)
 
 		{
 			_playerServices = playerServices;
 			_splitEvent = splitEvent;
 			_betUpdateEvent = betUpdateEvent;
 			_blackJackPlayerViewModelCreator = blackJackPlayerViewModelCreator;
+			_blackJackCardHandViewModelCreator = blackJackCardHandViewModelCreator;
 
-			DealerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(dealerServices.DealerCardHand.PrimaryCardHand);
+			DealerCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(dealerServices.DealerCardHand.PrimaryCardHand);
 
 			playerViewModels = new ObservableCollection<IPlayerViewModel>();
 
@@ -80,7 +84,10 @@ namespace BlackJackV2.ViewModels
 
 			foreach (var player in playerEvent)
 			{
-				IPlayerViewModel playerViewModel = _blackJackPlayerViewModelCreator.CreatePlayerViewModel(player.Value, _splitEvent, _betUpdateEvent);
+				IPlayerViewModel playerViewModel = _blackJackPlayerViewModelCreator.CreatePlayerViewModel(	player.Value, 
+																											_splitEvent, 
+																											_betUpdateEvent,
+																											_blackJackCardHandViewModelCreator	);
 				playerViewModels.Add(playerViewModel);
 			}
 		}

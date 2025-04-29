@@ -23,6 +23,7 @@ using BlackJackV2.Models.GameLogic.CoreServices;
 using System.Collections.Generic;
 using BlackJackV2.Models.GameLogic.CardServices;
 using BlackJackV2.Factories.PlayerViewModelFactory;
+using BlackJackV2.Factories.CardHandViewModelFactory;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -74,6 +75,7 @@ namespace BlackJackV2.Services.DependencyInjection
 
 			// View models factories
 			collection.AddScoped<BlackJackPlayerViewModelCreator>();
+			collection.AddScoped<BlackJackCardHandViewModelCreator>();
 
 			// View models
 			collection.AddSingleton<StatsViewModel>();

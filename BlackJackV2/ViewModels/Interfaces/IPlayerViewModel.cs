@@ -12,6 +12,9 @@ namespace BlackJackV2.ViewModels.Interfaces
 	/// Represents a view model for a Blackjack player, exposing information about hands, funds,
 	/// and methods for managing split state and synchronizing bets.
 	/// </summary>
+	/// /// <remarks>
+	/// Related files <see cref="BlackJackV2.Factories.PlayerViewModelFactory"/>
+	/// </remarks>
 	public interface IPlayerViewModel : IDisposable
 	{
 		/// <summary>
@@ -28,18 +31,18 @@ namespace BlackJackV2.ViewModels.Interfaces
 		/// <summary>
 		/// View model representing the player’s primary hand.
 		/// </summary>
-		CardHandViewModel PlayerCardHandViewModel { get; }
+		ICardHandViewModel PlayerCardHandViewModel { get; }
 
 		/// <summary>
 		/// View model representing the player’s split hand.
 		/// </summary>
-		CardHandViewModel PlayerSplitCardHandViewModel { get; }
+		ICardHandViewModel PlayerSplitCardHandViewModel { get; }
 
 		/// <summary>
 		/// Collection of card hand view models to be displayed in the UI.
 		/// Typically contains one or two elements (primary and optionally split hand).
 		/// </summary>
-		ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; }
+		ObservableCollection<ICardHandViewModel> PlayerCardViewModels { get; }
 
 		/// <summary>
 		/// Synchronizes the bet values for the player’s hands, based on the player's name.

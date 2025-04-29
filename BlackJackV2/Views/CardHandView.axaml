@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
 			 xmlns:converter="clr-namespace:BlackJackV2.Views.Converters"
+			 xmlns:Views="clr-namespace:BlackJackV2.Views"
              x:Class="BlackJackV2.Views.CardHandView"
              x:DataType="vm:CardHandViewModel"
              mc:Ignorable="d">
@@ -50,6 +51,7 @@
 		
 			<!-- Shows the card value -->
 			<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
+			<!--<Views:ButtonView DataContext="{Binding ButtonViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/>-->
 	
 		</StackPanel>
 		

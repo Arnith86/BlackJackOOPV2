@@ -2,6 +2,7 @@
 // file: BlackJackV2/ViewModels/PlayerViewModel.cs
 
 using Avalonia.Media.Imaging;
+using BlackJackV2.Factories.CardHandViewModelFactory;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
@@ -28,19 +29,19 @@ namespace BlackJackV2.ViewModels
 		/// <summary>
 		/// Gets the view model representing the player's primary card hand. Initialized during construction.
 		/// </summary>
-		public CardHandViewModel PlayerCardHandViewModel { get; }
+		public ICardHandViewModel PlayerCardHandViewModel { get; }
 
 		/// <summary>
 		/// View model for the player's split hand. Created during construction but
 		/// only shown when a split occurs.
 		/// </summary>
-		public CardHandViewModel PlayerSplitCardHandViewModel { get; }
+		public ICardHandViewModel PlayerSplitCardHandViewModel { get; }
 
 		/// <summary>
 		/// Holds the set of hand view models displayed in the UI. Always includes
 		/// the primary hand; the split hand is added/removed dynamically.
 		/// </summary>
-		public ObservableCollection<CardHandViewModel> PlayerCardViewModels { get; private set; }
+		public ObservableCollection<ICardHandViewModel> PlayerCardViewModels { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PlayerViewModel"/> class,
@@ -49,15 +50,22 @@ namespace BlackJackV2.ViewModels
 		/// <param name="player">The <see cref="IPlayer"/> associated with this view model.</param>
 		/// <param name="splitSuccessfulEvent">The event that is triggered when a player successfully split their hand.</param>
 		/// <param name="betUpdateEvent">The event that is triggered when a player updates their bet.</param>
-		public PlayerViewModel(IPlayer<Bitmap, string> player, Subject<SplitSuccessfulEvent> splitSuccessfulEvent, Subject<BetUpdateEvent> betUpdateEvent) 
+		/// <param name="blackJackCardHandViewModelCreator">Factory for creating <see cref="ICardHandViewModel"/>.</param>
+		/// <remarks>
+		/// Related files <see cref="BlackJackV2.Factories.PlayerViewModelFactory"/>
+		/// </remarks>
+		public PlayerViewModel(	IPlayer<Bitmap, string> player, 
+								Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
+								Subject<BetUpdateEvent> betUpdateEvent,
+								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator) 
 		{
 			Player = player;
 			
-			PlayerCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.Hands.PrimaryCardHand);
-			PlayerSplitCardHandViewModel = ViewModelCreator.CreateHandCardViewModel(player.Hands.SplitCardHand);
+			PlayerCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(player.Hands.PrimaryCardHand);
+			PlayerSplitCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(player.Hands.SplitCardHand);
 
 			// Add the player primary hand to the player card view models
-			PlayerCardViewModels = new ObservableCollection<CardHandViewModel>
+			PlayerCardViewModels = new ObservableCollection<ICardHandViewModel>
 			{
 				PlayerCardHandViewModel
 			};
@@ -107,11 +115,8 @@ namespace BlackJackV2.ViewModels
 		/// </summary>
 		public void SyncPlayerBet(string playerName)
 		{
-			//if (playerName == Player.Name) 
-			//{
-				PlayerCardHandViewModel.Bet =  Player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
-				PlayerSplitCardHandViewModel.Bet = Player.Hands.GetBetFromHand(HandOwners.HandOwner.Split);
-			//}
+			PlayerCardHandViewModel.Bet =  Player.Hands.GetBetFromHand(HandOwners.HandOwner.Primary);
+			PlayerSplitCardHandViewModel.Bet = Player.Hands.GetBetFromHand(HandOwners.HandOwner.Split);
 		}
 
 		/// <summary>
