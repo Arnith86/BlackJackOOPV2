@@ -20,10 +20,11 @@ namespace BlackJackV2.Factories.CardHandViewModelFactory
 		/// Creates a <see cref="CardHandViewModel"/> for a given Blackjack card hand model.
 		/// </summary>
 		/// <param name="blackJackCardHand">The Blackjack card hand to wrap in a ViewModel.</param>
+		/// <param name="buttonViewModel">The ViewModel for action buttons associated with the hand.</param>
 		/// <returns>An instance of <see cref="ICardHandViewModel"/> representing the card hand.</returns>
-		public override ICardHandViewModel CreateCardHandViewModel(IBlackJackCardHand<Bitmap, string> blackJackCardHand)
+		public override ICardHandViewModel CreateCardHandViewModel(IBlackJackCardHand<Bitmap, string> blackJackCardHand, IButtonViewModel buttonViewModel)
 		{
-			return new CardHandViewModel(blackJackCardHand);
+			return new CardHandViewModel(blackJackCardHand, buttonViewModel);
 		}
 	}
 }

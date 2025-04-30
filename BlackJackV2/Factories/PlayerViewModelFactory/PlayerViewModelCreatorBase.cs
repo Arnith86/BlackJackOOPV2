@@ -6,6 +6,8 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Factories.CardHandViewModelFactory;
 using System.Reactive.Subjects;
 using BlackJackV2.Services.Events;
+using BlackJackV2.Factories.ButtonViewModelFactory;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 
 namespace BlackJackV2.Factories.PlayerViewModelFactory
 {
@@ -30,10 +32,14 @@ namespace BlackJackV2.Factories.PlayerViewModelFactory
 		/// <param name="splitSuccessfulEvent">Event triggered when a player successfully splits their hand.</param>
 		/// <param name="betUpdateEvent">Event triggered when a player's bet is updated.</param>
 		/// <param name="blackJackCardHandViewModelCreator">Factory for creating <see cref="ICardHandViewModel"/>.</param>
+		/// <param name="blackJackButtonViewModelCreator">Factory for creating <see cref="IButtonViewModel"/>.</param>
+		/// <param name="playerRound">Hadles the players turn.</param>
 		/// <returns>A fully constructed and reactive <see cref="IPlayerViewModel"/> instance.</returns>
 		public abstract IPlayerViewModel CreatePlayerViewModel(	IPlayer<TImage, TValue> player, 
 																Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
 																Subject<BetUpdateEvent> betUpdateEvent,
-																BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator	);
+																BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
+																BlackJackButtonViewModelCreator blackJackButtonViewModelCreator,
+																IPlayerRound<TImage, TValue> playerRound	);
 	}
 }

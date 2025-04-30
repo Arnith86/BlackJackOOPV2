@@ -32,14 +32,14 @@ namespace BlackJackV2.ViewModels
 		/// <summary>
 		/// ViewModel for action buttons associated with the hand (e.g., Hit, Stand).
 		/// </summary>
-		public ButtonViewModel ButtonViewModel { get; }
+		public IButtonViewModel ButtonViewModel { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CardHandViewModel"/> class,
 		/// binding state to a Blackjack card hand and subscribing to updates.
 		/// </summary>
 		/// <param name="cardHand">The underlying hand model.</param>
-		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand)
+		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand, IButtonViewModel buttonViewModel)
 		{
 			_id = cardHand.Id;
 			HandIsActive = cardHand.IsActive;
@@ -47,8 +47,7 @@ namespace BlackJackV2.ViewModels
 			_cards = cardHand.Hand;
 			_handValue = cardHand.HandValue.ToString();
 
-			// NOTE: ButtonViewModel is planned to be injected via factory in the future.
-			//ButtonViewModel = ViewModelCreator.CreateButtonViewModel(gameLogic.playerRound);  !!!!!!!!!!!!!! You are woking on making a factory for cardhandview
+			ButtonViewModel = buttonViewModel;
 
 
 			// Automatically update UI-bound properties when model changes
@@ -56,7 +55,10 @@ namespace BlackJackV2.ViewModels
 				.Subscribe(tuple =>
 				{
 					var (isActive, handValue) = tuple;
+					
 					HandIsActive = isActive;
+					buttonViewModel.HandIsActive = isActive;
+					
 					HandValue = handValue.ToString();
 				})
 				.DisposeWith(_disposables);

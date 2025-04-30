@@ -3,6 +3,7 @@
 
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <summary>
 		/// A subject that emits the player's actions during their turn in the round (e.g., Hit, Fold, Split).
 		/// </summary>
-		public Subject<BlackJackActions.PlayerActions> PlayerActionSubject { get; }
+		public Subject<PlayerActionEvent> PlayerActionSubject { get; }
 
 		/// <summary>
 		/// Starts the player's turn, handling actions such as Hit, Fold, etc., for the specified player.

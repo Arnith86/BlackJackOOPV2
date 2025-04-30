@@ -51,8 +51,7 @@
 		
 			<!-- Shows the card value -->
 			<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
-			<!--<Views:ButtonView DataContext="{Binding ButtonViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/>-->
-	
+			<Views:ButtonView DataContext="{Binding ButtonViewModel}" IsVisible="{Binding HandIsActive}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
 		</StackPanel>
 		
 	</Border>

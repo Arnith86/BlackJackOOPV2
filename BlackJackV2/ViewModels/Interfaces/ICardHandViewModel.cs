@@ -53,6 +53,6 @@ namespace BlackJackV2.ViewModels.Interfaces
 		/// <summary>
 		/// Encapsulated button logic related to this hand (e.g., actions like Hit, Stand).
 		/// </summary>
-		ButtonViewModel ButtonViewModel { get; }
+		IButtonViewModel ButtonViewModel { get; }
 	}
 }

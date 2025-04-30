@@ -21,7 +21,8 @@ namespace BlackJackV2.Factories.CardHandViewModelFactory
 		/// Creates a ViewModel for the given Blackjack card hand model.
 		/// </summary>
 		/// <param name="blackJackCardHand">The card hand model to base the ViewModel on.</param>
+		/// <param name="buttonViewModel">The ViewModel for action buttons associated with the hand.</param>
 		/// <returns>An instance of <see cref="ICardHandViewModel"/> representing the given hand.</returns>
-		public abstract ICardHandViewModel CreateCardHandViewModel(IBlackJackCardHand<TImage, TValue> blackJackCardHand);
+		public abstract ICardHandViewModel CreateCardHandViewModel(IBlackJackCardHand<TImage, TValue> blackJackCardHand, IButtonViewModel buttonViewModel);
 	}
 }

@@ -2,7 +2,10 @@
 // file: BlackJackV2/ViewModels/PlayerViewModel.cs
 
 using Avalonia.Media.Imaging;
+using BlackJackV2.Factories.ButtonViewModelFactory;
 using BlackJackV2.Factories.CardHandViewModelFactory;
+using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
@@ -51,18 +54,29 @@ namespace BlackJackV2.ViewModels
 		/// <param name="splitSuccessfulEvent">The event that is triggered when a player successfully split their hand.</param>
 		/// <param name="betUpdateEvent">The event that is triggered when a player updates their bet.</param>
 		/// <param name="blackJackCardHandViewModelCreator">Factory for creating <see cref="ICardHandViewModel"/>.</param>
+		/// <param name="blackJackButtonViewModelCreator">Factory for creating <see cref="IButtonViewModel"/>.</param>
+		/// <param name="playerRound">Handles the players turn.</param>
 		/// <remarks>
 		/// Related files <see cref="BlackJackV2.Factories.PlayerViewModelFactory"/>
 		/// </remarks>
 		public PlayerViewModel(	IPlayer<Bitmap, string> player, 
 								Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
 								Subject<BetUpdateEvent> betUpdateEvent,
-								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator) 
+								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
+								BlackJackButtonViewModelCreator blackJackButtonViewModelCreator,
+								IPlayerRound<Bitmap, string> playerRound) 
 		{
 			Player = player;
 			
-			PlayerCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(player.Hands.PrimaryCardHand);
-			PlayerSplitCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(player.Hands.SplitCardHand);
+			PlayerCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(
+				player.Hands.PrimaryCardHand, 
+				blackJackButtonViewModelCreator.CreateButtonViewModel(player.Name, HandOwners.HandOwner.Primary, playerRound)
+			);
+			
+			PlayerSplitCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(
+				player.Hands.SplitCardHand, 
+				blackJackButtonViewModelCreator.CreateButtonViewModel(player.Name, HandOwners.HandOwner.Split, playerRound)
+			);
 
 			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<ICardHandViewModel>

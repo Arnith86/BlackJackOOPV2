@@ -2,7 +2,9 @@
 // file: BlackJackV2/Factories/PlayerViewModelFactory/BlackJackPlayerViewModelCreator.cs
 
 using Avalonia.Media.Imaging;
+using BlackJackV2.Factories.ButtonViewModelFactory;
 using BlackJackV2.Factories.CardHandViewModelFactory;
+using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.ViewModels;
@@ -28,13 +30,22 @@ namespace BlackJackV2.Factories.PlayerViewModelFactory
 		/// <param name="splitSuccessfulEvent">Event triggered when a player successfully splits their hand.</param>
 		/// <param name="betUpdateEvent">Event triggered when a player's bet is updated.</param>
 		/// <param name="blackJackCardHandViewModelCreator">Factory for creating <see cref="ICardHandViewModel"/>.</param>
+		/// <param name="blackJackButtonViewModelCreator">Factory for creating <see cref="IButtonViewModel"/>.</param>
+		/// <param name="playerRound">Hadles the players turn.</param>
 		/// <returns>A fully configured <see cref="PlayerViewModel"/> instance.</returns>
 		public override IPlayerViewModel CreatePlayerViewModel(	IPlayer<Bitmap, string> player, 
 																Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
 																Subject<BetUpdateEvent> betUpdateEvent,
-																BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator	)
+																BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
+																BlackJackButtonViewModelCreator blackJackButtonViewModelCreator,
+																IPlayerRound<Bitmap, string> playerRound	)
 		{
-			return new PlayerViewModel(player, splitSuccessfulEvent, betUpdateEvent, blackJackCardHandViewModelCreator);
+			return new PlayerViewModel(	player, 
+										splitSuccessfulEvent, 
+										betUpdateEvent, 
+										blackJackCardHandViewModelCreator, 
+										blackJackButtonViewModelCreator, 
+										playerRound);
 		}
 	}
 }

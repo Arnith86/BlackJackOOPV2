@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using BlackJackV2.Models.GameLogic.CardServices;
 using BlackJackV2.Factories.PlayerViewModelFactory;
 using BlackJackV2.Factories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ButtonViewModelFactory;
+using BlackJackV2.ViewModels.Interfaces;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -42,8 +44,9 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<IImageLoader<Bitmap>, AvaloniaImageLoader>();
 
 			collection.AddScoped<Dictionary<string, IPlayer<Bitmap, string>>>();
-
-			collection.AddSingleton<Subject<BlackJackActions.PlayerActions>>();
+			
+			// Subjects 
+			collection.AddSingleton<Subject<PlayerActionEvent>>();
 			collection.AddSingleton<Subject<Dictionary<string, IPlayer<Bitmap, string>>>>();
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
 			collection.AddSingleton<Subject<BetUpdateEvent>>();
@@ -55,9 +58,11 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<BlackJackPlayerHandsCreator<Bitmap, string>>();
 			collection.AddSingleton<BlackJackPlayerCreator<Bitmap, string>>();
 
-
+			// Rule Services
 			collection.AddSingleton<IGameRules<Bitmap, string>, GameRules<Bitmap, string>>();
 			collection.AddSingleton<IRoundEvaluator<Bitmap, string>, RoundEvaluator<Bitmap, string>>();
+			
+			// PlayerServices
 			collection.AddSingleton<IPlayerRound<Bitmap, string>, PlayerRound<Bitmap, string>>();
 			collection.AddSingleton<IPlayerAction<Bitmap, string>, PlayerAction<Bitmap, string>>();
 
@@ -74,11 +79,13 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<GameLogic<Bitmap, string>>();
 
 			// View models factories
-			collection.AddScoped<BlackJackPlayerViewModelCreator>();
-			collection.AddScoped<BlackJackCardHandViewModelCreator>();
+			collection.AddSingleton<BlackJackPlayerViewModelCreator>();
+			collection.AddSingleton<BlackJackCardHandViewModelCreator>();
+			collection.AddSingleton<BlackJackButtonViewModelCreator>();
 
 			// View models
-			collection.AddSingleton<StatsViewModel>();
+			collection.AddSingleton<InformationViewModel>();
+			collection.AddScoped<IButtonViewModel, ButtonViewModel>();
 			collection.AddSingleton<TableViewModel>();
 			collection.AddSingleton<MainWindowViewModel>();
 		}

@@ -35,18 +35,19 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		private Queue<IBlackJackCardHand<TImage, TValue>> blackJackCardHands = new Queue<IBlackJackCardHand<TImage, TValue>>();
 
 		/// <summary>
+		/// Manages subscriptions that need to be disposed when the round ends.
+		/// </summary>
+		private readonly CompositeDisposable _disposables = new CompositeDisposable();
+		
+		/// <summary>
 		/// Subject used to listen for player actions during their turn.
 		/// </summary>
-		public Subject<BlackJackActions.PlayerActions> PlayerActionSubject { get; }
+		public Subject<PlayerActionEvent> PlayerActionSubject { get; }
 
 		//// Notifies when a hand has changed
 		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
 		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
 
-		/// <summary>
-		/// Manages subscriptions that need to be disposed when the round ends.
-		/// </summary>
-		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PlayerRound{TImage, TValue}"/> class.
@@ -55,7 +56,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <param name="playerActionSubject">Subject to listen for player actions from the UI or input system.</param>
 		/// <param name="splitSuccessfulEvent">Event that notifies when a player's hand has been successfully split.</param>
 		public PlayerRound(	IPlayerAction<TImage, TValue> playerAction, 
-							Subject<BlackJackActions.PlayerActions> playerActionSubject,
+							Subject<PlayerActionEvent> playerActionSubject,
 							Subject<SplitSuccessfulEvent> splitSuccessfulEvent )
 		{
 			_playerAction = playerAction;
@@ -103,8 +104,8 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 				while (!currentHand.IsBusted && !currentHand.IsFolded && !currentHand.IsBlackJack)
 				{
 					// Pause here and wait until a player does something (Hit, Fold, etc ), and once they do, continue with the loop or logic.
-					BlackJackActions.PlayerActions action = await PlayerActionSubject.FirstAsync();
-					ProcessPlayerAction(action);
+					PlayerActionEvent playerActionEvent = await PlayerActionSubject.FirstAsync();
+					ProcessPlayerAction(playerActionEvent);
 				}
 
 				// Hand is finished
@@ -121,19 +122,19 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <summary>
 		/// Processes the player action received during the turn and applies the corresponding game logic.
 		/// </summary>
-		/// <param name="action">The player action to process (e.g., Hit, Fold, DoubleDown, Split).</param>
-		private void ProcessPlayerAction(BlackJackActions.PlayerActions action)
+		/// <param name="playerAction">Represents an event containing information about a player's action during a game round.</param>
+		private void ProcessPlayerAction(PlayerActionEvent playerAction)
 		{
-			switch (action)
+			switch (playerAction.PlayerAction)
 			{
 				case BlackJackActions.PlayerActions.Hit:
-					_playerAction.PerformHit(_player.Hands, currentHand, _cardDeck);
+					_playerAction.PerformHit(playerAction, _player, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.DoubleDown:
-					_playerAction.PerformDoubleDown(_player, currentHand, _cardDeck);
+					_playerAction.PerformDoubleDown(playerAction, _player, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Fold:
-					_playerAction.PerformFold(_player.Hands, currentHand, _cardDeck);
+					_playerAction.PerformFold(playerAction, _player, _cardDeck);
 					break;
 				case BlackJackActions.PlayerActions.Split:
 					_playerAction.PerformSplit(_player, _cardDeck);

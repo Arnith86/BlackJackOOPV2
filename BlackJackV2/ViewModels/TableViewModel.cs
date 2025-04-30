@@ -25,12 +25,14 @@ using System.Reactive.Linq;
 using System.Reactive.Disposables;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Services.Events;
+using BlackJackV2.Shared.Constants;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.ViewModels.Interfaces;
 using BlackJackV2.Factories.PlayerViewModelFactory;
 using BlackJackV2.Factories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ButtonViewModelFactory;
 
 namespace BlackJackV2.ViewModels
 {
@@ -41,6 +43,7 @@ namespace BlackJackV2.ViewModels
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
 		private readonly BlackJackPlayerViewModelCreator _blackJackPlayerViewModelCreator;
 		private readonly BlackJackCardHandViewModelCreator _blackJackCardHandViewModelCreator;
+		private readonly BlackJackButtonViewModelCreator _blackJackButtonViewModelCreator;
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -55,21 +58,25 @@ namespace BlackJackV2.ViewModels
 								Subject<SplitSuccessfulEvent> splitEvent, 
 								Subject<BetUpdateEvent> betUpdateEvent, 
 								BlackJackPlayerViewModelCreator blackJackPlayerViewModelCreator,
-								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator	)
-
+								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
+								BlackJackButtonViewModelCreator blackJackButtonViewModelCreator)
 		{
 			_playerServices = playerServices;
 			_splitEvent = splitEvent;
 			_betUpdateEvent = betUpdateEvent;
 			_blackJackPlayerViewModelCreator = blackJackPlayerViewModelCreator;
 			_blackJackCardHandViewModelCreator = blackJackCardHandViewModelCreator;
+			_blackJackButtonViewModelCreator = blackJackButtonViewModelCreator;
 
-			DealerCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(dealerServices.DealerCardHand.PrimaryCardHand);
+			DealerCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(	
+				dealerServices.DealerCardHand.PrimaryCardHand, 
+				blackJackButtonViewModelCreator.CreateButtonViewModel("Dealer", HandOwners.HandOwner.Primary, playerServices.PlayerRound)	
+			);
 
 			playerViewModels = new ObservableCollection<IPlayerViewModel>();
 
 			playerServices.PlayerChangedEvent
-				.Subscribe(playerEvent =>{
+				.Subscribe(playerEvent => {
 					// Update the player view models when the player event is received
 					UpdatePlayerViewModels(playerEvent);
 			}).DisposeWith(_disposables);
@@ -87,7 +94,9 @@ namespace BlackJackV2.ViewModels
 				IPlayerViewModel playerViewModel = _blackJackPlayerViewModelCreator.CreatePlayerViewModel(	player.Value, 
 																											_splitEvent, 
 																											_betUpdateEvent,
-																											_blackJackCardHandViewModelCreator	);
+																											_blackJackCardHandViewModelCreator,
+																											_blackJackButtonViewModelCreator,
+																											_playerServices.PlayerRound);
 				playerViewModels.Add(playerViewModel);
 			}
 		}

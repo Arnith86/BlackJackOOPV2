@@ -37,8 +37,8 @@
     <Compile Update="Views\TableView.axaml.cs">
       <DependentUpon>TableView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\StatsView.axaml.cs">
-      <DependentUpon>StatsView.axaml</DependentUpon>
+    <Compile Update="Views\InformationView.axaml.cs">
+      <DependentUpon>InformationView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
