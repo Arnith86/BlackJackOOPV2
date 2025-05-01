@@ -8,9 +8,9 @@
 			 mc:Ignorable="d">
 
 
-	<!--<Panel>
+	<Panel>
 		
-	 --><!--Bet Input--><!-- 
+	 <!--Bet Input--> 
 	
 		<StackPanel Orientation="Horizontal" Spacing="5">
 			<TextBlock Text="Place Bet:" FontWeight="Bold" VerticalAlignment="Center"/>
@@ -32,8 +32,9 @@
 			<Button	Content="Place Bet"
 					Command="{Binding InputBetCommand}"
 					CommandParameter="{Binding Text, ElementName=BetInputBox}"
-					IsEnabled="{Binding IsBetEnabled}" />
+					IsEnabled="{Binding CanPlaceBet}" />
 
 		</StackPanel>
-	</Panel>-->
+	</Panel>
+	
 </UserControl>

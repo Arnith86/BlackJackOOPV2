@@ -51,7 +51,18 @@
 		
 			<!-- Shows the card value -->
 			<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
-			<Views:ButtonView DataContext="{Binding ButtonViewModel}" IsVisible="{Binding HandIsActive}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+			
+			<!-- Shows the player action buttons -->
+			<Views:ButtonView DataContext="{Binding ButtonViewModel}" 
+							  IsVisible="{Binding HandIsActive}" 
+							  HorizontalContentAlignment="Center" 
+							  VerticalAlignment="Center"/>
+			
+			<!-- Shows the Bet input view -->
+			<Views:BetView DataContext="{Binding BetViewModel}" 
+						   IsVisible="{Binding CanPlaceBet}" 
+						   HorizontalAlignment="Center" 
+						   VerticalAlignment="Center"/>
 		</StackPanel>
 		
 	</Border>

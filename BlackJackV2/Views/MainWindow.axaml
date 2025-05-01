@@ -26,13 +26,11 @@
 			</Grid.RowDefinitions>
 
 			<!-- Shows the Funds and chosen bet -->
-			<Views:StatsView Grid.Row="0" DataContext="{Binding StatsViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+			<Views:StatsView Grid.Row="0" DataContext="{Binding InformationViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
 			
 			<!-- Shows the table and the cards -->
 			<Views:TableView Grid.Row="1" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/> 
 			
-			<!-- Shows the player action buttons -->
-			<Views:ButtonView Grid.Row="2" DataContext="{Binding ButtonViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-	    </Grid>
+		</Grid>
 
     </Window>

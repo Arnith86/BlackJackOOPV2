@@ -20,7 +20,7 @@ namespace BlackJackV2.ViewModels
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");
 		private readonly IPlayer<Bitmap, string> _player;
-		private bool _isBetEnabled;
+		private bool _canPlaceBet;
 
 		public ReactiveCommand<string, Unit> InputBetCommand { get; }
 
@@ -33,12 +33,12 @@ namespace BlackJackV2.ViewModels
 			IGameRules<Bitmap, string> gameRule,
 			Subject<BetRequestEvent<Bitmap, string>> betRequestEvent)
 		{
-			IsBetEnabled = true;
+			CanPlaceBet = true;
 
 			InputBetCommand = ReactiveCommand.Create<string>(betString =>
 			{
 				// Ignore Enter key press if the bet is not enabled
-				if (!IsBetEnabled) return;
+				if (!CanPlaceBet) return;
 
 				// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Funds 
 				if (!string.IsNullOrWhiteSpace(betString) &&
@@ -54,6 +54,7 @@ namespace BlackJackV2.ViewModels
 					else
 					{
 						playerServices.OnBetInputReceived(player.Name, parsedBet);
+						CanPlaceBet = false; 
 					}
 				}
 				else
@@ -64,10 +65,10 @@ namespace BlackJackV2.ViewModels
 			}); 
 		}
 
-		public bool IsBetEnabled
+		public bool CanPlaceBet
 		{
-			get => _isBetEnabled;
-			set => this.RaiseAndSetIfChanged(ref _isBetEnabled, value);
+			get => _canPlaceBet;
+			set => this.RaiseAndSetIfChanged(ref _canPlaceBet, value);
 		}
 	}
 }

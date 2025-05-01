@@ -7,6 +7,7 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Linq;
@@ -41,7 +42,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		private readonly Subject<BetRequestEvent<TImage, TValue>> _betRequestedEvent;
 
 		// Used to wait for specific player bet input to be received
-		private Dictionary<string, TaskCompletionSource<int>> _betInputTask;
+		private ConcurrentDictionary<string, TaskCompletionSource<int>> _betInputTask;
 		// Subject and IObservable to notify when the game state changes
 		private BehaviorSubject<GameState> _gameStateSubject;
 		
@@ -62,7 +63,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			_playerChangedEvent = new Subject<Dictionary<string, IPlayer<TImage, TValue>>>();
 			_betUpdateEvent = betUpdateEvent;
 			_betRequestedEvent = betRequestEvent;
-			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
+			_betInputTask = new ConcurrentDictionary<string, TaskCompletionSource<int>>();
 			_gameStateSubject = new BehaviorSubject<GameState>(new GameState());
 		}
 
@@ -120,30 +121,24 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		///<inheritdoc/>
 		public async Task RegisterBetForNewRound()
 		{
-			foreach (KeyValuePair<string, IPlayer<TImage, TValue>> player in Players)
+			// All bet tasks are stored in this list, after the loop is done,
+			// we will await for all of them to complete.
+			var betTasks = new List<Task>();
+
+			foreach (var (playerName, currentPlayer) in Players)
 			{
-
-				string playerName = player.Key;
-				IPlayer<TImage, TValue> currentPlayer = player.Value;
-
 				// Adds a new completion source for the bet input task
-				TaskCompletionSource<int> betInputTask = new TaskCompletionSource<int>();
+				var betInputTask = new TaskCompletionSource<int>();
 				_betInputTask[playerName] = betInputTask;
 
 				// Notify which player is to place their bet
 				_betRequestedEvent.OnNext(new BetRequestEvent<TImage, TValue>(currentPlayer, false));
 
-				// Change the state to show that logic is waiting for the bet input
-				UpdateGameState(state => state.IsBetRecieved = false);
-
-				// Wait for the bet input to be received
-				int betInput = await betInputTask.Task; ;
-
-				// Change the state to show that logic is waiting for the bet input
-				UpdateGameState(state => state.IsBetRecieved = true);
-
-				Debug.WriteLine($"Bet input received for {playerName}: {betInput}");
+				betTasks.Add(betInputTask.Task);
 			}
+
+			// Wait for all bet tasks to complete
+			await Task.WhenAll(betTasks);
 
 			Debug.WriteLine("All bet inputs received. Starting new round.");
 		}
@@ -151,11 +146,11 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <inheritdoc/>
 		public void OnBetInputReceived(string playerName, int betInput)
 		{
-			if (_betInputTask.TryGetValue(playerName, out var betUpdateCompletionSource))
+			if (_betInputTask.TryRemove(playerName, out var betUpdateCompletionSource))
 			{
 				Players[playerName].PlaceBet(HandOwners.HandOwner.Primary, betInput);
 				betUpdateCompletionSource.SetResult(betInput);
-				_betInputTask.Remove(playerName);
+				Debug.WriteLine($"Bet input received for {playerName}: {betInput}");
 			}
 		}
 	}

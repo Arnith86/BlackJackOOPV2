@@ -25,7 +25,7 @@ namespace BlackJackV2.ViewModels
 
 		private GameLogic<Bitmap, string> _gameLogic;
 		
-		public InformationViewModel nformationViewModel { get; }
+		public InformationViewModel InformationViewModel { get; }
 		public TableViewModel TableViewModel { get; }
 				
 		public MainWindowViewModel(	
@@ -35,7 +35,7 @@ namespace BlackJackV2.ViewModels
 			InformationViewModel informationViewModel)
 		{
 			_gameLogic = gameLogic;
-			nformationViewModel = informationViewModel;
+			this.InformationViewModel = informationViewModel;
 			TableViewModel = tableViewModel;
 
 			// Schedule game start AFTER UI loads
