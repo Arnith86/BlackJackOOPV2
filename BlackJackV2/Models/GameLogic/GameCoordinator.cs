@@ -1,72 +1,65 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/GameCoordinator.cs
 
-
-
+using BlackJackV2.Factories.PlayerFactory;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic.CardServices;
+using BlackJackV2.Models.GameLogic.CoreServices;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Services.Events;
+using BlackJackV2.Shared.Constants;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-/// <summary>
-///		This is a Facade used to simplefy game logic classes and functionality  
-///		
-///		public		Subject<Dictionary<string, IPlayer>>		PlayerChangedEvent		:	Subject to notify if players in game change
-///		public		Subject<BetUpdateEvent>						BetUpdateEvent			:	Used to notify when the bet value is updated
-///		public		Subject<IPlayer>							BetRequestedEvent		:	Subject to notify when the bet is requested
-///		public		Subject<SplitSuccessfulEvent>				splitSuccessfulEvent	:	Subject to notify when the player split is successful
-///		public		IObservable<GameState>						GameStateObservable		:	Subject and IObservable to notify when the game state changes
-///		
-///		public		IBlackJackPlayerHands<Bitmap, string>		DealerCardHand			:	Represents the dealers hands	
-///  
-/// 	async Task		RegisterBetForNewRound();								: Initiates and wait for player bets retrival
-///		void			OnBetInputReceived(string playerName, int betInput)		: Called when the player inputs their bet	
-///		async Task		StartNewRound()											: Starts a new round of the game, handles player turns and dealer's turn
-///		void			EvaluateRound()											: Evaluates the round and determines the winner
-///		void			OnPlayerChangedReceived(List<string> playerNames)		: Called when the current players are changed
-/// </summary>
-
-
 namespace BlackJackV2.Models.GameLogic
 {
+	/// <summary>
+	/// Coordinates the full lifecycle of a Blackjack game round,
+	/// including betting, card dealing, player turns, dealer actions, and round evaluation.
+	/// </summary>
 	public class GameCoordinator<TImage, TValue> : IGameCoordinator<TImage, TValue>
 	{
-		private ICardServices<TImage, TValue> _coreServices;
+		private ICardServices<TImage, TValue> _cardServices;
 		private IDealerServices<TImage,TValue> _dealerServices;
 		private IPlayerServices<TImage, TValue> _playerServices;
 		private GameRuleServices<TImage, TValue> _gameRuleServices;
 
-		
-		public GameCoordinator(	ICardServices<TImage, TValue> coreServices,
+		/// <summary>
+		/// Constructs a new instance of the <see cref="GameCoordinator{TImage, TValue}"/> class
+		/// with required services for core card logic, dealer logic, player logic, and game rules.
+		/// </summary>
+		public GameCoordinator(	ICardServices<TImage, TValue> cardServices,
 								IDealerServices<TImage, TValue> dealerServices,
 								IPlayerServices<TImage, TValue> playerServices,
-								GameRuleServices<TImage, TValue> gameRuleServices	) 
+								GameRuleServices<TImage, TValue> gameRuleServices   ) 
 		{
-			_coreServices = coreServices;
+			_cardServices = cardServices;
 			_dealerServices = dealerServices;
 			_playerServices = playerServices;
 			_gameRuleServices = gameRuleServices;
-			
 		}
 
-		// Initiates and wait for player bets retrival
+		/// <summary>
+		/// Prepares the game for a new round by prompting all players to register their bets.
+		/// </summary>
 		public async Task RegisterBetForNewRound()
 		{
 			_playerServices.RegisterBetForNewRound();
 		}
 
-
-		// Starts a new round of the game, handles player turns and dealer's turn
+		/// <summary>
+		/// Starts a new round by shuffling the deck, dealing cards to the dealer and players,
+		/// executing each player's turn, and concluding with the dealer's turn.
+		/// </summary>
 		public async Task StartNewRound()
 		{
-			ICardDeck<TImage, TValue> cardDeck = _coreServices.CardDeck;
-			_coreServices.CardDeck.ShuffleDeck();
+			ICardDeck<TImage, TValue> cardDeck = _cardServices.CardDeck;
+			_cardServices.CardDeck.ShuffleDeck();
 
 			// Gives dealer his initial cards
 			_dealerServices.InitialDeal(_dealerServices.DealerCardHand, cardDeck);
@@ -83,13 +76,19 @@ namespace BlackJackV2.Models.GameLogic
 
 		}
 
-
+		/// <summary>
+		/// Evaluates the outcome of the round for all player hands against the dealer.
+		/// </summary>
 		public void EvaluateRound()
 		{
 			// Evaluate the round and determine the winner
 			//Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
 		}
 
+		/// <summary>
+		/// Evaluates the outcome of a single hand against the dealer. (Currently unused)
+		/// </summary>
+		/// <param name="cardHand">The player's hand to evaluate.</param>
 		private void EvaluateSingleHand(BlackJackCardHand<TImage, TValue> cardHand)
 		{
 

@@ -7,6 +7,10 @@ using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Models.GameLogic.CardServices;
+using BlackJackV2.Models.Player;
+using BlackJackV2.Factories.PlayerFactory;
+using BlackJackV2.Models.GameLogic.CoreServices;
+using BlackJackV2.Services.Events;
 
 namespace BlackJackV2.Models.GameLogic.Dealer_Services
 {
@@ -17,6 +21,8 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 	/// </summary>
 	public class DealerServices<TImage, TValue> : IDealerServices<TImage, TValue>
 	{
+		private IPlayer<TImage, TValue> _dealer;
+
 		/// <inheritdoc/>
 		public IBlackJackPlayerHands<TImage, TValue> DealerCardHand { get => _dealerCardHand; }
 		private IBlackJackPlayerHands<TImage, TValue> _dealerCardHand;
@@ -25,11 +31,17 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 		/// Initializes a new instance of the <see cref="DealerServices{TImage, TValue}"/> class.
 		/// Creates the hand associated with the dealer.
 		/// </summary>
-		/// <param name="playerHandsCreator">Creates the playerHands container.</param>
-		/// <param name="cardHandCreator">Creates the instances of <see cref="IBlackJackCardHand{TImage, TValue}"/> used in the <see cref="PlayerHands"/> container.</param>
-		public DealerServices(ICardServices<TImage, TValue> cardServices)
+		/// <param name="cardServices">Handles card-related services such as creating new cards, decks and hands.</param>
+		/// <param name="playerCreator">Handles player creation.</param>
+		public DealerServices(ICardServices<TImage, TValue> cardServices, BlackJackPlayerCreator<TImage, TValue> playerCreator)
 		{
 			_dealerCardHand = cardServices.GetNewPlayerHands(HandOwners.HandOwner.Dealer);
+
+			_dealer = playerCreator.CreatePlayer(
+				cardServices.GetNewPlayerHands(HandOwners.HandOwner.Dealer),
+				null,
+				HandOwners.HandOwner.Dealer.ToString()
+			);
 		}
 
 		///<inheritdoc/>

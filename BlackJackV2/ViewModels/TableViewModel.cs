@@ -68,9 +68,8 @@ namespace BlackJackV2.ViewModels
 			_blackJackCardHandViewModelCreator = blackJackCardHandViewModelCreator;
 			_blackJackButtonViewModelCreator = blackJackButtonViewModelCreator;
 
-			DealerCardHandViewModel = blackJackCardHandViewModelCreator.CreateCardHandViewModel(	
-				dealerServices.DealerCardHand.PrimaryCardHand, 
-				blackJackButtonViewModelCreator.CreateButtonViewModel("Dealer", HandOwners.HandOwner.Primary, playerServices.PlayerRound)	
+			DealerCardHandViewModel = blackJackCardHandViewModelCreator.CreateDealerCardHandViewModel(
+				dealerServices.DealerCardHand.PrimaryCardHand
 			);
 
 			playerViewModels = new ObservableCollection<IPlayerViewModel>();

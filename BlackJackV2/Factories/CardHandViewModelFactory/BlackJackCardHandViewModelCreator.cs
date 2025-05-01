@@ -25,6 +25,10 @@ namespace BlackJackV2.Factories.CardHandViewModelFactory
 		public override ICardHandViewModel CreateCardHandViewModel(IBlackJackCardHand<Bitmap, string> blackJackCardHand, IButtonViewModel buttonViewModel)
 		{
 			return new CardHandViewModel(blackJackCardHand, buttonViewModel);
+		/// <inheritdoc />
+		public override ICardHandViewModel CreateDealerCardHandViewModel(IBlackJackCardHand<Bitmap, string> blackJackCardHand)
+		{
+			return new CardHandViewModel(blackJackCardHand);
 		}
 	}
 }

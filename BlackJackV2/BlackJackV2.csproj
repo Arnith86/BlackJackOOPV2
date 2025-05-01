@@ -31,6 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\DealerCardHandView.axaml.cs">
+      <DependentUpon>DealerCardHandView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\CardHandView.axaml.cs">
       <DependentUpon>CardHandView.axaml</DependentUpon>
     </Compile>
