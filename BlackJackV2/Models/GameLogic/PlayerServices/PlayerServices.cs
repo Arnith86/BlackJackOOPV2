@@ -38,7 +38,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		// Event subjects to notify subscribers about player changes and bet updates
 		private readonly Subject<Dictionary<string, IPlayer<TImage, TValue>>> _playerChangedEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
-		private readonly Subject<IPlayer<TImage, TValue>> _betRequestedEvent;
+		private readonly Subject<BetRequestEvent<TImage, TValue>> _betRequestedEvent;
 
 		// Used to wait for specific player bet input to be received
 		private Dictionary<string, TaskCompletionSource<int>> _betInputTask;
@@ -51,7 +51,8 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 								IPlayerAction<TImage, TValue> playerAction, 
 								IPlayerRound<TImage, TValue> playerRound,
 								BlackJackPlayerCreator<TImage, TValue> playerCreator,
-								Subject<BetUpdateEvent> betUpdateEvent)
+								Subject<BetUpdateEvent> betUpdateEvent,
+								Subject<BetRequestEvent<TImage, TValue>> betRequestEvent)
 		{
 			_players = players;
 			_cardServices = cardServices;
@@ -60,7 +61,8 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			_playerCreator = playerCreator;
 			_playerChangedEvent = new Subject<Dictionary<string, IPlayer<TImage, TValue>>>();
 			_betUpdateEvent = betUpdateEvent;
-			_betRequestedEvent = new Subject<IPlayer<TImage, TValue>>();
+			_betRequestedEvent = betRequestEvent;
+			//_betRequestedEvent = new Subject<IPlayer<TImage, TValue>>();
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 			_gameStateSubject = new BehaviorSubject<GameState>(new GameState());
 		}
@@ -75,8 +77,8 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <inheritdoc/>
 		public Subject<BetUpdateEvent> BetUpdateEvent => _betUpdateEvent;
 		
-		/// <inheritdoc/>
-		public Subject<IPlayer<TImage, TValue>> BetRequestedEvent => _betRequestedEvent;
+		///// <inheritdoc/>
+		//public Subject<BetRequestEvent> BetRequestedEvent => _betRequestedEvent;
 
 		/// <inheritdoc/>
 		public IPlayerAction<TImage, TValue> PlayerAction => _playerAction;
@@ -133,7 +135,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 				_betInputTask[playerName] = betInputTask;
 
 				// Notify which player is to place their bet
-				BetRequestedEvent.OnNext(currentPlayer);
+				_betRequestedEvent.OnNext(new BetRequestEvent<TImage, TValue>(currentPlayer, false));
 
 				// Change the state to show that logic is waiting for the bet input
 				UpdateGameState(state => state.IsBetRecieved = false);

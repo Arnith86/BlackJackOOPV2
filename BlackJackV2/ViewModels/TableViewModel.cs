@@ -33,14 +33,17 @@ using BlackJackV2.ViewModels.Interfaces;
 using BlackJackV2.Factories.PlayerViewModelFactory;
 using BlackJackV2.Factories.CardHandViewModelFactory;
 using BlackJackV2.Factories.ButtonViewModelFactory;
+using BlackJackV2.Models.GameLogic.GameRuleServices;
 
 namespace BlackJackV2.ViewModels
 {
 	public class TableViewModel : ReactiveObject
 	{
 		private readonly IPlayerServices<Bitmap, string> _playerServices;
+		private readonly GameRuleServices<Bitmap, string> _gameRuleServices;
 		private readonly Subject<SplitSuccessfulEvent> _splitEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
+		private readonly Subject<BetRequestEvent<Bitmap, string>> _betRequestEvent;
 		private readonly BlackJackPlayerViewModelCreator _blackJackPlayerViewModelCreator;
 		private readonly BlackJackCardHandViewModelCreator _blackJackCardHandViewModelCreator;
 		private readonly BlackJackButtonViewModelCreator _blackJackButtonViewModelCreator;
@@ -48,20 +51,25 @@ namespace BlackJackV2.ViewModels
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		// View models for the dealers
+		//public ICardHandViewModel DealerCardHandViewModel { get; }
 		public ICardHandViewModel DealerCardHandViewModel { get; }
-	
+
 		// A collection of player view models
 		public ObservableCollection<IPlayerViewModel> playerViewModels { get; private set; }
 				
 		public TableViewModel(	IPlayerServices<Bitmap, string> playerServices, 
-								IDealerServices<Bitmap, string> dealerServices, 
+								IDealerServices<Bitmap, string> dealerServices,
+								GameRuleServices<Bitmap, string> gameRuleServices,
 								Subject<SplitSuccessfulEvent> splitEvent, 
-								Subject<BetUpdateEvent> betUpdateEvent, 
+								Subject<BetUpdateEvent> betUpdateEvent,
+								Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
 								BlackJackPlayerViewModelCreator blackJackPlayerViewModelCreator,
 								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
 								BlackJackButtonViewModelCreator blackJackButtonViewModelCreator)
 		{
 			_playerServices = playerServices;
+			_gameRuleServices = gameRuleServices;
+			_betRequestEvent = betRequestEvent;
 			_splitEvent = splitEvent;
 			_betUpdateEvent = betUpdateEvent;
 			_blackJackPlayerViewModelCreator = blackJackPlayerViewModelCreator;
@@ -90,14 +98,23 @@ namespace BlackJackV2.ViewModels
 
 			foreach (var player in playerEvent)
 			{
-				IPlayerViewModel playerViewModel = _blackJackPlayerViewModelCreator.CreatePlayerViewModel(	player.Value, 
-																											_splitEvent, 
-																											_betUpdateEvent,
-																											_blackJackCardHandViewModelCreator,
-																											_blackJackButtonViewModelCreator,
-																											_playerServices.PlayerRound);
+				IPlayerViewModel playerViewModel = BuildPlayerViewModel(player.Value);
 				playerViewModels.Add(playerViewModel);
 			}
+		}
+
+		private IPlayerViewModel BuildPlayerViewModel(IPlayer<Bitmap, string> player)
+		{
+			return _blackJackPlayerViewModelCreator.CreatePlayerViewModel(
+				player,
+				_splitEvent,
+				_betUpdateEvent,
+				_betRequestEvent,
+				_blackJackCardHandViewModelCreator,
+				_blackJackButtonViewModelCreator,
+				_playerServices,
+				_gameRuleServices
+			);
 		}
 		
 		public void Dispose() => _disposables.Dispose();

@@ -35,11 +35,18 @@ namespace BlackJackV2.ViewModels
 		public IButtonViewModel ButtonViewModel { get; }
 
 		/// <summary>
+		/// ViewModel for regestering bets associated with the hand.
+		/// </summary>
+		public BetViewModel BetViewModel { get; }
+
+		/// <summary>
+		/// Player specific <see cref="CardHandViewModel"/>.
 		/// Initializes a new instance of the <see cref="CardHandViewModel"/> class,
 		/// binding state to a Blackjack card hand and subscribing to updates.
 		/// </summary>
 		/// <param name="cardHand">The underlying hand model.</param>
-		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand, IButtonViewModel buttonViewModel)
+		/// <param name="inputWrapperViewModel">ViewModel for input actions.</param>
+		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand, InputWrapperViewModel inputWrapperViewModel)
 		{
 			_id = cardHand.Id;
 			HandIsActive = cardHand.IsActive;
@@ -47,8 +54,10 @@ namespace BlackJackV2.ViewModels
 			_cards = cardHand.Hand;
 			_handValue = cardHand.HandValue.ToString();
 
-			ButtonViewModel = buttonViewModel;
-
+			ButtonViewModel = inputWrapperViewModel.ButtonViewModel;
+			
+			//TODO: Handle bet and bet request events!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			BetViewModel = inputWrapperViewModel.BetViewModel;
 
 			// Automatically update UI-bound properties when model changes
 			cardHand.WhenAnyValue(x => x.IsActive, x => x.HandValue)
@@ -57,7 +66,7 @@ namespace BlackJackV2.ViewModels
 					var (isActive, handValue) = tuple;
 					
 					HandIsActive = isActive;
-					buttonViewModel.HandIsActive = isActive;
+					ButtonViewModel.HandIsActive = isActive;
 					
 					HandValue = handValue.ToString();
 				})
@@ -69,6 +78,28 @@ namespace BlackJackV2.ViewModels
 			{
 				MessageBus.Current.SendMessage(new CardMarkedMessage(markedCardValue));
 			});
+		}
+
+		/// <summary>
+		/// Dealer specific <see cref="CardHandViewModel"/>."/>
+		/// Initializes a new instance of the <see cref="CardHandViewModel"/> class,
+		/// binding state to a Blackjack card hand.
+		/// </summary>
+		/// <param name="cardHand">The underlying hand model.</param>
+		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand)
+		{
+			_id = cardHand.Id;
+			_cards = cardHand.Hand;
+			_handValue = cardHand.HandValue.ToString();
+
+			// Automatically update UI-bound properties when model changes
+			cardHand.WhenAnyValue(x => x.HandValue)
+				.Subscribe(handValue =>
+				{
+					//var (handValue) = tuple;
+					HandValue = handValue.ToString();
+				})
+				.DisposeWith(_disposables);
 		}
 
 		/// <inheritdoc/>

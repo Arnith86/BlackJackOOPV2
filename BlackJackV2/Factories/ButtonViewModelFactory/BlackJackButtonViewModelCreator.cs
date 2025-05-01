@@ -3,9 +3,12 @@
 
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic.PlayerServices;
+using BlackJackV2.Models.Player;
+using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels;
 using BlackJackV2.ViewModels.Interfaces;
+using System.Reactive.Subjects;
 
 namespace BlackJackV2.Factories.ButtonViewModelFactory
 {
@@ -19,11 +22,16 @@ namespace BlackJackV2.Factories.ButtonViewModelFactory
 		/// <summary>
 		/// Creates a new <see cref="ButtonViewModel"/> instance using the specified <paramref name="playerRound"/>.
 		/// </summary>
+		/// <param name="player">The player this set of inputs are linked to.</param>
+		/// <param name="primaryOrSplit">Indicates whether the hand is primary or a split hand.</param>
 		/// <param name="playerRound">The current player round context.</param>
 		/// <returns>A new instance of <see cref="IButtonViewModel"/>.</returns>
-		public override IButtonViewModel CreateButtonViewModel(string playerName, HandOwners.HandOwner primaryOrSplit, IPlayerRound<Bitmap, string> playerRound)
+		public override IButtonViewModel CreateButtonViewModel(
+			IPlayer<Bitmap, string> player, 
+			HandOwners.HandOwner primaryOrSplit, 
+			IPlayerRound<Bitmap, string> playerRound)
 		{
-			return new ButtonViewModel(playerName, primaryOrSplit, playerRound);
+			return new ButtonViewModel(player, primaryOrSplit, playerRound);
 		}
 	}
 }
