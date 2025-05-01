@@ -1,21 +1,6 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/ViewModels/TableViewModel.cs
 
-/// <summary>
-///
-///		This class is used to represent the table in the view
-///		Here we have the dealer's hand and a collection of player hands
-///		
-///		GameLogic								_gameLogic				: The game logic for the game 
-///		CardHandViewModel						DealerCardHandViewModel : The dealer's hand view model 
-///		ObservableCollection<PlayerViewModel>	playerViewModels		: A collection of player view models
-///		readonly CompositeDisposable			_disposables			: Used to clean up resources	
-/// 
-///		void	UpdatePlayerViewModels(Dictionary<string, IPlayer>)		: Update the player view models when the player changed event is received
-///		void	Dispose()												: Cleans up resources
-///		
-/// </summary>
-
 using BlackJackV2.Models.Player;
 using ReactiveUI;
 using System;
@@ -25,7 +10,6 @@ using System.Reactive.Linq;
 using System.Reactive.Disposables;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Services.Events;
-using BlackJackV2.Shared.Constants;
 using System.Reactive.Subjects;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.PlayerServices;
@@ -37,6 +21,10 @@ using BlackJackV2.Models.GameLogic.GameRuleServices;
 
 namespace BlackJackV2.ViewModels
 {
+	/// <summary>
+	/// ViewModel responsible for managing the overall Blackjack table, including dealer and player hands.
+	/// Subscribes to player change events and rebuilds player view models accordingly.
+	/// </summary>
 	public class TableViewModel : ReactiveObject
 	{
 		private readonly IPlayerServices<Bitmap, string> _playerServices;
@@ -50,13 +38,30 @@ namespace BlackJackV2.ViewModels
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-		// View models for the dealers
-		//public ICardHandViewModel DealerCardHandViewModel { get; }
+		/// <summary>
+		/// ViewModel representing the dealer's card hand.
+		/// </summary>
 		public ICardHandViewModel DealerCardHandViewModel { get; }
 
-		// A collection of player view models
+		/// <summary>
+		/// Collection of ViewModels for each player at the table.
+		/// </summary>
 		public ObservableCollection<IPlayerViewModel> playerViewModels { get; private set; }
-				
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TableViewModel"/> class.
+		/// Handles initialization of dealer and player view models, and subscribes to player update events.
+		/// </summary>
+		/// <param name="playerServices">Service providing access to player-related data and events.</param>
+		/// <param name="dealerServices">Service providing access to the dealer's hand.</param>
+		/// <param name="gameRuleServices">Service containing game rules logic.</param>
+		/// <param name="splitEvent">Event triggered when a split is successful.</param>
+		/// <param name="betUpdateEvent">Event triggered when a bet is updated.</param>
+		/// <param name="betRequestEvent">Event used to request player bets.</param>
+		/// <param name="blackJackPlayerViewModelCreator">Factory for creating player view models.</param>
+		/// <param name="blackJackCardHandViewModelCreator">Factory for creating card hand view models.</param>
+		/// <param name="blackJackButtonViewModelCreator">Factory for creating button view models.</param>
+
 		public TableViewModel(	IPlayerServices<Bitmap, string> playerServices, 
 								IDealerServices<Bitmap, string> dealerServices,
 								GameRuleServices<Bitmap, string> gameRuleServices,
@@ -90,7 +95,11 @@ namespace BlackJackV2.ViewModels
 	
 		}
 
-		// Update the player view models when the player changed event is received
+
+		/// <summary>
+		/// Updates the collection of player view models based on the provided player data.
+		/// </summary>
+		/// <param name="playerEvent">A dictionary of players keyed by name.</param>
 		public void UpdatePlayerViewModels(Dictionary<string, IPlayer<Bitmap, string>> playerEvent)
 		{
 			// Replace the old player view models with the new ones
@@ -103,6 +112,11 @@ namespace BlackJackV2.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Constructs a player view model using the player factory and related dependencies.
+		/// </summary>
+		/// <param name="player">The player for whom to create the view model.</param>
+		/// <returns>A fully constructed <see cref="IPlayerViewModel"/> instance.</returns>
 		private IPlayerViewModel BuildPlayerViewModel(IPlayer<Bitmap, string> player)
 		{
 			return _blackJackPlayerViewModelCreator.CreatePlayerViewModel(
@@ -116,7 +130,10 @@ namespace BlackJackV2.ViewModels
 				_gameRuleServices
 			);
 		}
-		
+
+		/// <summary>
+		/// Disposes subscriptions and resources used by the view model.
+		/// </summary>
 		public void Dispose() => _disposables.Dispose();
 	}
 }
