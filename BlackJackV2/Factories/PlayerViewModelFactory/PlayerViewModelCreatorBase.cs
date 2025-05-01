@@ -8,7 +8,6 @@ using System.Reactive.Subjects;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Factories.ButtonViewModelFactory;
 using BlackJackV2.Models.GameLogic.PlayerServices;
-using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
 
 namespace BlackJackV2.Factories.PlayerViewModelFactory

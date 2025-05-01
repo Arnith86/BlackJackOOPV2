@@ -1,7 +1,6 @@
 ﻿// Project BlackJackV2
 // file: BlackJackV2/Factories/PlayerViewModelFactory/BlackJackPlayerViewModelCreator.cs
 
-using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Factories.ButtonViewModelFactory;
 using BlackJackV2.Factories.CardHandViewModelFactory;

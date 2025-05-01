@@ -62,7 +62,6 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			_playerChangedEvent = new Subject<Dictionary<string, IPlayer<TImage, TValue>>>();
 			_betUpdateEvent = betUpdateEvent;
 			_betRequestedEvent = betRequestEvent;
-			//_betRequestedEvent = new Subject<IPlayer<TImage, TValue>>();
 			_betInputTask = new Dictionary<string, TaskCompletionSource<int>>();
 			_gameStateSubject = new BehaviorSubject<GameState>(new GameState());
 		}
@@ -77,9 +76,6 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <inheritdoc/>
 		public Subject<BetUpdateEvent> BetUpdateEvent => _betUpdateEvent;
 		
-		///// <inheritdoc/>
-		//public Subject<BetRequestEvent> BetRequestedEvent => _betRequestedEvent;
-
 		/// <inheritdoc/>
 		public IPlayerAction<TImage, TValue> PlayerAction => _playerAction;
 		

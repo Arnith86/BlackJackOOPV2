@@ -16,31 +16,4 @@
 		<Button Content="Split" Command="{Binding SplitCommand}"/>
 	</StackPanel>
 	
-	<!--<Panel>
-		--><!-- Bet Input --><!--
-		<StackPanel Orientation="Horizontal" Spacing="5">
-			<TextBlock Text="Place Bet:" FontWeight="Bold" VerticalAlignment="Center"/>
-
-			<TextBox
-				x:Name="BetInputBox"
-				Width="100"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Center">
-
-				<TextBox.KeyBindings>
-					<KeyBinding Command="{Binding InputBetCommand}"
-								CommandParameter="{Binding Text, ElementName=BetInputBox}"
-								Gesture="Enter"	/>
-				</TextBox.KeyBindings>
-
-			</TextBox>
-
-			<Button	Content="Place Bet"
-					Command="{Binding InputBetCommand}"
-					CommandParameter="{Binding Text, ElementName=BetInputBox}"
-					IsEnabled="{Binding IsBetEnabled}" />
-
-		</StackPanel>
-	</Panel>-->
-	
 </UserControl>

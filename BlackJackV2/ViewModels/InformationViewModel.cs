@@ -79,16 +79,7 @@ namespace BlackJackV2.ViewModels
 				}
 			});
 
-			//// Set the current player to the one that is requesting a bet
-			//playerServices.BetRequestedEvent
-			//	.Subscribe(currentPlayer =>{
-
-			//		CurrentPlayer = currentPlayer;
-			//		// Set the funds to the current players funds
-			//		Funds = CurrentPlayer.Funds;
-
-			//	}).DisposeWith(_disposable);
-
+		
 			// This will automatically update bet in the UI due to data binding
 			playerServices.GameStateObservable
 				.Subscribe(gameState =>	{

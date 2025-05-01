@@ -32,11 +32,6 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// </summary>
 		public Subject<BetUpdateEvent> BetUpdateEvent { get; }
 
-		///// <summary>
-		///// Gets the event subject that requests a player to place their bet.
-		///// </summary>
-		//public Subject<IPlayer<TImage, TValue>> BetRequestedEvent { get; }
-
 		/// <summary>
 		/// Gets the service that manages player actions such as hit, stand, split, and fold.
 		/// </summary>
