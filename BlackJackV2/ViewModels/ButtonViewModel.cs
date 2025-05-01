@@ -1,15 +1,17 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/ViewModels/ButtonViewModel.cs
 
-
-
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.ViewModels.Interfaces;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Services.Events;
 using ReactiveUI;
+using System;
 using System.Reactive;
+using System.Reactive.Subjects;
+using BlackJackV2.Models.Player;
+
 
 namespace BlackJackV2.ViewModels
 {
@@ -20,7 +22,7 @@ namespace BlackJackV2.ViewModels
 	{
 		private IPlayerRound<Bitmap, string> _playerRound;
 		private bool _handIsActive;
-	
+
 		/// <summary>
 		/// Command for executing the "Hit" action.
 		/// </summary>
@@ -46,21 +48,24 @@ namespace BlackJackV2.ViewModels
 		/// wiring up commands to the provided <see cref="IPlayerRound{TImage, TValue}"/>.
 		/// </summary>
 		/// <param name="playerRound">The current round context that handles player actions.</param>
-		public ButtonViewModel(string playerName, HandOwners.HandOwner primaryOrSplit, IPlayerRound<Bitmap, string> playerRound)
+		public ButtonViewModel(
+			IPlayer<Bitmap, string> player,
+			HandOwners.HandOwner primaryOrSplit, 
+			IPlayerRound<Bitmap, string> playerRound)
 		{
 			_playerRound = playerRound;
+						
+			HitCommand = ReactiveCommand.Create(() =>
+				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.Hit)));
 
-			HitCommand = ReactiveCommand.Create(() => 
-				_playerRound.PlayerActionSubject.OnNext( new PlayerActionEvent(playerName, primaryOrSplit, BlackJackActions.PlayerActions.Hit) )); 
+			FoldCommand = ReactiveCommand.Create(() =>
+				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.Fold)));
 
-			FoldCommand = ReactiveCommand.Create(() => 
-				_playerRound.PlayerActionSubject.OnNext( new PlayerActionEvent( playerName, primaryOrSplit, BlackJackActions.PlayerActions.Fold) ));
-			
 			DoubleDownCommand = ReactiveCommand.Create(() =>
-				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(playerName, primaryOrSplit, BlackJackActions.PlayerActions.DoubleDown)));
+				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.DoubleDown)));
 
 			SplitCommand = ReactiveCommand.Create(() =>
-				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(playerName, primaryOrSplit, BlackJackActions.PlayerActions.Split)));	
+				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.Split)));
 		}
 
 		/// <inheritdoc/>

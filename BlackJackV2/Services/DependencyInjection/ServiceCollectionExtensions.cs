@@ -49,6 +49,7 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<Subject<PlayerActionEvent>>();
 			collection.AddSingleton<Subject<Dictionary<string, IPlayer<Bitmap, string>>>>();
 			collection.AddSingleton<Subject<SplitSuccessfulEvent>>();
+			collection.AddSingleton<Subject<BetRequestEvent<Bitmap, string>>>();
 			collection.AddSingleton<Subject<BetUpdateEvent>>();
 
 			// Models factories
