@@ -20,6 +20,8 @@
 		<!-- Border shows which hand is the active hand-->
 	
 		<StackPanel>
+			
+			<!-- A border only around the cards in the hand and its value.-->
 			<Border BorderThickness="1"
 				Margin="5"
 				Padding="10"

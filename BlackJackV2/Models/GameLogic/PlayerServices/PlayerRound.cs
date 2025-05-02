@@ -113,12 +113,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			}
 		}
 
-		//// Awaits player action input
-		//private async Task<BlackJackActions.PlayerActions> WaitForPlayerAction()
-		//{
-		//	return await _playerActionSubject.FirstAsync();
-		//}
-
+	
 		/// <summary>
 		/// Processes the player action received during the turn and applies the corresponding game logic.
 		/// </summary>

@@ -13,12 +13,20 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces
 	public interface IGameRules<TImage, TValue>
 	{
 		/// <summary>
+		/// Checks if the player is allowed to fold their hand based on the current game state. (Must have one drawn card.)
+		/// </summary>
+		/// <param name="player">The player attempting to fold.</param>
+		/// <param name="primaryOrSplit">Specifies which hand is being checked (e.g., primary or split).</param>
+		/// <returns>A result indicating whether the action is allowed, along with an optional message.</returns>
+		public RuleCheckResult CanFold(IPlayer<TImage, TValue> player, HandOwners.HandOwner primaryOrSplit);
+
+		/// <summary>
 		/// Checks if the player is allowed to double down based on their current hand and game state.
 		/// </summary>
 		/// <param name="player">The player attempting to double down.</param>
-		/// <param name="whichHand">Specifies which hand is being checked (e.g., primary or split).</param>
+		/// <param name="primaryOrSplit">Specifies which hand is being checked (e.g., primary or split).</param>
 		/// <returns>A result indicating whether the action is allowed, along with an optional message.</returns>
-		public RuleCheckResult CanDoubleDown(IPlayer<TImage, TValue> player, HandOwners.HandOwner whichHand);
+		public RuleCheckResult CanDoubleDown(IPlayer<TImage, TValue> player, HandOwners.HandOwner primaryOrSplit);
 
 		/// <summary>
 		/// Checks if the player is allowed to split their hand based on the rules of Blackjack.

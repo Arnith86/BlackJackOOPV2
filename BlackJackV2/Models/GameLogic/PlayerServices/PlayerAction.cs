@@ -94,8 +94,17 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		{
 			IBlackJackCardHand<TImage, TValue> cardHand = GetCardHand(player, playerActionEvent.PrimaryOrSplit);
 
-			if (cardHand is { IsBusted: false})
-				player.Hands.FoldHand(cardHand);
+			var result = _ruleServices.CanFold(player, cardHand.Id);
+
+			if (!result.IsAllowed)
+			{
+				Debug.WriteLine(result.Message);
+			}
+			else
+			{
+				if (cardHand is { IsBusted: false })
+					player.Hands.FoldHand(cardHand);
+			}
 		}
 
 		/// Performs the Split action by moving the second card to the split hand and adding a card to each hand,

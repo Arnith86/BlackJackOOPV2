@@ -14,12 +14,18 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 	/// </summary>
 	public class GameRules<TImage, TValue> : IGameRules<TImage, TValue>
 	{
-		/// <summary>
-		/// Validates whether the player is allowed to double down on the specified hand.
-		/// </summary>
-		/// <param name="player">The player attempting to double down.</param>
-		/// <param name="whichHand">Specifies which hand is being evaluated.</param>
-		/// <returns>A result indicating whether the action is allowed.</returns>
+		/// <inheritdoc/>
+		public RuleCheckResult CanFold(IPlayer<TImage, TValue> player, HandOwners.HandOwner primaryOrSplit)
+		{
+			var hand = player.Hands.GetCardHand(primaryOrSplit);
+
+			if (!(hand.Hand.Count > 0))
+				return RuleCheckResult.Denied("You cannot fold an empty hand.");
+
+			return RuleCheckResult.Allowed();
+		}
+
+		/// <inheritdoc/>
 		public RuleCheckResult CanDoubleDown(IPlayer<TImage, TValue> player, HandOwners.HandOwner whichHand)
 		{
 			var hand = player.Hands.GetCardHand(whichHand);
@@ -34,12 +40,7 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 			return RuleCheckResult.Allowed();
 		}
 
-		/// <summary>
-		/// Validates whether the player is allowed to split their hand.
-		/// The player must have exactly two cards of the same value and enough funds to cover a second bet.
-		/// </summary>
-		/// <param name="player">The player attempting to split.</param>
-		/// <returns>A result indicating whether the action is allowed and a message if it is denied.</returns>
+		/// <inheritdoc/>
 		public RuleCheckResult CanSplit(IPlayer<TImage, TValue> player)
 		{
 			var hand = player.Hands.PrimaryCardHand.Hand;
@@ -66,12 +67,7 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 
 		}
 
-		/// <summary>
-		/// Validates if a player has enough funds to place the initial bet.
-		/// </summary>
-		/// <param name="player">The player making the bet.</param>
-		/// <param name="betAmount">The amount the player wants to bet.</param>
-		/// <returns>A RuleCheckResult indicating if the bet is allowed.</returns>
+		/// <inheritdoc/>
 		public RuleCheckResult CanPlaceInitialBet(IPlayer<TImage, TValue> player, int betAmount)
 		{
 			if (betAmount < 0 || betAmount > 10)
@@ -81,6 +77,6 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 				return RuleCheckResult.Denied("You do not have enough funds to place this bet.");
 
 			return RuleCheckResult.Allowed();
-		}
+		}	
 	}
 }
