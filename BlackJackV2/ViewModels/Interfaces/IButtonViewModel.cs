@@ -10,6 +10,9 @@ namespace BlackJackV2.ViewModels.Interfaces
 	/// Represents the interface for a button-based ViewModel 
 	/// that exposes commands for player actions in Blackjack.
 	/// </summary>
+	/// /// <remarks>
+	/// Related files <see cref="BlackJackV2.Factories.ButtonViewModelFactory"/>
+	/// </remarks>
 	public interface IButtonViewModel
 	{
 		/// <summary>

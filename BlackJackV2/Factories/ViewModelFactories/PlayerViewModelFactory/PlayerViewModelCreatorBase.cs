@@ -3,14 +3,14 @@
 
 using BlackJackV2.ViewModels.Interfaces;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Factories.CardHandViewModelFactory;
 using System.Reactive.Subjects;
 using BlackJackV2.Services.Events;
-using BlackJackV2.Factories.ButtonViewModelFactory;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
+using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
 
-namespace BlackJackV2.Factories.PlayerViewModelFactory
+namespace BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory
 {
 	/// <summary>
 	/// Defines the abstract base for a factory that creates player view models
@@ -18,7 +18,7 @@ namespace BlackJackV2.Factories.PlayerViewModelFactory
 	/// view model is constructed for a specific player type or configuration.
 	/// </summary>
 	/// <remarks>
-	/// Related files <see cref="BlackJackV2.ViewModels.Interfaces"/>
+	/// Related files <see cref="ViewModels.Interfaces"/>
 	/// </remarks>
 	/// <typeparam name="TImage">The image type used to represent cards.</typeparam>
 	/// <typeparam name="TValue">The value type used to represent card values.</typeparam>

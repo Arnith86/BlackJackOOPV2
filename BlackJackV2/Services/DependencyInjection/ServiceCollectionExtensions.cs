@@ -22,10 +22,11 @@ using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.CoreServices;
 using System.Collections.Generic;
 using BlackJackV2.Models.GameLogic.CardServices;
-using BlackJackV2.Factories.PlayerViewModelFactory;
-using BlackJackV2.Factories.CardHandViewModelFactory;
-using BlackJackV2.Factories.ButtonViewModelFactory;
 using BlackJackV2.ViewModels.Interfaces;
+using BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.BetViewModelFactory;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -80,13 +81,16 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<GameLogic<Bitmap, string>>();
 
 			// View models factories
+			collection.AddSingleton<IViewModelCreator, ViewModelCreator>();
 			collection.AddSingleton<BlackJackPlayerViewModelCreator>();
 			collection.AddSingleton<BlackJackCardHandViewModelCreator>();
 			collection.AddSingleton<BlackJackButtonViewModelCreator>();
+			collection.AddSingleton<BlackJackBetViewModelCreator>();
 
 			// View models
 			collection.AddSingleton<InformationViewModel>();
 			collection.AddScoped<IButtonViewModel, ButtonViewModel>();
+			collection.AddScoped<IBetViewModel, BetViewModel>();
 			collection.AddSingleton<TableViewModel>();
 			collection.AddSingleton<MainWindowViewModel>();
 		}

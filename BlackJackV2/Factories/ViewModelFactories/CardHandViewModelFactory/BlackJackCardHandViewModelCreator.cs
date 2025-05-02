@@ -6,13 +6,13 @@ using BlackJackV2.Models.CardHand;
 using BlackJackV2.ViewModels;
 using BlackJackV2.ViewModels.Interfaces;
 
-namespace BlackJackV2.Factories.CardHandViewModelFactory
+namespace BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory
 {
 	/// <summary>
 	/// Concrete factory for creating <see cref="CardHandViewModel"/> instances using Blackjack-specific types.
 	/// </summary>
 	/// <remarks>
-	/// Related files <see cref="BlackJackV2.Factories.CardHandViewModelFactory"/>
+	/// Related files <see cref="ViewModels.Interfaces"/>
 	/// </remarks>
 	public class BlackJackCardHandViewModelCreator : CardViewModelCreatorBase<Bitmap, string>
 	{

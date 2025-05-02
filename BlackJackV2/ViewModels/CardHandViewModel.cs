@@ -44,6 +44,9 @@ namespace BlackJackV2.ViewModels
 		/// Initializes a new instance of the <see cref="CardHandViewModel"/> class,
 		/// binding state to a Blackjack card hand and subscribing to updates.
 		/// </summary>
+		/// /// <remarks>
+		/// Related files <see cref="BlackJackV2.Factories.CardHandViewModelFactory"/>
+		/// </remarks>
 		/// <param name="cardHand">The underlying hand model.</param>
 		/// <param name="inputWrapperViewModel">ViewModel for input actions.</param>
 		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand, InputWrapperViewModel inputWrapperViewModel)

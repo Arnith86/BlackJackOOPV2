@@ -5,14 +5,14 @@ using BlackJackV2.Models.CardHand;
 using BlackJackV2.ViewModels;
 using BlackJackV2.ViewModels.Interfaces;
 
-namespace BlackJackV2.Factories.CardHandViewModelFactory
+namespace BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory
 {
 	/// <summary>
 	/// Abstract base class for factories that create <see cref="ICardHandViewModel"/> instances.
 	/// Provides a generic contract for converting a Blackjack card hand model into its corresponding ViewModel.
 	/// </summary>
 	/// <remarks>
-	/// Related files <see cref="BlackJackV2.ViewModels.Interfaces"/>
+	/// Related files <see cref="ViewModels.Interfaces"/>
 	/// </remarks>
 	/// <typeparam name="TImage">The type used to represent card images (e.g., Bitmap).</typeparam>
 	/// <typeparam name="TValue">The type used to represent card values (e.g., string).</typeparam>

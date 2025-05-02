@@ -1,37 +1,44 @@
-﻿using Avalonia.Media.Imaging;
+﻿// Project: BlackJackV2
+// file: BlackJackV2/ViewModels/BetViewModel.cs
+
+using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Services.Events;
+using BlackJackV2.ViewModels.Interfaces;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive;
-using System.Reactive.Subjects;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace BlackJackV2.ViewModels
 {
-	public class BetViewModel : ReactiveObject
+	/// <summary>
+	/// ViewModel responsible for handling bet input logic in the Blackjack game.
+	/// </summary>
+	public class BetViewModel : ReactiveObject, IBetViewModel
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");
-		private readonly IPlayer<Bitmap, string> _player;
 		private bool _canPlaceBet;
 
+		/// <inheritdoc/>
 		public ReactiveCommand<string, Unit> InputBetCommand { get; }
 
-		////////////////////////////////////////////////////////////////////////////// CONTINUE FROM HERE !!!////////////////////////////
 
-		/// <param name="betRequestEvent">Event triggered when a bet is requested from the player.</param>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BetViewModel"/> class.
+		/// Sets up the input command and connects to the necessary services.
+		/// </summary>
+		/// <remarks>
+		/// Related files <see cref="BlackJackV2.Factories.BetViewModelFactory"/>
+		/// </remarks>
+		/// <param name="player">The player placing the bet.</param>
+		/// <param name="playerServices">Service for sending the bet to the hand.</param>
+		/// <param name="gameRule">Service for validating the bet amount based on game rules.</param>
 		public BetViewModel(
 			IPlayer<Bitmap, string> player,
 			IPlayerServices<Bitmap, string> playerServices,
-			IGameRules<Bitmap, string> gameRule,
-			Subject<BetRequestEvent<Bitmap, string>> betRequestEvent)
+			IGameRules<Bitmap, string> gameRule)
 		{
 			CanPlaceBet = true;
 
@@ -46,6 +53,7 @@ namespace BlackJackV2.ViewModels
 						int.TryParse(betString, out int parsedBet))
 				{
 					var result = gameRule.CanPlaceInitialBet(player, parsedBet);
+
 					if (!result.IsAllowed)
 					{
 						//TODO: Show the user that the bet is not allowed
@@ -65,6 +73,7 @@ namespace BlackJackV2.ViewModels
 			}); 
 		}
 
+		/// <inheritdoc/>
 		public bool CanPlaceBet
 		{
 			get => _canPlaceBet;

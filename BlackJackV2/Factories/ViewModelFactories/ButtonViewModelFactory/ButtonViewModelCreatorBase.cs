@@ -4,17 +4,18 @@
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels.Interfaces;
-using System.Reactive.Subjects;
 
-namespace BlackJackV2.Factories.ButtonViewModelFactory
+namespace BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory
 {
 	/// <summary>
 	/// Abstract factory base class for creating <see cref="IButtonViewModel"/> instances
 	/// using a given <see cref="IPlayerRound{TImage, TValue}"/> context.
 	/// </summary>
+	/// <remarks>
+	/// Related files <see cref="ViewModels.Interfaces"/>
+	/// </remarks>
 	/// <typeparam name="TImage">The type representing card images.</typeparam>
 	/// <typeparam name="TValue">The type representing card values.</typeparam>
 	public abstract class ButtonViewModelCreatorBase<TImage, TValue>

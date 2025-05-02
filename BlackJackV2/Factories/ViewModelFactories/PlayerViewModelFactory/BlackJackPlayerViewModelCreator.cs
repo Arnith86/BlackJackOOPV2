@@ -2,8 +2,8 @@
 // file: BlackJackV2/Factories/PlayerViewModelFactory/BlackJackPlayerViewModelCreator.cs
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Factories.ButtonViewModelFactory;
-using BlackJackV2.Factories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
@@ -12,14 +12,14 @@ using BlackJackV2.ViewModels;
 using BlackJackV2.ViewModels.Interfaces;
 using System.Reactive.Subjects;
 
-namespace BlackJackV2.Factories.PlayerViewModelFactory
+namespace BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory
 {
 	/// <summary>
 	/// Concrete factory for creating Blackjack-specific player view models.
 	/// Uses <see cref="Bitmap"/> for card images and <see cref="string"/> for card values.
 	/// </summary>
 	/// <remarks>
-	/// Related files <see cref="BlackJackV2.ViewModels.Interfaces"/>
+	/// Related files <see cref="ViewModels.Interfaces"/>
 	/// </remarks>
 	public class BlackJackPlayerViewModelCreator : PlayerViewModelCreatorBase<Bitmap, string>
 	{

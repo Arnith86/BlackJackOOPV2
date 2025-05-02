@@ -4,19 +4,20 @@
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels;
 using BlackJackV2.ViewModels.Interfaces;
-using System.Reactive.Subjects;
 
-namespace BlackJackV2.Factories.ButtonViewModelFactory
+namespace BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory
 {
 	/// <summary>
 	/// Concrete implementation of <see cref="ButtonViewModelCreatorBase{Bitmap, string}"/> 
 	/// for creating <see cref="ButtonViewModel"/> instances using a <see cref="Bitmap"/> image type and <see cref="string"/> value type.
 	/// Used in the BlackJack game context.
 	/// </summary>
+	/// <remarks>
+	/// Related files <see cref="ViewModels.Interfaces"/>
+	/// </remarks>
 	public class BlackJackButtonViewModelCreator : ButtonViewModelCreatorBase<Bitmap, string>
 	{
 		/// <summary>

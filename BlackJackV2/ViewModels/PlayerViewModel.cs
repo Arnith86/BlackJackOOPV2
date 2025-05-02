@@ -2,8 +2,8 @@
 // file: BlackJackV2/ViewModels/PlayerViewModel.cs
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Factories.ButtonViewModelFactory;
-using BlackJackV2.Factories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.PlayerServices;
@@ -14,7 +14,6 @@ using BlackJackV2.ViewModels.Interfaces;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
-using System.Numerics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -27,8 +26,7 @@ namespace BlackJackV2.ViewModels
 		private IPlayer<Bitmap, string> _player;
 		private readonly IPlayerServices<Bitmap, string> _playerServices;
 		private readonly GameRuleServices<Bitmap, string> _gameRuleServices;
-		private readonly BlackJackCardHandViewModelCreator _blackJackCardHandViewModelCreator;
-		private readonly BlackJackButtonViewModelCreator _blackJackButtonViewModelCreator;
+		private readonly IViewModelCreator _viewModelCreator;
 		private readonly Subject<BetRequestEvent<Bitmap, string>> _betRequestEvent;
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -57,8 +55,7 @@ namespace BlackJackV2.ViewModels
 		/// <param name="splitSuccessfulEvent">The event that is triggered when a player successfully split their hand.</param>
 		/// <param name="betUpdateEvent">The event that is triggered when a player updates their bet.</param>
 		/// <param name="betRequestEvent">Event triggered when a bet is requested from the player.</param>
-		/// <param name="blackJackCardHandViewModelCreator">Factory for creating <see cref="ICardHandViewModel"/>.</param>
-		/// <param name="blackJackButtonViewModelCreator">Factory for creating <see cref="IButtonViewModel"/>.</param>
+		/// <param name="viewModelCreator">A wrapper class containing factories for creating view models.</param>
 		/// <param name="playerServices">Handles player-specific services and actions.</param>
 		/// <param name="gameRuleServices">Handles game rules and logic.</param>
 		/// <remarks>
@@ -68,16 +65,14 @@ namespace BlackJackV2.ViewModels
 								Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
 								Subject<BetUpdateEvent> betUpdateEvent,
 								Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
-								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
-								BlackJackButtonViewModelCreator blackJackButtonViewModelCreator,
+								IViewModelCreator viewModelCreator,
 								IPlayerServices<Bitmap, string> playerServices,
 								GameRuleServices<Bitmap, string> gameRuleServices) 
 		{
 			Player = player;
 			_playerServices = playerServices;
 			_gameRuleServices = gameRuleServices;
-			_blackJackCardHandViewModelCreator = blackJackCardHandViewModelCreator;
-			_blackJackButtonViewModelCreator = blackJackButtonViewModelCreator;
+			_viewModelCreator = viewModelCreator;
 			_betRequestEvent = betRequestEvent;
 
 			PlayerCardHandViewModel = BuildCardHandViewModel(HandOwners.HandOwner.Primary);
@@ -173,19 +168,19 @@ namespace BlackJackV2.ViewModels
 
 		private ICardHandViewModel BuildCardHandViewModel(HandOwners.HandOwner primaryOrSplit)
 		{
-			// NOTE: BetViewModel will have a factory that handle creation. This is TEMPORARY!!
-			BetViewModel betViewModel = new BetViewModel(
-				_player,
-				_playerServices,
-				_gameRuleServices.GameRules,
-				_betRequestEvent
-			);
+			IBetViewModel betViewModel = 
+				_viewModelCreator.BlackJackBetViewModelCreator.CreateBetViewModel(
+					_player,
+					_playerServices,
+					_gameRuleServices.GameRules
+				);
 
-			IButtonViewModel buttonViewModel = _blackJackButtonViewModelCreator.CreateButtonViewModel(
-				_player,
-				primaryOrSplit,
-				_playerServices.PlayerRound
-			);
+			IButtonViewModel buttonViewModel = 
+				_viewModelCreator.BlackJackButtonViewModelCreator.CreateButtonViewModel(
+					_player,
+					primaryOrSplit,
+					_playerServices.PlayerRound
+				);
 
 			// NOTE: InputWrapperViewModel will have a factory that handle creation. This is TEMPORARY!!
 			InputWrapperViewModel inputWrapperViewModel = new InputWrapperViewModel(
@@ -197,7 +192,9 @@ namespace BlackJackV2.ViewModels
 				primaryOrSplit == HandOwners.HandOwner.Primary ? 
 				_player.Hands.PrimaryCardHand : _player.Hands.SplitCardHand;
 			
-			return _blackJackCardHandViewModelCreator.CreateCardHandViewModel(hand, inputWrapperViewModel);
+			return 
+				_viewModelCreator.BlackJackCardHandViewModelCreator.
+				CreateCardHandViewModel(hand, inputWrapperViewModel);
 		}
 	}
 }

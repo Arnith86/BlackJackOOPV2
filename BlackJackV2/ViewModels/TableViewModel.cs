@@ -14,10 +14,10 @@ using System.Reactive.Subjects;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.ViewModels.Interfaces;
-using BlackJackV2.Factories.PlayerViewModelFactory;
-using BlackJackV2.Factories.CardHandViewModelFactory;
-using BlackJackV2.Factories.ButtonViewModelFactory;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
+using BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
 
 namespace BlackJackV2.ViewModels
 {
@@ -58,30 +58,25 @@ namespace BlackJackV2.ViewModels
 		/// <param name="splitEvent">Event triggered when a split is successful.</param>
 		/// <param name="betUpdateEvent">Event triggered when a bet is updated.</param>
 		/// <param name="betRequestEvent">Event used to request player bets.</param>
-		/// <param name="blackJackPlayerViewModelCreator">Factory for creating player view models.</param>
-		/// <param name="blackJackCardHandViewModelCreator">Factory for creating card hand view models.</param>
-		/// <param name="blackJackButtonViewModelCreator">Factory for creating button view models.</param>
-
+		/// <param name="viewModelCreator">A wrapper class containing factories for creating view models.</param>
 		public TableViewModel(	IPlayerServices<Bitmap, string> playerServices, 
 								IDealerServices<Bitmap, string> dealerServices,
 								GameRuleServices<Bitmap, string> gameRuleServices,
 								Subject<SplitSuccessfulEvent> splitEvent, 
 								Subject<BetUpdateEvent> betUpdateEvent,
 								Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
-								BlackJackPlayerViewModelCreator blackJackPlayerViewModelCreator,
-								BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
-								BlackJackButtonViewModelCreator blackJackButtonViewModelCreator)
+								IViewModelCreator viewModelCreator)			
 		{
 			_playerServices = playerServices;
 			_gameRuleServices = gameRuleServices;
 			_betRequestEvent = betRequestEvent;
 			_splitEvent = splitEvent;
 			_betUpdateEvent = betUpdateEvent;
-			_blackJackPlayerViewModelCreator = blackJackPlayerViewModelCreator;
-			_blackJackCardHandViewModelCreator = blackJackCardHandViewModelCreator;
-			_blackJackButtonViewModelCreator = blackJackButtonViewModelCreator;
+			_blackJackPlayerViewModelCreator = viewModelCreator.BlackJackPlayerViewModelCreator;
+			_blackJackCardHandViewModelCreator = viewModelCreator.BlackJackCardHandViewModelCreator;
+			_blackJackButtonViewModelCreator = viewModelCreator.BlackJackButtonViewModelCreator;
 
-			DealerCardHandViewModel = blackJackCardHandViewModelCreator.CreateDealerCardHandViewModel(
+			DealerCardHandViewModel = _blackJackCardHandViewModelCreator.CreateDealerCardHandViewModel(
 				dealerServices.DealerCardHand.PrimaryCardHand
 			);
 

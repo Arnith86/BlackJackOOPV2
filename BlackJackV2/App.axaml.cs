@@ -35,6 +35,5 @@ namespace BlackJackV2
 
             base.OnFrameworkInitializationCompleted();
         }
-
     }
 }
