@@ -24,7 +24,7 @@ namespace BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory
 		/// <returns>An instance of <see cref="ICardHandViewModel"/> representing the card hand.</returns>
 		public override ICardHandViewModel CreateCardHandViewModel(
 			IBlackJackCardHand<Bitmap, string> blackJackCardHand,
-			InputWrapperViewModel inputWrapperViewModel)
+			IInputWrapperViewModel inputWrapperViewModel)
 		{
 			return new CardHandViewModel(blackJackCardHand, inputWrapperViewModel);
 		}

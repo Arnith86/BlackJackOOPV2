@@ -37,7 +37,7 @@ namespace BlackJackV2.ViewModels
 		/// <summary>
 		/// ViewModel for regestering bets associated with the hand.
 		/// </summary>
-		public BetViewModel BetViewModel { get; }
+		public IBetViewModel BetViewModel { get; }
 
 		/// <summary>
 		/// Player specific <see cref="CardHandViewModel"/>.
@@ -49,7 +49,7 @@ namespace BlackJackV2.ViewModels
 		/// </remarks>
 		/// <param name="cardHand">The underlying hand model.</param>
 		/// <param name="inputWrapperViewModel">ViewModel for input actions.</param>
-		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand, InputWrapperViewModel inputWrapperViewModel)
+		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand, IInputWrapperViewModel inputWrapperViewModel)
 		{
 			_id = cardHand.Id;
 			HandIsActive = cardHand.IsActive;

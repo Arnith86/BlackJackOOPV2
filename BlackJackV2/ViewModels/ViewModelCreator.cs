@@ -4,6 +4,7 @@
 using BlackJackV2.Factories.ViewModelFactories.BetViewModelFactory;
 using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
 using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.InputWrapperViewModelFactory;
 using BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory;
 using BlackJackV2.ViewModels.Interfaces;
 
@@ -19,6 +20,7 @@ namespace BlackJackV2.ViewModels
 		BlackJackBetViewModelCreator BlackJackBetViewModelCreator,
 		BlackJackButtonViewModelCreator BlackJackButtonViewModelCreator,
 		BlackJackCardHandViewModelCreator BlackJackCardHandViewModelCreator,
-		BlackJackPlayerViewModelCreator BlackJackPlayerViewModelCreator
+		BlackJackPlayerViewModelCreator BlackJackPlayerViewModelCreator,
+		BlackJackInputWrapperViewModelCreator BlackJackInputWrapperViewModelCreator
 	) : IViewModelCreator;
 }

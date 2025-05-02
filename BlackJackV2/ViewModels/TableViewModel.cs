@@ -32,9 +32,7 @@ namespace BlackJackV2.ViewModels
 		private readonly Subject<SplitSuccessfulEvent> _splitEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
 		private readonly Subject<BetRequestEvent<Bitmap, string>> _betRequestEvent;
-		private readonly BlackJackPlayerViewModelCreator _blackJackPlayerViewModelCreator;
-		private readonly BlackJackCardHandViewModelCreator _blackJackCardHandViewModelCreator;
-		private readonly BlackJackButtonViewModelCreator _blackJackButtonViewModelCreator;
+		private readonly IViewModelCreator _viewModelCreator;
 
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -72,13 +70,12 @@ namespace BlackJackV2.ViewModels
 			_betRequestEvent = betRequestEvent;
 			_splitEvent = splitEvent;
 			_betUpdateEvent = betUpdateEvent;
-			_blackJackPlayerViewModelCreator = viewModelCreator.BlackJackPlayerViewModelCreator;
-			_blackJackCardHandViewModelCreator = viewModelCreator.BlackJackCardHandViewModelCreator;
-			_blackJackButtonViewModelCreator = viewModelCreator.BlackJackButtonViewModelCreator;
-
-			DealerCardHandViewModel = _blackJackCardHandViewModelCreator.CreateDealerCardHandViewModel(
-				dealerServices.DealerCardHand.PrimaryCardHand
-			);
+			_viewModelCreator = viewModelCreator;
+			
+			DealerCardHandViewModel = 
+				_viewModelCreator.BlackJackCardHandViewModelCreator.CreateDealerCardHandViewModel(
+					dealerServices.DealerCardHand.PrimaryCardHand
+				);
 
 			playerViewModels = new ObservableCollection<IPlayerViewModel>();
 
@@ -114,13 +111,12 @@ namespace BlackJackV2.ViewModels
 		/// <returns>A fully constructed <see cref="IPlayerViewModel"/> instance.</returns>
 		private IPlayerViewModel BuildPlayerViewModel(IPlayer<Bitmap, string> player)
 		{
-			return _blackJackPlayerViewModelCreator.CreatePlayerViewModel(
+			return _viewModelCreator.BlackJackPlayerViewModelCreator.CreatePlayerViewModel(
 				player,
 				_splitEvent,
 				_betUpdateEvent,
 				_betRequestEvent,
-				_blackJackCardHandViewModelCreator,
-				_blackJackButtonViewModelCreator,
+				_viewModelCreator,
 				_playerServices,
 				_gameRuleServices
 			);

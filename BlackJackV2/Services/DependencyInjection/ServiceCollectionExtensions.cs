@@ -27,6 +27,7 @@ using BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory;
 using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
 using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
 using BlackJackV2.Factories.ViewModelFactories.BetViewModelFactory;
+using BlackJackV2.Factories.ViewModelFactories.InputWrapperViewModelFactory;
 
 namespace BlackJackV2.Services.DependencyInjection
 {
@@ -86,6 +87,7 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<BlackJackCardHandViewModelCreator>();
 			collection.AddSingleton<BlackJackButtonViewModelCreator>();
 			collection.AddSingleton<BlackJackBetViewModelCreator>();
+			collection.AddSingleton<BlackJackInputWrapperViewModelCreator>();
 
 			// View models
 			collection.AddSingleton<InformationViewModel>();

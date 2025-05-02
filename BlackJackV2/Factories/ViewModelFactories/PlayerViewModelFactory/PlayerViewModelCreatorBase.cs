@@ -7,8 +7,7 @@ using System.Reactive.Subjects;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
-using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
-using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
+
 
 namespace BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory
 {
@@ -33,8 +32,7 @@ namespace BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory
 		/// <param name="splitSuccessfulEvent">Event triggered when a player successfully splits their hand.</param>
 		/// <param name="betUpdateEvent">Event triggered when a player's bet is updated.</param>
 		/// <param name="betRequestEvent">Event triggered when a bet is requested from the player.</param>
-		/// <param name="blackJackCardHandViewModelCreator">Factory for creating <see cref="ICardHandViewModel"/>.</param>
-		/// <param name="blackJackButtonViewModelCreator">Factory for creating <see cref="IButtonViewModel"/>.</param>
+		/// <param name="viewModelCreator">A wrapper class containing factories for creating view models.</param>
 		/// <param name="playerServices">Handles player-specific services and actions.</param>
 		/// <param name="gameRuleServices">Handles game rules.</param>
 		/// <returns>A fully constructed and reactive <see cref="IPlayerViewModel"/> instance.</returns>
@@ -43,8 +41,7 @@ namespace BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory
 			Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
 			Subject<BetUpdateEvent> betUpdateEvent,
 			Subject<BetRequestEvent<TImage, TValue>> betRequestEvent,
-			BlackJackCardHandViewModelCreator blackJackCardHandViewModelCreator,
-			BlackJackButtonViewModelCreator blackJackButtonViewModelCreator,
+			IViewModelCreator viewModelCreator,
 			IPlayerServices<TImage, TValue> playerServices,
 			GameRuleServices<TImage, TValue> gameRuleServices);
 	}

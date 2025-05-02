@@ -26,7 +26,7 @@ namespace BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory
 		/// <returns>An instance of <see cref="ICardHandViewModel"/> representing the given hand.</returns>
 		public abstract ICardHandViewModel CreateCardHandViewModel(
 			IBlackJackCardHand<TImage, TValue> blackJackCardHand,
-			InputWrapperViewModel inputWrapperViewModel);
+			IInputWrapperViewModel inputWrapperViewModel);
 
 		/// <summary>
 		/// Creates a ViewModel for the dealers Blackjack card hand model.

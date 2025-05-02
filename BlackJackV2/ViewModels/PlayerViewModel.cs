@@ -182,11 +182,11 @@ namespace BlackJackV2.ViewModels
 					_playerServices.PlayerRound
 				);
 
-			// NOTE: InputWrapperViewModel will have a factory that handle creation. This is TEMPORARY!!
-			InputWrapperViewModel inputWrapperViewModel = new InputWrapperViewModel(
-				buttonViewModel,
-				betViewModel
-			);
+			IInputWrapperViewModel inputWrapperViewModel = 
+				_viewModelCreator.BlackJackInputWrapperViewModelCreator.CreateInputWrapperViewModel(
+					betViewModel,
+					buttonViewModel
+				);
 
 			IBlackJackCardHand<Bitmap, string> hand = 
 				primaryOrSplit == HandOwners.HandOwner.Primary ? 
