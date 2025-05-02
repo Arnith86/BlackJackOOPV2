@@ -12,7 +12,6 @@ using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
-using BlackJackV2.Shared.Constants;
 using BlackJackV2.Shared.Utilities.ImageLoader;
 using BlackJackV2.ViewModels;
 using Microsoft.Extensions.DependencyInjection;

@@ -2,7 +2,6 @@
 // file: BlackJackV2/Factories/CardHandViewModelFactory/CardViewModelCreatorBase.cs
 
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.ViewModels;
 using BlackJackV2.ViewModels.Interfaces;
 
 namespace BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory
@@ -33,7 +32,8 @@ namespace BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory
 		/// </summary>
 		/// <param name="blackJackCardHand">The card hand model assigned to the dealer to base the ViewModel on.</param>
 		/// <returns>An instance of <see cref="ICardHandViewModel"/> representing the given hand.</returns>
-		public abstract ICardHandViewModel CreateDealerCardHandViewModel(IBlackJackCardHand<TImage, TValue> blackJackCardHand);
+		public abstract ICardHandViewModel CreateDealerCardHandViewModel(
+			IBlackJackCardHand<TImage, TValue> blackJackCardHand);
 	}
 }
 

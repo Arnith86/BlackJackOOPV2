@@ -58,8 +58,6 @@ namespace BlackJackV2.ViewModels
 			_handValue = cardHand.HandValue.ToString();
 
 			ButtonViewModel = inputWrapperViewModel.ButtonViewModel;
-			
-			//TODO: Handle bet and bet request events!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			BetViewModel = inputWrapperViewModel.BetViewModel;
 
 			// Automatically update UI-bound properties when model changes
@@ -97,11 +95,7 @@ namespace BlackJackV2.ViewModels
 
 			// Automatically update UI-bound properties when model changes
 			cardHand.WhenAnyValue(x => x.HandValue)
-				.Subscribe(handValue =>
-				{
-					//var (handValue) = tuple;
-					HandValue = handValue.ToString();
-				})
+				.Subscribe(handValue =>	HandValue = handValue.ToString())
 				.DisposeWith(_disposables);
 		}
 

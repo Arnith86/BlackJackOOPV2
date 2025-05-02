@@ -2,9 +2,6 @@
 // file: BlackJackV2/ViewModels/PlayerViewModel.cs
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
-using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
-using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
@@ -24,10 +21,6 @@ namespace BlackJackV2.ViewModels
 	{
 		private int _funds;
 		private IPlayer<Bitmap, string> _player;
-		private readonly IPlayerServices<Bitmap, string> _playerServices;
-		private readonly GameRuleServices<Bitmap, string> _gameRuleServices;
-		private readonly IViewModelCreator _viewModelCreator;
-		private readonly Subject<BetRequestEvent<Bitmap, string>> _betRequestEvent;
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		/// <summary>
@@ -70,13 +63,12 @@ namespace BlackJackV2.ViewModels
 								GameRuleServices<Bitmap, string> gameRuleServices) 
 		{
 			Player = player;
-			_playerServices = playerServices;
-			_gameRuleServices = gameRuleServices;
-			_viewModelCreator = viewModelCreator;
-			_betRequestEvent = betRequestEvent;
-
-			PlayerCardHandViewModel = BuildCardHandViewModel(HandOwners.HandOwner.Primary);
-			PlayerSplitCardHandViewModel = BuildCardHandViewModel(HandOwners.HandOwner.Split);
+		
+			PlayerCardHandViewModel = viewModelCreator.BuildCardHandViewModel(
+				HandOwners.HandOwner.Primary,player, playerServices, gameRuleServices);
+			
+			PlayerSplitCardHandViewModel = viewModelCreator.BuildCardHandViewModel(
+				HandOwners.HandOwner.Split, player, playerServices, gameRuleServices);
 
 			// Add the player primary hand to the player card view models
 			PlayerCardViewModels = new ObservableCollection<ICardHandViewModel>
@@ -165,36 +157,5 @@ namespace BlackJackV2.ViewModels
 		/// Cleans up reactive subscriptions and disposables tied to this view model.
 		/// </summary>
 		public void Dispose() => _disposables.Dispose();
-
-		private ICardHandViewModel BuildCardHandViewModel(HandOwners.HandOwner primaryOrSplit)
-		{
-			IBetViewModel betViewModel = 
-				_viewModelCreator.BlackJackBetViewModelCreator.CreateBetViewModel(
-					_player,
-					_playerServices,
-					_gameRuleServices.GameRules
-				);
-
-			IButtonViewModel buttonViewModel = 
-				_viewModelCreator.BlackJackButtonViewModelCreator.CreateButtonViewModel(
-					_player,
-					primaryOrSplit,
-					_playerServices.PlayerRound
-				);
-
-			IInputWrapperViewModel inputWrapperViewModel = 
-				_viewModelCreator.BlackJackInputWrapperViewModelCreator.CreateInputWrapperViewModel(
-					betViewModel,
-					buttonViewModel
-				);
-
-			IBlackJackCardHand<Bitmap, string> hand = 
-				primaryOrSplit == HandOwners.HandOwner.Primary ? 
-				_player.Hands.PrimaryCardHand : _player.Hands.SplitCardHand;
-			
-			return 
-				_viewModelCreator.BlackJackCardHandViewModelCreator.
-				CreateCardHandViewModel(hand, inputWrapperViewModel);
-		}
 	}
 }

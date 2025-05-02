@@ -15,9 +15,7 @@ using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.ViewModels.Interfaces;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
-using BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory;
-using BlackJackV2.Factories.ViewModelFactories.CardHandViewModelFactory;
-using BlackJackV2.Factories.ViewModelFactories.ButtonViewModelFactory;
+
 
 namespace BlackJackV2.ViewModels
 {
