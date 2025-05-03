@@ -93,7 +93,8 @@ namespace BlackJackV2.ViewModels
 		public void UpdatePlayerViewModels(Dictionary<string, IPlayer<Bitmap, string>> playerEvent)
 		{
 			// Replace the old player view models with the new ones
-			playerViewModels = new ObservableCollection<IPlayerViewModel>();
+			//playerViewModels = new ObservableCollection<IPlayerViewModel>();
+			playerViewModels.Clear();
 
 			foreach (var player in playerEvent)
 			{
