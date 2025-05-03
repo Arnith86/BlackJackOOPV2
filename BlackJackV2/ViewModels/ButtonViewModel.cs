@@ -7,9 +7,7 @@ using BlackJackV2.ViewModels.Interfaces;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Services.Events;
 using ReactiveUI;
-using System;
 using System.Reactive;
-using System.Reactive.Subjects;
 using BlackJackV2.Models.Player;
 
 
@@ -23,7 +21,9 @@ namespace BlackJackV2.ViewModels
 	/// </remarks>
 	public class ButtonViewModel : ReactiveObject ,IButtonViewModel
 	{
-		private IPlayerRound<Bitmap, string> _playerRound;
+		private readonly IPlayer<Bitmap, string> _player;
+		private readonly HandOwners.HandOwner _primaryOrSplit;
+		private readonly IPlayerRound<Bitmap, string> _playerRound;
 		private bool _handIsActive;
 
 		/// <summary>
@@ -56,19 +56,19 @@ namespace BlackJackV2.ViewModels
 			HandOwners.HandOwner primaryOrSplit, 
 			IPlayerRound<Bitmap, string> playerRound)
 		{
+			_player = player;
+			_primaryOrSplit = primaryOrSplit;
 			_playerRound = playerRound;
-						
-			HitCommand = ReactiveCommand.Create(() =>
-				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.Hit)));
 
-			FoldCommand = ReactiveCommand.Create(() =>
-				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.Fold)));
+			HitCommand = CreateCommand(BlackJackActions.PlayerActions.Hit);
+			FoldCommand = CreateCommand(BlackJackActions.PlayerActions.Fold);
+			DoubleDownCommand = CreateCommand(BlackJackActions.PlayerActions.DoubleDown);
+			SplitCommand = CreateCommand(BlackJackActions.PlayerActions.Split);
+		}
 
-			DoubleDownCommand = ReactiveCommand.Create(() =>
-				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.DoubleDown)));
-
-			SplitCommand = ReactiveCommand.Create(() =>
-				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(player.Name, primaryOrSplit, BlackJackActions.PlayerActions.Split)));
+		private ReactiveCommand<Unit, Unit> CreateCommand(BlackJackActions.PlayerActions action)
+		{
+			return ReactiveCommand.Create(() => _playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(_player.Name, _primaryOrSplit, action)));
 		}
 
 		/// <inheritdoc/>
@@ -76,6 +76,15 @@ namespace BlackJackV2.ViewModels
 		{
 			get => _handIsActive;
 			set => this.RaiseAndSetIfChanged(ref _handIsActive, value);
+		}
+		
+		/// <inheritdoc/>
+		public void Dispose()
+		{
+			HitCommand.Dispose();
+			FoldCommand.Dispose();
+			DoubleDownCommand.Dispose();
+			SplitCommand.Dispose();
 		}
 	}
 }

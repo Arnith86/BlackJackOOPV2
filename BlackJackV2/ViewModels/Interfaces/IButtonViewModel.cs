@@ -39,5 +39,10 @@ namespace BlackJackV2.ViewModels.Interfaces
 		/// Indicates whether the hand which this <see cref="IButtonViewModel"/> is bound to is active.
 		/// </summary>
 		public bool HandIsActive { get; set; }
+
+		/// <summary>
+		/// Disposes of the ViewModel and any resources it holds.
+		/// </summary>
+		public void Dispose();
 	}
 }
