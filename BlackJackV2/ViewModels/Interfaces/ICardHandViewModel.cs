@@ -43,12 +43,7 @@ namespace BlackJackV2.ViewModels.Interfaces
 		/// <summary>
 		/// The collection of cards currently held in this hand.
 		/// </summary>
-		ObservableCollection<ICard<Bitmap, string>> Cards { get; set; }
-
-		/// <summary>
-		/// Command triggered when a card in the hand is clicked.
-		/// </summary>
-		ReactiveCommand<string, Unit> CardClickedCommand { get; }
+		ObservableCollection<ICard<Bitmap, string>> Cards { get; }
 
 		/// <summary>
 		/// Encapsulated button logic related to this hand (e.g., actions like Hit, Stand).

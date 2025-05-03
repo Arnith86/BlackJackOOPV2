@@ -2,7 +2,6 @@
 // file: BlackJackV2/ViewModels/BetViewModel.cs
 
 using Avalonia.Media.Imaging;
-using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;

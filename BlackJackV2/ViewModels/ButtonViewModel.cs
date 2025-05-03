@@ -9,6 +9,7 @@ using BlackJackV2.Services.Events;
 using ReactiveUI;
 using System.Reactive;
 using BlackJackV2.Models.Player;
+using System;
 
 
 namespace BlackJackV2.ViewModels
@@ -19,7 +20,7 @@ namespace BlackJackV2.ViewModels
 	/// /// <remarks>
 	/// Related files <see cref="BlackJackV2.Factories.ButtonViewModelFactory"/>
 	/// </remarks>
-	public class ButtonViewModel : ReactiveObject ,IButtonViewModel
+	public class ButtonViewModel : ReactiveObject ,IButtonViewModel, IDisposable
 	{
 		private readonly IPlayer<Bitmap, string> _player;
 		private readonly HandOwners.HandOwner _primaryOrSplit;
@@ -68,7 +69,9 @@ namespace BlackJackV2.ViewModels
 
 		private ReactiveCommand<Unit, Unit> CreateCommand(BlackJackActions.PlayerActions action)
 		{
-			return ReactiveCommand.Create(() => _playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(_player.Name, _primaryOrSplit, action)));
+			return ReactiveCommand.Create(() => 
+				_playerRound.PlayerActionSubject.OnNext(new PlayerActionEvent(_player.Name, _primaryOrSplit, action))
+			);
 		}
 
 		/// <inheritdoc/>
