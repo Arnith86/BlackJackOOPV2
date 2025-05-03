@@ -25,5 +25,10 @@ namespace BlackJackV2.ViewModels.Interfaces
 		/// Used to show or hide betView.
 		/// </summary>
 		bool CanPlaceBet { get; set; }
+
+		/// <summary>
+		/// Disposes of the resources used by the BetViewModel.
+		/// </summary>
+		public void Dispose();
 	}
 }

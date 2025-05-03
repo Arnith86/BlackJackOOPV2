@@ -2,6 +2,7 @@
 // file: BlackJackV2/ViewModels/BetViewModel.cs
 
 using Avalonia.Media.Imaging;
+using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
@@ -19,6 +20,9 @@ namespace BlackJackV2.ViewModels
 	public class BetViewModel : ReactiveObject, IBetViewModel
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");
+		private IPlayer<Bitmap, string> _player;
+		private IGameRules<Bitmap, string> _gameRule;
+		private IPlayerServices<Bitmap, string> _playerServices;
 		private bool _canPlaceBet;
 
 		/// <inheritdoc/>
@@ -40,37 +44,14 @@ namespace BlackJackV2.ViewModels
 			IPlayerServices<Bitmap, string> playerServices,
 			IGameRules<Bitmap, string> gameRule)
 		{
+			_player = player;
+			_gameRule = gameRule;
+			_playerServices = playerServices;
 			CanPlaceBet = true;
 
-			InputBetCommand = ReactiveCommand.Create<string>(betString =>
-			{
-				// Ignore Enter key press if the bet is not enabled
-				if (!CanPlaceBet) return;
-
-				// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Funds 
-				if (!string.IsNullOrWhiteSpace(betString) &&
-						InputBetRegex.IsMatch(betString) &&
-						int.TryParse(betString, out int parsedBet))
-				{
-					var result = gameRule.CanPlaceInitialBet(player, parsedBet);
-
-					if (!result.IsAllowed)
-					{
-						//TODO: Show the user that the bet is not allowed
-						Debug.WriteLine(result.Message);
-					}
-					else
-					{
-						playerServices.OnBetInputReceived(player.Name, parsedBet);
-						CanPlaceBet = false; 
-					}
-				}
-				else
-				{
-					// TODO: IMPLEMENT proper error handling
-					Debug.WriteLine("Invalid input: not a number.");
-				}
-			}); 
+			// ReactiveCommand to handle bet input, as long as CanPlaceBet is true.
+			var canExecute = this.WhenAnyValue(x => x.CanPlaceBet);
+			InputBetCommand = ReactiveCommand.Create<string>(OnBetEntered, canExecute); 
 		}
 
 		/// <inheritdoc/>
@@ -79,5 +60,36 @@ namespace BlackJackV2.ViewModels
 			get => _canPlaceBet;
 			set => this.RaiseAndSetIfChanged(ref _canPlaceBet, value);
 		}
+
+		private void OnBetEntered(string betString)
+		{
+			// Validates the bet input. Must be a number between 1 and 10, and less than or equal to Funds 
+			if (!string.IsNullOrWhiteSpace(betString) &&
+					InputBetRegex.IsMatch(betString) &&
+					int.TryParse(betString, out int parsedBet))
+			{
+				var result = _gameRule.CanPlaceInitialBet(_player, parsedBet);
+
+				if (!result.IsAllowed)
+				{
+					//TODO: Show the user that the bet is not allowed
+					Debug.WriteLine(result.Message);
+				}
+				else
+				{
+					_playerServices.OnBetInputReceived(_player.Name, parsedBet);
+					CanPlaceBet = false;
+				}
+			}
+			else
+			{
+				// TODO: IMPLEMENT proper error handling
+				Debug.WriteLine("Invalid input: not a number.");
+			}
+		}
+
+		/// <inheritdoc/>
+		public void Dispose() => 
+			InputBetCommand.Dispose();
 	}
 }
