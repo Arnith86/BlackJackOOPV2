@@ -35,7 +35,7 @@ namespace BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory
 		/// <returns>A fully configured <see cref="PlayerViewModel"/> instance.</returns>
 		public override IPlayerViewModel CreatePlayerViewModel(
 			IPlayer<Bitmap, string> player,
-			Subject<SplitSuccessfulEvent> splitSuccessfulEvent,
+			Subject<SplitEvent> splitSuccessfulEvent,
 			Subject<BetUpdateEvent> betUpdateEvent,
 			Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
 			IViewModelCreator viewModelCreator,

@@ -56,7 +56,7 @@ namespace BlackJackV2.ViewModels
 		/// Related files <see cref="BlackJackV2.Factories.PlayerViewModelFactory"/>
 		/// </remarks>
 		public PlayerViewModel(	IPlayer<Bitmap, string> player, 
-								Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
+								Subject<SplitEvent> splitSuccessfulEvent, 
 								Subject<BetUpdateEvent> betUpdateEvent,
 								Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
 								IViewModelCreator viewModelCreator,
@@ -106,13 +106,19 @@ namespace BlackJackV2.ViewModels
 			splitSuccessfulEvent
 			.Subscribe(splitEvent =>
 			{
-				// If the player split was successful, add the split hand to the player card view models
-				// and update the bet values
-				if (splitEvent.PlayerName == Player.Name)
+				if (splitEvent.PlayerName == Player.Name && splitEvent.splitStart)
 				{
+					// If the player split was successful, add the split hand to the
+					// player card view models and update the bet values.
 					OnPlayerSplit();
 					SyncPlayerBet(splitEvent.PlayerName);
+				} 
+				else if (splitEvent.PlayerName == Player.Name && !splitEvent.splitStart)
+				{
+					// When split session ends, remove the split hand from the player card view models.
+					OnPlayerSplitEnd();
 				}
+
 			}).DisposeWith(_disposables);
 		}
 

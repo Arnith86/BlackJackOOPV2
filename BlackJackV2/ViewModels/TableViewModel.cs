@@ -27,7 +27,7 @@ namespace BlackJackV2.ViewModels
 	{
 		private readonly IPlayerServices<Bitmap, string> _playerServices;
 		private readonly GameRuleServices<Bitmap, string> _gameRuleServices;
-		private readonly Subject<SplitSuccessfulEvent> _splitEvent;
+		private readonly Subject<SplitEvent> _splitEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
 		private readonly Subject<BetRequestEvent<Bitmap, string>> _betRequestEvent;
 		private readonly IViewModelCreator _viewModelCreator;
@@ -58,7 +58,7 @@ namespace BlackJackV2.ViewModels
 		public TableViewModel(	IPlayerServices<Bitmap, string> playerServices, 
 								IDealerServices<Bitmap, string> dealerServices,
 								GameRuleServices<Bitmap, string> gameRuleServices,
-								Subject<SplitSuccessfulEvent> splitEvent, 
+								Subject<SplitEvent> splitEvent, 
 								Subject<BetUpdateEvent> betUpdateEvent,
 								Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
 								IViewModelCreator viewModelCreator)			

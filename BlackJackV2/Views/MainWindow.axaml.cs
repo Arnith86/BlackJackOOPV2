@@ -10,7 +10,7 @@ namespace BlackJackV2.Views
             this.Width = 1024;
 			this.Height = 768;
             this.MinHeight = 800;
-			this.MinWidth = 600;
+			this.MinWidth = 600;		
 		}
     }
 }

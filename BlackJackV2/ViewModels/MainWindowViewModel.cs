@@ -15,8 +15,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using BlackJackV2.Models.GameLogic;
 using BlackJackV2.Models.GameLogic.PlayerServices;
+using BlackJackV2.ViewModels.Interfaces;
 
 namespace BlackJackV2.ViewModels
 {
@@ -25,26 +27,39 @@ namespace BlackJackV2.ViewModels
 
 		private GameLogic<Bitmap, string> _gameLogic;
 		
-		public InformationViewModel InformationViewModel { get; }
+		public IPlayerSetupViewModel PlayerSetupViewModel { get; }
 		public TableViewModel TableViewModel { get; }
 				
 		public MainWindowViewModel(	
 			GameLogic<Bitmap, string> gameLogic, 
 			IPlayerServices<Bitmap, string> playerServices,
 			TableViewModel tableViewModel, 
-			InformationViewModel informationViewModel)
+			IPlayerSetupViewModel playerSetupViewModel)
 		{
 			_gameLogic = gameLogic;
-			this.InformationViewModel = informationViewModel;
+			PlayerSetupViewModel = playerSetupViewModel;
 			TableViewModel = tableViewModel;
-
-			// Schedule game start AFTER UI loads
-			Task.Run(async () =>
-			{
-				await Task.Delay(100); // short delay to ensure window shows
-				playerServices.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
-				gameLogic.RunGameLoop();
-			});
+			
+			//Dispatcher.UIThread.Post(async () =>
+			//{
+			//	await Task.Delay(500); // Ensure UI has time to load
+			//	playerServices.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
+			//	//await gameLogic.RunGameLoop();
+			//});
+			//Task.Run(async () =>
+			//{
+			//	await Task.Delay(500); // Wait a bit for UI to finish initializing
+			//	playerServices.OnPlayerChangedReceived(new List<string> { "Player1", "Player2" });
+			//	await _gameLogic.RunGameLoop(); // ✔️ background thread
+			//});
 		}
+
+
+		//// ViewModel
+		//public async void OnLoaded()
+		//{
+		//	await Task.Delay(100); // Allow time for the UI to render
+		//	_gameLogic.RunGameLoop();
+		//}
 	}
 }

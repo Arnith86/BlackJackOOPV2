@@ -24,13 +24,10 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 	{
 		private ICardDeck<TImage, TValue> _cardDeck;
 		private IPlayer<TImage, TValue> _player;
-		
 		// The player action class handles the blackjack related actions the players can take
 		private IPlayerAction<TImage, TValue> _playerAction;
-
 		// The current active hand in the game
 		private IBlackJackCardHand<TImage, TValue> currentHand;
-
 		// Queue of card hands to handle
 		private Queue<IBlackJackCardHand<TImage, TValue>> blackJackCardHands = new Queue<IBlackJackCardHand<TImage, TValue>>();
 
@@ -44,10 +41,6 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// </summary>
 		public Subject<PlayerActionEvent> PlayerActionSubject { get; }
 
-		//// Notifies when a hand has changed
-		//private Subject<Unit> _roundCompletedSubject = new Subject<Unit>();
-		//public IObservable<Unit> RoundCompletedObservable => _roundCompletedSubject;
-
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PlayerRound{TImage, TValue}"/> class.
@@ -57,7 +50,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <param name="splitSuccessfulEvent">Event that notifies when a player's hand has been successfully split.</param>
 		public PlayerRound(	IPlayerAction<TImage, TValue> playerAction, 
 							Subject<PlayerActionEvent> playerActionSubject,
-							Subject<SplitSuccessfulEvent> splitSuccessfulEvent )
+							Subject<SplitEvent> splitSuccessfulEvent )
 		{
 			_playerAction = playerAction;
 			PlayerActionSubject = playerActionSubject;
@@ -67,7 +60,10 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			{
 				// If the player split was successful, add the split hand to the player card view models
 				// and update the bet values
-				if (splitEvent.PlayerName == _player.Name)
+				if (
+					_player != null && 
+					splitEvent.PlayerName == _player.Name &&
+					splitEvent.splitStart )
 				{
 					blackJackCardHands.Enqueue(_player.Hands.SplitCardHand);
 				}

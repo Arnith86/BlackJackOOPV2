@@ -1,16 +1,13 @@
 ﻿// Project: BlackJackV2
 // file: BlackJackV2/Models/GameLogic/GameCoordinator.cs
 
-using BlackJackV2.Factories.PlayerFactory;
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic.CardServices;
-using BlackJackV2.Models.GameLogic.CoreServices;
 using BlackJackV2.Models.GameLogic.Dealer_Services;
 using BlackJackV2.Models.GameLogic.GameRuleServices;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
-using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,6 +26,8 @@ namespace BlackJackV2.Models.GameLogic
 		private IPlayerServices<TImage, TValue> _playerServices;
 		private GameRuleServices<TImage, TValue> _gameRuleServices;
 
+		private bool _isGameOver = false;
+		
 		/// <summary>
 		/// Constructs a new instance of the <see cref="GameCoordinator{TImage, TValue}"/> class
 		/// with required services for core card logic, dealer logic, player logic, and game rules.
@@ -44,12 +43,32 @@ namespace BlackJackV2.Models.GameLogic
 			_gameRuleServices = gameRuleServices;
 		}
 
+		/// <inheritdoc/>
+		public bool IsGameOver
+		{
+			get  
+			{
+				foreach (var player in _playerServices.Players)
+				{
+					if (player.Value.Funds > 0)
+						return false;
+				}
+				return true;
+			} 
+		}
+
 		/// <summary>
 		/// Prepares the game for a new round by prompting all players to register their bets.
 		/// </summary>
 		public async Task RegisterBetForNewRound()
 		{
-			_playerServices.RegisterBetForNewRound();
+			await _playerServices.RegisterBetForNewRound();
+		}
+
+		public void ResetCardHands()
+		{
+			_dealerServices.ResetDealerCardHand();
+			_playerServices.ResetPlayerCardHands();
 		}
 
 		/// <summary>
@@ -72,26 +91,54 @@ namespace BlackJackV2.Models.GameLogic
 
 			// Dealer finishes his turn
 			_dealerServices.DealerFinishTurn(_dealerServices.DealerCardHand, cardDeck);
-			EvaluateRound();
-
 		}
 
 		/// <summary>
 		/// Evaluates the outcome of the round for all player hands against the dealer.
 		/// </summary>
-		public void EvaluateRound()
+		/// <returns>Task representing the asynchronous operation.</returns>
+		public Task EvaluateRound()
 		{
-			// Evaluate the round and determine the winner
-			//Debug.WriteLine(roundEvaluator.EvaluateRound(PlayerCardHand.PrimaryCardHand, DealerCardHand.PrimaryCardHand));
+			foreach (var (playerName, currentPlayer) in _playerServices.Players) 
+			{
+				IBlackJackCardHand<TImage, TValue> splitHand = currentPlayer.Hands.GetCardHand(HandOwners.HandOwner.Split);
+
+				EvaluateSingleHand(currentPlayer, HandOwners.HandOwner.Primary);
+
+				if (splitHand.Hand.Count > 0)
+					EvaluateSingleHand(currentPlayer, HandOwners.HandOwner.Split);
+			}
+			return Task.CompletedTask; 
 		}
 
 		/// <summary>
 		/// Evaluates the outcome of a single hand against the dealer. (Currently unused)
 		/// </summary>
 		/// <param name="cardHand">The player's hand to evaluate.</param>
-		private void EvaluateSingleHand(BlackJackCardHand<TImage, TValue> cardHand)
+		private void EvaluateSingleHand(IPlayer<TImage, TValue> player, HandOwners.HandOwner primaryOrSplit)
 		{
+			IBlackJackCardHand<TImage, TValue> cardHand = player.Hands.GetCardHand(primaryOrSplit);
 
+			int bet = player.Hands.GetBetFromHand(primaryOrSplit);
+
+			BlackJackRoundResult.RoundResult result = 
+				_gameRuleServices.RoundEvaluator.EvaluateRound(cardHand, _dealerServices.DealerCardHand.PrimaryCardHand);
+			
+			PayOutWinnings(player, bet, result);
+		}
+
+		/// <summary>
+		/// Calculates and pays out winnings based on the round result.
+		/// </summary>
+		/// <param name="player">The player to pay out winnings to.</param>
+		/// <param name="bet">The amount the player bet.</param>
+		/// <param name="result">The result of the round.</param>
+		private void PayOutWinnings(IPlayer<TImage, TValue> player, int bet, BlackJackRoundResult.RoundResult result)
+		{
+			if (result == BlackJackRoundResult.RoundResult.PlayerWinsBlackJack)
+				player.PayOut(bet * (3 / 2));
+			else if (result == BlackJackRoundResult.RoundResult.PlayerWins)
+				player.PayOut(bet * 2);
 		}
 	}
 }

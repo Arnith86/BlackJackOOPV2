@@ -5,6 +5,7 @@ using Avalonia.Media.Imaging;
 using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
 using BlackJackV2.Models.GameLogic.PlayerServices;
 using BlackJackV2.Models.Player;
+using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels.Interfaces;
 using ReactiveUI;
 using System.Diagnostics;
@@ -20,6 +21,7 @@ namespace BlackJackV2.ViewModels
 	{
 		private readonly Regex InputBetRegex = new Regex(@"^\d+$");
 		private IPlayer<Bitmap, string> _player;
+		private HandOwners.HandOwner _primaryOrSplit;
 		private IGameRules<Bitmap, string> _gameRule;
 		private IPlayerServices<Bitmap, string> _playerServices;
 		private bool _canPlaceBet;
@@ -46,7 +48,6 @@ namespace BlackJackV2.ViewModels
 			_player = player;
 			_gameRule = gameRule;
 			_playerServices = playerServices;
-			CanPlaceBet = true;
 
 			// ReactiveCommand to handle bet input, as long as CanPlaceBet is true.
 			var canExecute = this.WhenAnyValue(x => x.CanPlaceBet);

@@ -5,6 +5,7 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
@@ -42,16 +43,12 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// </summary>
 		IPlayerRound<TImage, TValue> PlayerRound { get; }
 
-		/// <summary>
-		/// Gets an observable that notifies subscribers when the game state changes.
-		/// </summary>
-		IObservable<GameState> GameStateObservable { get; }
-
+	
 		/// <summary>
 		/// Recreates the player list based on a new set of player names and notifies subscribers about the change.
 		/// </summary>
-		/// <param name="playerNames">The list of new player names.</param>
-		void OnPlayerChangedReceived(List<string> playerNames);
+		/// <param name="playerNames">The list of classes containing player names.</param>
+		void OnPlayerChangedReceived(ObservableCollection<PlayerNameEntry> playerNames);
 
 		/// <summary>
 		/// Initiates the process of registering player bets for a new round by requesting input from each player.
@@ -64,5 +61,10 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <param name="playerName">The name of the player who placed the bet.</param>
 		/// <param name="betInput">The amount of the bet placed by the player.</param>
 		void OnBetInputReceived(string playerName, int betInput);
+
+		/// <summary>
+		/// Clears all players card hands for a new round.
+		/// </summary>
+		void ResetPlayerCardHands();
 	}
 }

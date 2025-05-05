@@ -85,6 +85,10 @@ namespace BlackJackV2.Factories.CardDeckFactory
 			//cards.Add(card8);
 			//ICard<TImage, TValue> card9 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
 			//cards.Add(card9);
+			//ICard<TImage, TValue> card10 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card10);
+			//ICard<TImage, TValue> card11 = _cardCreator.CreateCard(cardFrontImage, cardBackImage, (TValue)(object)"Hearts_1");
+			//cards.Add(card11);
 
 			return new BlackJackCardDeck<TImage, TValue>(cards);
 		}

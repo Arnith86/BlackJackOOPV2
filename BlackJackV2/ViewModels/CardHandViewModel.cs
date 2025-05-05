@@ -52,7 +52,7 @@ namespace BlackJackV2.ViewModels
 			
 			ButtonViewModel = inputWrapperViewModel.ButtonViewModel;
 			BetViewModel = inputWrapperViewModel.BetViewModel;
-
+		
 			// Automatically update UI-bound properties when model changes
 			cardHand.WhenAnyValue(x => x.IsActive).Subscribe( isActive => {
 				HandIsActive = isActive;

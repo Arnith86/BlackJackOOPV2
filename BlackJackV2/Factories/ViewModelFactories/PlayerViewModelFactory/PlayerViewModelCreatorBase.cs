@@ -38,7 +38,7 @@ namespace BlackJackV2.Factories.ViewModelFactories.PlayerViewModelFactory
 		/// <returns>A fully constructed and reactive <see cref="IPlayerViewModel"/> instance.</returns>
 		public abstract IPlayerViewModel CreatePlayerViewModel(	
 			IPlayer<TImage, TValue> player, 
-			Subject<SplitSuccessfulEvent> splitSuccessfulEvent, 
+			Subject<SplitEvent> splitSuccessfulEvent, 
 			Subject<BetUpdateEvent> betUpdateEvent,
 			Subject<BetRequestEvent<TImage, TValue>> betRequestEvent,
 			IViewModelCreator viewModelCreator,

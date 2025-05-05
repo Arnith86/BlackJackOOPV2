@@ -12,6 +12,11 @@ namespace BlackJackV2.Models.GameLogic
 	public interface IGameCoordinator<TImage, TValue>
 	{
 		/// <summary>
+		/// Indicates whether the game is over. If true, the game cannot continue.
+		/// </summary>
+		public bool IsGameOver { get; }
+
+		/// <summary>
 		/// Prompts the player(s) to place their bets and prepares the system for a new round.
 		/// </summary>
 		public Task RegisterBetForNewRound();
@@ -25,6 +30,11 @@ namespace BlackJackV2.Models.GameLogic
 		/// <summary>
 		/// Evaluates all hands at the end of the round and determines the outcome for each player.
 		/// </summary>
-		public void EvaluateRound();
+		public Task EvaluateRound();
+
+		/// <summary>
+		/// Resets game state for a new game session, including resetting player and dealer hands.
+		/// </summary>
+		public void ResetCardHands();
 	}
 }

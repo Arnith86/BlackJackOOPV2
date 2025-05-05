@@ -6,11 +6,10 @@ using BlackJackV2.Models.GameLogic.CardServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
@@ -39,21 +38,22 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		// Event subjects to notify subscribers about player changes and bet updates
 		private readonly Subject<Dictionary<string, IPlayer<TImage, TValue>>> _playerChangedEvent;
 		private readonly Subject<BetUpdateEvent> _betUpdateEvent;
+		private readonly Subject<SplitEvent> _splitEvent;
 		private readonly Subject<BetRequestEvent<TImage, TValue>> _betRequestedEvent;
 
 		// Used to wait for specific player bet input to be received
 		private ConcurrentDictionary<string, TaskCompletionSource<int>> _betInputTask;
-		// Subject and IObservable to notify when the game state changes
-		private BehaviorSubject<GameState> _gameStateSubject;
-		
+			
 
-		public PlayerServices(	Dictionary<string, IPlayer<TImage, TValue>> players,
-								ICardServices<TImage, TValue> cardServices,
-								IPlayerAction<TImage, TValue> playerAction, 
-								IPlayerRound<TImage, TValue> playerRound,
-								BlackJackPlayerCreator<TImage, TValue> playerCreator,
-								Subject<BetUpdateEvent> betUpdateEvent,
-								Subject<BetRequestEvent<TImage, TValue>> betRequestEvent)
+		public PlayerServices(	
+			Dictionary<string, IPlayer<TImage, TValue>> players,
+			ICardServices<TImage, TValue> cardServices,
+			IPlayerAction<TImage, TValue> playerAction, 
+			IPlayerRound<TImage, TValue> playerRound,
+			BlackJackPlayerCreator<TImage, TValue> playerCreator,
+			Subject<BetUpdateEvent> betUpdateEvent,
+			Subject<BetRequestEvent<TImage, TValue>> betRequestEvent,
+			Subject<SplitEvent> splitEvent)
 		{
 			_players = players;
 			_cardServices = cardServices;
@@ -63,8 +63,8 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			_playerChangedEvent = new Subject<Dictionary<string, IPlayer<TImage, TValue>>>();
 			_betUpdateEvent = betUpdateEvent;
 			_betRequestedEvent = betRequestEvent;
+			_splitEvent = splitEvent;
 			_betInputTask = new ConcurrentDictionary<string, TaskCompletionSource<int>>();
-			_gameStateSubject = new BehaviorSubject<GameState>(new GameState());
 		}
 
 
@@ -83,35 +83,19 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <inheritdoc/>
 		public IPlayerRound<TImage, TValue> PlayerRound => _playerRound;
 
+		
 		/// <inheritdoc/>
-		public IObservable<GameState> GameStateObservable => _gameStateSubject.AsObservable();
-
-		// Updates the FundsAndBet state and notify subscribers
-		// Action<> means "a method that takes a FundsAndBet state and modifies it, but doesn't return anything.
-		private void UpdateGameState(Action<GameState> updateAction)
-		{
-			// Specify the subject to update
-			var newState = _gameStateSubject.Value;
-
-			// Update the state using the provided action
-			updateAction(newState);
-
-			// Notify subscribers about the new state
-			_gameStateSubject.OnNext(newState);
-		}
-
-		/// <inheritdoc/>
-		public void OnPlayerChangedReceived(List<string> playerNames)
+		public void OnPlayerChangedReceived(ObservableCollection<PlayerNameEntry> playerNames)
 		{
 			Players.Clear();
 
-			foreach (string playerName in playerNames)
+			foreach (PlayerNameEntry playerName in playerNames)
 			{
-				Players.Add(playerName,
+				Players.Add(playerName.PlayerName,
 					_playerCreator.CreatePlayer(
 						_cardServices.GetNewPlayerHands(HandOwners.HandOwner.Player),
 						BetUpdateEvent,
-						playerName)
+						playerName.PlayerName)
 					);
 			}
 
@@ -151,6 +135,16 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 				Players[playerName].PlaceBet(HandOwners.HandOwner.Primary, betInput);
 				betUpdateCompletionSource.SetResult(betInput);
 				Debug.WriteLine($"Bet input received for {playerName}: {betInput}");
+			}
+		}
+
+		/// <inheritdoc/>
+		public void ResetPlayerCardHands()
+		{
+			foreach (var (playerName, currentPlayer) in _players)
+			{
+				_splitEvent.OnNext(new SplitEvent(playerName, false));
+				currentPlayer.Hands.ResetHand();
 			}
 		}
 	}

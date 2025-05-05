@@ -20,7 +20,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// <summary>
 		/// Notifies when a split was successful
 		/// </summary>
-		private readonly Subject<SplitSuccessfulEvent> _splitSuccessfulEvent;
+		private readonly Subject<SplitEvent> _splitSuccessfulEvent;
 
 		private readonly IGameRules<TImage, TValue> _ruleServices;
 
@@ -29,7 +29,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 		/// Initializes a new instance of <see cref="IPlayerAction{TImage, TValue}"/> with a subject to notify when a split is successful.
 		/// </summary>
 		/// <param name="splitSuccessfulEvent"></param>
-		public PlayerAction(Subject<SplitSuccessfulEvent> splitSuccessfulEvent, IGameRules<TImage, TValue> gameRules)
+		public PlayerAction(Subject<SplitEvent> splitSuccessfulEvent, IGameRules<TImage, TValue> gameRules)
 		{
 			_splitSuccessfulEvent = splitSuccessfulEvent;
 			_ruleServices = gameRules;
@@ -117,7 +117,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			if(!result.IsAllowed)
 			{
 				Debug.WriteLine(result.Message);
-				// TODO : Send message to the user that the split was not successfull
+				// TODO : Send message to the user that the split was not successful
 			}
 			else
 			{
@@ -126,7 +126,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 				player.Hands.AddCardToHand(split, blackJackCardDeck.GetTopCard());
 
 				// Notify that the split was successful
-				_splitSuccessfulEvent.OnNext(new SplitSuccessfulEvent(player.Name));
+				_splitSuccessfulEvent.OnNext(new SplitEvent(player.Name, true));
 			}
 		}
 	}
