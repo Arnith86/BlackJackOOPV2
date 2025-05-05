@@ -2,11 +2,11 @@
 // file: BlackJackV2/Shared/Constants/BlackJackActions.cs 
 
 
-/// <summary>
-///		Contains possible actions in the blackjack game
-/// </summary> 
 namespace BlackJackV2.Shared.Constants
 {
+	/// <summary>
+	///	Contains possible actions in the blackjack game
+	/// </summary> 
 	public static class BlackJackActions
 	{
 		public enum PlayerActions

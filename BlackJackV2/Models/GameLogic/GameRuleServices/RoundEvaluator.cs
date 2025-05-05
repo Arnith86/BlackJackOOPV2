@@ -3,6 +3,7 @@
 
 using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.GameLogic.GameRuleServices
 {
@@ -20,34 +21,34 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices
 		/// <param name="playerHand">The player's <see cref="IBlackJackCardHand{TImage, TValue}"/> to evaluate.</param>
 		/// <param name="dealerHand">The dealer's <see cref="IBlackJackCardHand{TImage, TValue}"/> to evaluate.</param>
 		/// <returns>The result of the round as a <see cref="RoundResult"/>.</returns>
-		public RoundResult EvaluateRound(IBlackJackCardHand<TImage, TValue> playerHand, IBlackJackCardHand<TImage, TValue> dealerHand) 
+		public BlackJackRoundResult.RoundResult EvaluateRound(IBlackJackCardHand<TImage, TValue> playerHand, IBlackJackCardHand<TImage, TValue> dealerHand) 
 		{
 			_playerHand = playerHand; 
 			_dealerHand = dealerHand;
 
 			// Both have black jack, its a tie 
-			if (_playerHand.IsBlackJack && _dealerHand.IsBlackJack) return RoundResult.Push;
+			if (_playerHand.IsBlackJack && _dealerHand.IsBlackJack) return BlackJackRoundResult.RoundResult.Push;
 
 			// If only player has black jack, player wins
-			if (_playerHand.IsBlackJack) return RoundResult.PlayerWinsBlackJack;
+			if (_playerHand.IsBlackJack) return BlackJackRoundResult.RoundResult.PlayerWinsBlackJack;
 
 			// If only dealer has black jack, dealer wins
-			if (_dealerHand.IsBlackJack) return RoundResult.DealerWinsBlackJack;
+			if (_dealerHand.IsBlackJack) return BlackJackRoundResult.RoundResult.DealerWinsBlackJack;
 
 			// If player is busted, dealer wins
-			if (_playerHand.IsBusted) return RoundResult.DealerWins;
+			if (_playerHand.IsBusted) return BlackJackRoundResult.RoundResult.DealerWins;
 
 			// If dealer is busted, player wins
-			if (_dealerHand.IsBusted) return RoundResult.PlayerWins;
+			if (_dealerHand.IsBusted) return BlackJackRoundResult.RoundResult.PlayerWins;
 
 			// If player has higher value than dealer, player wins
-			if (_playerHand.HandValue > _dealerHand.HandValue) return RoundResult.PlayerWins;
+			if (_playerHand.HandValue > _dealerHand.HandValue) return BlackJackRoundResult.RoundResult.PlayerWins;
 
 			// If dealer has higher value than player, dealer wins
-			if (_playerHand.HandValue < _dealerHand.HandValue) return RoundResult.DealerWins;
+			if (_playerHand.HandValue < _dealerHand.HandValue) return BlackJackRoundResult.RoundResult.DealerWins;
 
 			// If both have the same value, its a tie
-			return RoundResult.Push;
+			return BlackJackRoundResult.RoundResult.Push;
 		}
 	}
 }

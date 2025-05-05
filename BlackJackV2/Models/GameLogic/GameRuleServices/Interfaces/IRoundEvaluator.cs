@@ -2,6 +2,7 @@
 // file: BlackJackV2/Models/GameLogic/GameRuleServices/Interfaces/IRoundEvaluator.cs
 
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Shared.Constants;
 
 namespace BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces
 {
@@ -16,15 +17,15 @@ namespace BlackJackV2.Models.GameLogic.GameRuleServices.Interfaces
 		/// <param name="playerHand">The player's <see cref="IBlackJackCardHand{TImage, TValue}"/> to evaluate.</param>
 		/// <param name="dealerHand">The dealer's <see cref="IBlackJackCardHand{TImage, TValue}"/> to evaluate.</param>
 		/// <returns>The result of the round as a <see cref="RoundResult"/>.</returns>
-		RoundResult EvaluateRound(IBlackJackCardHand<TImage, TValue> playerHand, IBlackJackCardHand<TImage, TValue> dealerHand);
+		BlackJackRoundResult.RoundResult EvaluateRound(IBlackJackCardHand<TImage, TValue> playerHand, IBlackJackCardHand<TImage, TValue> dealerHand);
 	}
-
-	public enum RoundResult
-	{
-		PlayerWinsBlackJack,
-		DealerWinsBlackJack,
-		PlayerWins,
-		DealerWins,
-		Push
-	}
+	
+	//public enum RoundResult
+	//{
+	//	PlayerWinsBlackJack,
+	//	DealerWinsBlackJack,
+	//	PlayerWins,
+	//	DealerWins,
+	//	Push
+	//}
 }
