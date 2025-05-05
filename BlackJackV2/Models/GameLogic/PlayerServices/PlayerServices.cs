@@ -145,6 +145,7 @@ namespace BlackJackV2.Models.GameLogic.PlayerServices
 			{
 				_splitEvent.OnNext(new SplitEvent(playerName, false));
 				currentPlayer.Hands.ResetHand();
+				_betUpdateEvent.OnNext(new BetUpdateEvent(playerName, HandOwners.HandOwner.Primary));
 			}
 		}
 	}
