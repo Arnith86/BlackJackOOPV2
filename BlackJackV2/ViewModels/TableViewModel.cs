@@ -55,13 +55,14 @@ namespace BlackJackV2.ViewModels
 		/// <param name="betUpdateEvent">Event triggered when a bet is updated.</param>
 		/// <param name="betRequestEvent">Event used to request player bets.</param>
 		/// <param name="viewModelCreator">A wrapper class containing factories for creating view models.</param>
-		public TableViewModel(	IPlayerServices<Bitmap, string> playerServices, 
-								IDealerServices<Bitmap, string> dealerServices,
-								GameRuleServices<Bitmap, string> gameRuleServices,
-								Subject<SplitEvent> splitEvent, 
-								Subject<BetUpdateEvent> betUpdateEvent,
-								Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
-								IViewModelCreator viewModelCreator)			
+		public TableViewModel(	
+			IPlayerServices<Bitmap, string> playerServices, 
+			IDealerServices<Bitmap, string> dealerServices,
+			GameRuleServices<Bitmap, string> gameRuleServices,
+			Subject<SplitEvent> splitEvent, 
+			Subject<BetUpdateEvent> betUpdateEvent,
+			Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
+			IViewModelCreator viewModelCreator)			
 		{
 			_playerServices = playerServices;
 			_gameRuleServices = gameRuleServices;

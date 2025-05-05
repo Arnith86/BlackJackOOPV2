@@ -1,3 +1,13 @@
+<!--
+    DealerCardHandView.axaml
+    This view displays the dealer's hand in the Blackjack game.
+    It includes:
+    - A border that highlights when the hand is active.
+    - A horizontal list of card images.
+    - The current total value of the dealer's hand.
+    ViewModel: CardHandViewModel
+-->
+
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,6 +19,7 @@
              x:DataType="vm:CardHandViewModel"
              mc:Ignorable="d">
 
+	<!-- Converters used for visual or logical bindings -->
 	<UserControl.Resources>
 		<converter:CardPositionConverter x:Key="CardPositionConverter"/>
 		<converter:ElementToIndexConverter x:Key="ElementToIndexConverter"/>
@@ -16,15 +27,17 @@
 	</UserControl.Resources>
 
 
-		<!-- View representing the cards in the dealer hand. -->
-		<!-- Border shows which hand is the active hand-->
+	<!-- Border highlights if this is the currently active hand -->
 	<Border BorderThickness="1"
         Margin="5"
         Padding="10"
         CornerRadius="10"
 		BorderBrush="{Binding HandIsActive, Converter={StaticResource BoolToHighlightBrush}}">
 
+		<!-- Main vertical layout for cards and hand value -->
 		<StackPanel>
+
+			<!-- Displays the dealer's cards horizontally -->
 			<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -33,6 +46,7 @@
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>
 			
+				<!-- Each card is displayed as an image. -->
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<StackPanel>
@@ -42,9 +56,11 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		
-			<!-- Shows the card value -->
+			<!-- Shows the total value of the dealer's hand -->
 			<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
+
 		</StackPanel>
 		
 	</Border>
+
 </UserControl>

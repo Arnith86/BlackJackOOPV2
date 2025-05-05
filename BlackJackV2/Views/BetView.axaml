@@ -1,3 +1,10 @@
+<!--
+    BetView.axaml
+    This view displays the bet input area for a player in the Blackjack game.
+    It binds to BetViewModel and provides a TextBox for entering bets,
+    along with a button and Enter-key shortcut for submitting.
+-->
+
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,19 +14,21 @@
 			 x:DataType="vm:BetViewModel"
 			 mc:Ignorable="d">
 
-
+	<!-- Layout root -->
 	<Panel>
 		
-	 <!--Bet Input--> 
-	
+	 
+		<!-- Bet Input Section: TextBox and Submit Button -->
 		<StackPanel Orientation="Horizontal" Spacing="5">
-			
+
+			<!-- Input field for entering the bet amount -->
 			<TextBox
 				x:Name="BetInputBox"
 				Width="100"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Center">
 
+				<!-- Pressing Enter submits the bet -->
 				<TextBox.KeyBindings>
 					<KeyBinding Command="{Binding InputBetCommand}"
 								CommandParameter="{Binding Text, ElementName=BetInputBox}"
@@ -28,6 +37,7 @@
 
 			</TextBox>
 
+			<!-- Button to submit the bet manually -->
 			<Button	Content="Place Bet"
 					Command="{Binding InputBetCommand}"
 					CommandParameter="{Binding Text, ElementName=BetInputBox}"

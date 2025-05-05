@@ -1,3 +1,9 @@
+<!--
+    ButtonView.axaml
+    This view represents the action buttons for a player in the Blackjack game.
+    It binds to the ButtonViewModel and provides buttons for Hit, Fold,
+    Double Down, and Split actions, which are triggered via ReactiveCommands.
+-->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,13 +13,21 @@
 			 x:DataType="vm:ButtonViewModel"
 			 mc:Ignorable="d" >
 	
-	<!-- View representing the action buttons -->
-	
+	<!-- Horizontal stack of action buttons. -->	
 	<StackPanel Orientation="Horizontal" Spacing="10">
+		
+		<!-- Triggers a "Hit" action. -->
 		<Button Content="Hit" Command="{Binding HitCommand}"/>
+		
+		<!-- Triggers a "Fold" action. -->
 		<Button Content="Fold" Command="{Binding FoldCommand}"/>
+		
+		<!-- Triggers a "Double Down" action. -->
 		<Button Content="Double" Command="{Binding DoubleDownCommand}"/>
+		
+		<!-- Triggers a "Split" action. -->
 		<Button Content="Split" Command="{Binding SplitCommand}"/>
+		
 	</StackPanel>
 	
 </UserControl>

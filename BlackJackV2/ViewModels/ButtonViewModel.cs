@@ -17,7 +17,7 @@ namespace BlackJackV2.ViewModels
 	/// <summary>
 	/// ViewModel that provides commands for player actions in a Blackjack round.
 	/// </summary>
-	/// /// <remarks>
+	/// <remarks>
 	/// Related files <see cref="BlackJackV2.Factories.ButtonViewModelFactory"/>
 	/// </remarks>
 	public class ButtonViewModel : ReactiveObject ,IButtonViewModel, IDisposable

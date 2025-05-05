@@ -7,7 +7,6 @@ using System.Reactive.Disposables;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
-using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels.Interfaces;
 using ReactiveUI;
@@ -38,12 +37,14 @@ namespace BlackJackV2.ViewModels
 		/// Initializes a new instance of the <see cref="CardHandViewModel"/> class,
 		/// binding state to a Blackjack card hand and subscribing to updates.
 		/// </summary>
-		/// /// <remarks>
+		/// <remarks>
 		/// Related files <see cref="BlackJackV2.Factories.CardHandViewModelFactory"/>
 		/// </remarks>
 		/// <param name="cardHand">The underlying hand model.</param>
 		/// <param name="inputWrapperViewModel">ViewModel for input actions.</param>
-		public CardHandViewModel(IBlackJackCardHand<Bitmap, string> cardHand, IInputWrapperViewModel inputWrapperViewModel)
+		public CardHandViewModel(
+			IBlackJackCardHand<Bitmap, string> cardHand, 
+			IInputWrapperViewModel inputWrapperViewModel)
 		{
 			Initialize(cardHand.Id, cardHand);
 			

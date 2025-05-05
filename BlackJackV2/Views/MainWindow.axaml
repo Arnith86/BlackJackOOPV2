@@ -1,36 +1,46 @@
-    <Window xmlns="https://github.com/avaloniaui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+<!--
+	MainWindow.axaml
+	This is the main window of the Blackjack game.
+	It composes the entire layout using nested views and binds to MainWindowViewModel.
+	It includes:
+	- A top section for player setup (funds, bet).
+	- A middle section displaying the game table with hands.
+	- A bottom section reserved (currently unused).
+-->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            
-			xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
-			xmlns:Views="clr-namespace:BlackJackV2.Views"
-	        x:Class="BlackJackV2.Views.MainWindow"
-            x:DataType="vm:MainWindowViewModel"
-            Icon="/Assets/avalonia-logo.ico"
-            Title="BlackJackV2">
+		xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
+		xmlns:Views="clr-namespace:BlackJackV2.Views"
+	    x:Class="BlackJackV2.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="BlackJackV2">
 
-		<!-- The MainView of the game, which uses other views to build a complete view -->
-		
-        <Design.DataContext>
-            <!-- This only sets the DataContext for the previewer in an IDE,
-                 to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-            <vm:MainWindowViewModel/>
-        </Design.DataContext>
 	
-	    <Grid ShowGridLines="True">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="110"/>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="50"/>		
-			</Grid.RowDefinitions>
+	<!-- Design-time DataContext for IDE previewer -->
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+                to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
 
-			<!-- Shows the Funds and chosen bet -->
-			<Views:PlayerSetupView Grid.Row="0" DataContext="{Binding PlayerSetupViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-			
-			<!-- Shows the table and the cards -->
-			<Views:TableView Grid.Row="1" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/> 
-			
-		</Grid>
+	<!-- Main layout grid for structuring the application -->
+	<Grid ShowGridLines="True">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="110"/>	<!-- Player setup area -->
+			<RowDefinition Height="*"/>		<!-- Game table area -->
+			<RowDefinition Height="50"/>	<!-- Reserved for future use -->
+		</Grid.RowDefinitions>
 
-    </Window>
+		<!-- View to manage player funds and bet -->
+		<Views:PlayerSetupView Grid.Row="0" DataContext="{Binding PlayerSetupViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
+		<!-- Main game view including dealer and player hands -->
+		<Views:TableView Grid.Row="1" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/> 
+			
+	</Grid>
+
+</Window>

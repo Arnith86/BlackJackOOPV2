@@ -1,3 +1,11 @@
+<!--
+    PlayerSetupView.axaml
+    This view handles the setup phase before the game starts.
+    It allows the player to:
+    - Choose the number of players.
+    - Enter names for each player.
+    - Start a new game when ready.
+-->
 <UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,16 +16,18 @@
     x:DataType="vm:PlayerSetupViewModel"
     mc:Ignorable="d">
 
+	<!-- Main container, only visible when a new game is being started -->
 	<StackPanel IsVisible="{Binding NewGameStarted}">
 		
 		<Grid>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="35"/>
-				<RowDefinition Height="35"/>
-				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>	<!-- Player count -->
+				<RowDefinition Height="35"/>	<!-- Player names -->
+				<RowDefinition Height="35"/>	<!-- Start button -->
 			</Grid.RowDefinitions>
 
 
+			<!-- Player count selection -->
 			<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
 				<TextBlock Text="How many players? " VerticalAlignment="Center"/>
 				<ComboBox
@@ -25,7 +35,10 @@
 					SelectedItem="{Binding NumberOfPlayers}" />
 			</StackPanel>
 
+
+			<!-- Player name input fields -->
 			<StackPanel Grid.Row="1" IsVisible="{Binding CanStartNewGame}">
+				
 				<ItemsControl Name="PlayerNameInputControl" ItemsSource="{Binding PlayerNames}">
 
 					<ItemsControl.ItemsPanel>
@@ -43,9 +56,12 @@
 							</StackPanel>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
+				
 				</ItemsControl>
+			
 			</StackPanel>
 
+			<!-- Start new game button -->
 			<Button Grid.Row="2"
 				Content="Start New Game"
 				Command="{Binding StartNewGameCommand}"

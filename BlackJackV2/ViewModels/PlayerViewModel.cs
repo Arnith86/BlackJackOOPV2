@@ -8,7 +8,6 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels.Interfaces;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -55,13 +54,14 @@ namespace BlackJackV2.ViewModels
 		/// <remarks>
 		/// Related files <see cref="BlackJackV2.Factories.PlayerViewModelFactory"/>
 		/// </remarks>
-		public PlayerViewModel(	IPlayer<Bitmap, string> player, 
-								Subject<SplitEvent> splitSuccessfulEvent, 
-								Subject<BetUpdateEvent> betUpdateEvent,
-								Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
-								IViewModelCreator viewModelCreator,
-								IPlayerServices<Bitmap, string> playerServices,
-								GameRuleServices<Bitmap, string> gameRuleServices) 
+		public PlayerViewModel(	
+			IPlayer<Bitmap, string> player, 
+			Subject<SplitEvent> splitSuccessfulEvent, 
+			Subject<BetUpdateEvent> betUpdateEvent,
+			Subject<BetRequestEvent<Bitmap, string>> betRequestEvent,
+			IViewModelCreator viewModelCreator,
+			IPlayerServices<Bitmap, string> playerServices,
+			GameRuleServices<Bitmap, string> gameRuleServices) 
 		{
 			Player = player;
 		

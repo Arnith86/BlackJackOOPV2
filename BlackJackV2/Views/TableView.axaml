@@ -1,3 +1,24 @@
+<!-- 
+    TableView.axaml
+    Purpose:
+    - Acts as the main layout container for rendering the Blackjack table scene.
+
+    Responsibilities:
+    - Renders the background image of the table.
+    - Displays the dealer's cards using DealerCardHandView.
+    - Iterates over PlayerViewModels to render each player's name and PlayerView (which includes hands and bets).
+
+    Integration:
+    - Binds to TableViewModel as its DataContext.
+    - Expects DealerCardHandViewModel to be populated for the dealer view.
+    - Expects PlayerViewModels to contain initialized Player and PlayerCardViewModels.
+    - Relies on MVVM structure where logic is handled outside the view.
+
+    Notes:
+    - Background image uses Stretch=UniformToFill and is not hit-testable.
+    - Player layout is horizontally spaced for a clear multi-hand display.
+-->
+
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,15 +29,14 @@
              x:DataType="vm:TableViewModel"
              mc:Ignorable="d" >
 	
-	<!-- A view that simulates the "Table", gathers and presenting all CardHandViews -->
 	<Grid>
-		
-		<!-- Background Image -->
+
+		<!-- Table background -->
 		<Image Source="avares://BlackJackV2/Assets/Backgrounds/Table.jpg"
 			   Stretch="UniformToFill"
 			   IsHitTestVisible="False" />
-		
-		<!-- Forground content -->
+
+		<!-- Foreground content -->
 		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
 					>
 

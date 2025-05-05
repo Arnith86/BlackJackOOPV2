@@ -1,3 +1,11 @@
+<!--
+    PlayerView.axaml
+    This view displays information related to a player, including:
+    - Current funds
+    - Each of their hands (can be multiple if split)
+    - The bet placed on each hand
+-->
+
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -14,13 +22,16 @@
 	<!-- Accesses each instance of PlayerCardViewModel in the ObservableCollection -->
 
 	<Panel>
+		
 		<StackPanel>
 			
+			<!-- Displays player's current funds -->
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="5">
 				<Image Source="avares://BlackJackV2/Assets/Coin.png" Width="15" Height="15"/>
 				<TextBlock Text="{Binding Funds}" VerticalAlignment="Center"/>
 			</StackPanel>
-			
+
+			<!-- Displays each of the player's hands (in case of split) -->
 			<ItemsControl ItemsSource="{Binding PlayerCardViewModels}" MinHeight="200">
 
 				<ItemsControl.ItemsPanel>
@@ -34,8 +45,11 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate x:DataType="vm:CardHandViewModel">
 						<StackPanel>
-							<Views:CardHandView HorizontalContentAlignment="Center"/>
 							
+							<!-- Card hand view (reusable control) -->
+							<Views:CardHandView HorizontalContentAlignment="Center"/>
+
+							<!-- Displays the bet placed on this hand -->
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 								<Image Source="avares://BlackJackV2/Assets/Bet.png" Width="25" Height="25"/>
 								<TextBlock Text="{Binding Bet}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -48,6 +62,7 @@
 			</ItemsControl>
 		
 		</StackPanel>
+	
 	</Panel>
 	
 </UserControl>

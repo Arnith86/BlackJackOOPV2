@@ -1,3 +1,13 @@
+<!--
+    CardHandView.axaml
+    This view represents a single hand of cards in the Blackjack game.
+    It includes:
+    - A border that visually highlights the currently active hand.
+    - A collection of card images, each clickable via a command (The clicking aspect will be removed in future updates).
+    - A text block showing the hand's total value.
+    - Conditional child views for placing a bet and performing actions (Hit, Fold, etc.).
+    ViewModel: CardHandViewModel
+-->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,6 +19,7 @@
              x:DataType="vm:CardHandViewModel"
              mc:Ignorable="d">
 
+	<!-- Converters used for binding logic -->
 	<UserControl.Resources>
 		<converter:CardPositionConverter x:Key="CardPositionConverter"/>
 		<converter:ElementToIndexConverter x:Key="ElementToIndexConverter"/>
@@ -16,63 +27,71 @@
 	</UserControl.Resources>
 
 
-		<!-- View representing the cards in a single hand -->
-		<!-- Border shows which hand is the active hand-->
-	
-		<StackPanel>
-			
-			<!-- A border only around the cards in the hand and its value.-->
-			<Border BorderThickness="1"
-				Margin="5"
-				Padding="10"
-				CornerRadius="10"
-				BorderBrush="{Binding HandIsActive, Converter={StaticResource BoolToHighlightBrush}}">
+	<!-- Outer container for the hand -->
+	<StackPanel>
 
-				<StackPanel>
-					
-					<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<StackPanel Orientation="Horizontal"
-											Spacing="5"/>
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
+		<!-- Border highlights if the hand is active -->
+		<Border 
+			BorderThickness="1"
+			Margin="5"
+			Padding="10"
+			CornerRadius="10"
+			BorderBrush="{Binding HandIsActive, Converter={StaticResource BoolToHighlightBrush}}">
 
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<StackPanel>
-									<!-- Sends the value of the clicked card to CardHandViewModel -->
-									<!-- Had to bind it using ReflectionBinding.. -->
-									<Button	Command="{ReflectionBinding #cards.DataContext.CardClickedCommand, 
+			<!-- Inner layout for cards and hand value -->
+			<StackPanel>
+
+				<!-- Displays cards horizontally -->
+				<ItemsControl Name="cards" ItemsSource="{Binding Cards}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"
+										Spacing="5"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+
+					<!-- Each card shown as a button with image -->
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<!-- Binds command to click, sending card value -->
+								<!-- Had to bind it using ReflectionBinding.. -->
+							
+								<Button	Command="{ReflectionBinding #cards.DataContext.CardClickedCommand, 
 									RelativeSource={RelativeSource AncestorType=ItemsControl}}"
 										CommandParameter="{Binding Value}">
+									
+									<Image Source="{Binding CurrentImage}" Width="100" Height="150"/>
+								
+								</Button>
+							
+							</StackPanel>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 
-										<Image Source="{Binding CurrentImage}" Width="100" Height="150"/>
-									</Button>
-								</StackPanel>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
+				<!-- Shows the total value of the hand -->
+				<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
 
-					<!-- Shows the card value -->
-					<TextBlock Text="{Binding HandValue}" HorizontalAlignment="Center"/>
+			</StackPanel>
 
-				</StackPanel>
+		</Border>
 
-			</Border>		
-			
-			<!-- Shows the player action buttons -->
-			<Views:ButtonView DataContext="{Binding ButtonViewModel}" 
-							  IsVisible="{Binding HandIsActive}" 
-							  HorizontalContentAlignment="Center" 
-							  VerticalAlignment="Center"/>
-			
-			<!-- Shows the Bet input view -->
-			<Views:BetView DataContext="{Binding BetViewModel}" 
-						   IsVisible="{Binding CanPlaceBet}" 
-						   HorizontalAlignment="Center" 
-						   VerticalAlignment="Center"/>
-		</StackPanel>
+		<!-- Displays action buttons only if hand is active -->
+		<Views:ButtonView 
+			DataContext="{Binding ButtonViewModel}" 
+			IsVisible="{Binding HandIsActive}" 
+			HorizontalContentAlignment="Center" 
+			VerticalAlignment="Center"/>
+
+		<!-- Displays bet input only if allowed -->
+		<Views:BetView 
+			DataContext="{Binding BetViewModel}" 
+			IsVisible="{Binding CanPlaceBet}" 
+			HorizontalAlignment="Center" 
+			VerticalAlignment="Center"/>
+		
+	</StackPanel>
 		
 	
 </UserControl>
