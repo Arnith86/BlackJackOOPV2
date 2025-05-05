@@ -10,7 +10,6 @@
 
 	<StackPanel IsVisible="{Binding NewGameStarted}">
 		
-		
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="35"/>
@@ -54,10 +53,8 @@
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center" />
 
-
 		</Grid>
-
-		
-		</StackPanel>
+	
+	</StackPanel>
 	
 </UserControl>
