@@ -4,42 +4,60 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
-    x:Class="BlackJackV2.Views.StatsView"
+    x:Class="BlackJackV2.Views.InformationView"
     x:DataType="vm:InformationViewModel"
     mc:Ignorable="d">
 
-	<!--<StackPanel>
+	<StackPanel IsVisible="{Binding NewGameStarted}">
 		
-		--><!-- Shows current Points --><!--
-		<StackPanel Orientation="Horizontal" Spacing="20">
-			<TextBlock Text="Funds:" FontWeight="Bold"/>
-			<TextBlock Text="{Binding Funds}" />
-		</StackPanel>
+		
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+			</Grid.RowDefinitions>
 
-		--><!-- Bet Input --><!--
-		<StackPanel Orientation="Horizontal" Spacing="5">
-			<TextBlock Text="Place Bet:" FontWeight="Bold" VerticalAlignment="Center"/>
-			
-			<TextBox 
-				x:Name="BetInputBox"
-				Width="100"
-				HorizontalAlignment="Left"
-				VerticalAlignment="Center">
-				
-				<TextBox.KeyBindings>
-					<KeyBinding Command="{Binding InputBetCommand}"
-								CommandParameter="{Binding Text, ElementName=BetInputBox}"
-								Gesture="Enter"	/>	
-				</TextBox.KeyBindings>
-				
-			</TextBox>
-			
-			<Button	Content="Place Bet"
-					Command="{Binding InputBetCommand}"
-					CommandParameter="{Binding Text, ElementName=BetInputBox}"
-					IsEnabled="{Binding IsBetEnabled}" />
-			
+
+			<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+				<TextBlock Text="How many players? " VerticalAlignment="Center"/>
+				<ComboBox
+					ItemsSource="{Binding NumberOptions}"
+					SelectedItem="{Binding NumberOfPlayers}" />
+			</StackPanel>
+
+			<StackPanel Grid.Row="1" IsVisible="{Binding CanStartNewGame}">
+				<ItemsControl Name="PlayerNameInputControl" ItemsSource="{Binding PlayerNames}">
+
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"
+										Spacing="6"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding PlayerName}" VerticalAlignment="Center" Width="65"/>
+								<TextBox Text="{Binding PlayerName, Mode=TwoWay}" Width="80"/>
+							</StackPanel>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</StackPanel>
+
+			<Button Grid.Row="2"
+				Content="Start New Game"
+				Command="{Binding StartNewGameCommand}"
+				IsVisible="{Binding CanStartNewGame}"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center" />
+
+
+		</Grid>
+
+		
 		</StackPanel>
-	</StackPanel>-->
 	
 </UserControl>

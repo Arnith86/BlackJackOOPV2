@@ -20,13 +20,13 @@
 	
 	    <Grid ShowGridLines="True">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="100"/>
+				<RowDefinition Height="110"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="50"/>		
 			</Grid.RowDefinitions>
 
 			<!-- Shows the Funds and chosen bet -->
-			<Views:StatsView Grid.Row="0" DataContext="{Binding InformationViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+			<Views:InformationView Grid.Row="0" DataContext="{Binding InformationViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
 			
 			<!-- Shows the table and the cards -->
 			<Views:TableView Grid.Row="1" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/> 
