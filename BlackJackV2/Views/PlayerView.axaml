@@ -16,8 +16,8 @@
 	<Panel>
 		<StackPanel>
 			
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-				<Label Content="Funds:" VerticalAlignment="Center" Margin="0,0,0,0"/>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="5">
+				<Image Source="avares://BlackJackV2/Assets/Coin.png" Width="15" Height="15"/>
 				<TextBlock Text="{Binding Funds}" VerticalAlignment="Center"/>
 			</StackPanel>
 			
@@ -34,7 +34,6 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate x:DataType="vm:CardHandViewModel">
 						<StackPanel>
-							<!--<TextBlock Text="{Binding Id}" HorizontalAlignment="Center"/>-->
 							<Views:CardHandView HorizontalContentAlignment="Center"/>
 							<TextBlock Text="{Binding Bet, StringFormat='Bet: {0}'}" HorizontalAlignment="Center"/>
 						</StackPanel>

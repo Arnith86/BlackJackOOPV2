@@ -4,8 +4,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:BlackJackV2.ViewModels"
-    x:Class="BlackJackV2.Views.InformationView"
-    x:DataType="vm:InformationViewModel"
+    x:Class="BlackJackV2.Views.PlayerSetupView"
+    x:DataType="vm:PlayerSetupViewModel"
     mc:Ignorable="d">
 
 	<StackPanel IsVisible="{Binding NewGameStarted}">

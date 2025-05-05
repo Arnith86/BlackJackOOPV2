@@ -13,8 +13,7 @@
 	 <!--Bet Input--> 
 	
 		<StackPanel Orientation="Horizontal" Spacing="5">
-			<TextBlock Text="Place Bet:" FontWeight="Bold" VerticalAlignment="Center"/>
-
+			
 			<TextBox
 				x:Name="BetInputBox"
 				Width="100"

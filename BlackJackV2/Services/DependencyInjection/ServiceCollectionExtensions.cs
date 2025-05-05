@@ -89,7 +89,7 @@ namespace BlackJackV2.Services.DependencyInjection
 			collection.AddSingleton<BlackJackInputWrapperViewModelCreator>();
 
 			// View models
-			collection.AddSingleton<InformationViewModel>();
+			collection.AddSingleton<IPlayerSetupViewModel, PlayerSetupViewModel>();
 			collection.AddScoped<IButtonViewModel, ButtonViewModel>();
 			collection.AddScoped<IBetViewModel, BetViewModel>();
 			collection.AddSingleton<TableViewModel>();

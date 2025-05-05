@@ -26,7 +26,7 @@
 			</Grid.RowDefinitions>
 
 			<!-- Shows the Funds and chosen bet -->
-			<Views:InformationView Grid.Row="0" DataContext="{Binding InformationViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+			<Views:PlayerSetupView Grid.Row="0" DataContext="{Binding PlayerSetupViewModel}" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
 			
 			<!-- Shows the table and the cards -->
 			<Views:TableView Grid.Row="1" DataContext="{Binding TableViewModel}"  HorizontalContentAlignment="Center" VerticalAlignment="Center"/> 
