@@ -35,7 +35,12 @@
 					<DataTemplate x:DataType="vm:CardHandViewModel">
 						<StackPanel>
 							<Views:CardHandView HorizontalContentAlignment="Center"/>
-							<TextBlock Text="{Binding Bet, StringFormat='Bet: {0}'}" HorizontalAlignment="Center"/>
+							
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+								<Image Source="avares://BlackJackV2/Assets/Bet.png" Width="25" Height="25"/>
+								<TextBlock Text="{Binding Bet}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+							</StackPanel>
+							
 						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>

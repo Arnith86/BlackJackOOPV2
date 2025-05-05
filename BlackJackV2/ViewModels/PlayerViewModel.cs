@@ -8,6 +8,7 @@ using BlackJackV2.Models.Player;
 using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels.Interfaces;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -82,6 +83,16 @@ namespace BlackJackV2.ViewModels
 				.SelectMany(player => player.WhenAnyValue(p => p.Funds))
 				.Subscribe(funds => Funds = funds)
 				.DisposeWith(_disposables);
+
+
+			betRequestEvent.Subscribe(betRequest =>
+			{ 
+				if (betRequest.Player == Player)
+				{
+					// Request the player to place a bet
+					PlayerCardHandViewModel.BetIsRequested();
+				}
+			});
 
 			betUpdateEvent
 			.Subscribe(betEvent => 

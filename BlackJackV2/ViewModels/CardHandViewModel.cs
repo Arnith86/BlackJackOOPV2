@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using Avalonia.Media.Imaging;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardHand;
+using BlackJackV2.Services.Events;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.ViewModels.Interfaces;
 using ReactiveUI;
@@ -119,6 +120,11 @@ namespace BlackJackV2.ViewModels
 		/// <inheritdoc/>
 		public ObservableCollection<ICard<Bitmap, string>> Cards => _cards;
 		
+		public void BetIsRequested()
+		{
+			BetViewModel.CanPlaceBet = true;	
+		}
+
 		/// <summary>
 		/// Disposes of reactive subscriptions to prevent memory leaks.
 		/// </summary>

@@ -35,5 +35,10 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 		/// </param>
 		/// <param name="cardDeck">The card deck used for drawing cards.</param>
 		public void DealerFinishTurn(IBlackJackPlayerHands<TImage, TValue> dealerHands, ICardDeck<TImage, TValue> cardDeck);
+
+		/// <summary>
+		/// Resets the dealer's card hand for a new round.
+		/// </summary>
+		public void ResetDealerCardHand();
 	}
 }

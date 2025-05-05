@@ -77,9 +77,7 @@ namespace BlackJackV2.ViewModels
 			PlayerNames.Clear();
 
 			for (int i = 0; i < _numberOfPlayers; i++)
-			{
-				PlayerNames.Add(new PlayerNameEntry(i, $"Player {i + 1}"));
-			}			 
+				PlayerNames.Add(new PlayerNameEntry(i, $"Player {i + 1}"));			 
 		}
 
 		/// <inheritdoc/>

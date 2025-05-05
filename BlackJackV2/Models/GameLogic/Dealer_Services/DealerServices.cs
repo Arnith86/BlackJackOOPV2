@@ -3,14 +3,12 @@
 
 using BlackJackV2.Models.CardDeck;
 using BlackJackV2.Models.Card;
-using BlackJackV2.Models.CardHand;
 using BlackJackV2.Models.PlayerHands;
 using BlackJackV2.Shared.Constants;
 using BlackJackV2.Models.GameLogic.CardServices;
 using BlackJackV2.Models.Player;
 using BlackJackV2.Factories.PlayerFactory;
-using BlackJackV2.Models.GameLogic.CoreServices;
-using BlackJackV2.Services.Events;
+
 
 namespace BlackJackV2.Models.GameLogic.Dealer_Services
 {
@@ -60,14 +58,18 @@ namespace BlackJackV2.Models.GameLogic.Dealer_Services
 			dealerHands.PrimaryCardHand.RecalculateHandAfterCardFlip();
 
 			if (dealerHands.PrimaryCardHand.HandValue <= 17)
-				DrawUntillSeventeen(dealerHands, cardDeck);
+				DrawUntilSeventeen(dealerHands, cardDeck);
 		}
 
 		// Dealer must hit until they reach a total of 17 or higher
-		private void DrawUntillSeventeen(IBlackJackPlayerHands<TImage, TValue> dealerHands, ICardDeck<TImage, TValue> cardDeck)
+		private void DrawUntilSeventeen(IBlackJackPlayerHands<TImage, TValue> dealerHands, ICardDeck<TImage, TValue> cardDeck)
 		{
 			while (dealerHands.PrimaryCardHand.HandValue < 17)
 				dealerHands.PrimaryCardHand.AddCard(cardDeck.GetTopCard());
 		}
+
+		/// <inheritdoc/>
+		public void ResetDealerCardHand() => 
+			_dealerCardHand.ResetHand();
 	}
 }
