@@ -4,9 +4,9 @@
 using BlackJackV2.Factories.CardFactory;
 using BlackJackV2.Models.Card;
 using BlackJackV2.Models.CardDeck;
+using BlackJackV2.Shared.Utilities.ImageLoader;
 using System.Collections.Generic;
 using System.Linq;
-using BlackJackV2.Shared.Utilities.ImageLoader;
 
 namespace BlackJackV2.Factories.CardDeckFactory
 {
@@ -28,7 +28,7 @@ namespace BlackJackV2.Factories.CardDeckFactory
 		/// </summary>
 		/// <param name="cardCreator">Creator for individual cards, used to generate the deck.</param>
 		/// <param name="imageLoader">Loader for card images, used to load front and back images.</param>
-		public BlackJackCardDeckCreator(BlackJackCardCreator<TImage, TValue> cardCreator, IImageLoader<TImage> imageLoader) 
+		public BlackJackCardDeckCreator(BlackJackCardCreator<TImage, TValue> cardCreator, IImageLoader<TImage> imageLoader)
 		{
 			_cardCreator = cardCreator;
 			_imageLoader = imageLoader;
